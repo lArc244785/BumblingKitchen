@@ -427,6 +427,74 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1744554698
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10.340114
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.388078
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2466801319545276329, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967046558602847555, guid: bea727482a6e1134c945279107ecf468,
+        type: 3}
+      propertyPath: m_Name
+      value: Renderer-Salad-OnionTomato
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bea727482a6e1134c945279107ecf468, type: 3}
 --- !u!4 &2392401283649841
 Transform:
   m_ObjectHideFlags: 0
@@ -3188,3 +3256,4 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 8201994244548439682}
+  - {fileID: 1744554698}
