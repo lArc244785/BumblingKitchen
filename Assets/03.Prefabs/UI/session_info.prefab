@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2239293948730698638}
   - component: {fileID: 5543299878910388690}
   m_Layer: 5
-  m_Name: room_info
+  m_Name: session_info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,6 +130,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2239293948730698638}
     m_Modifications:
+    - target: {fileID: 2836004120374507208, guid: 7c0615791e95fc14a8d15e373e160d9b,
+        type: 3}
+      propertyPath: m_text
+      value: Session Name
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836004120374507208, guid: 7c0615791e95fc14a8d15e373e160d9b,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2836004120374507208, guid: 7c0615791e95fc14a8d15e373e160d9b,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -163,7 +178,7 @@ PrefabInstance:
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 450
+      value: 447
       objectReference: {fileID: 0}
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
@@ -208,7 +223,7 @@ PrefabInstance:
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 50
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
@@ -233,7 +248,7 @@ PrefabInstance:
     - target: {fileID: 6969697868908991486, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
       propertyPath: m_Name
-      value: Text Room Name
+      value: Text Session Name
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -292,7 +307,7 @@ PrefabInstance:
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
@@ -337,7 +352,7 @@ PrefabInstance:
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -50
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 6968723883907496864, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
@@ -362,7 +377,7 @@ PrefabInstance:
     - target: {fileID: 6969697868908991486, guid: 7c0615791e95fc14a8d15e373e160d9b,
         type: 3}
       propertyPath: m_Name
-      value: Text Room User Amount
+      value: Text Session User Amount
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
