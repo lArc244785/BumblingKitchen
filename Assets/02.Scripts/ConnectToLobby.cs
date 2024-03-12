@@ -1,25 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MyFusion;
 using TMPro;
 using UnityEngine.UI;
 
-public class ConnectToLobby : MonoBehaviour
+namespace BumblingKitchen.Fusion
 {
-	[SerializeField] private Button onConnectToLobby;
-
-
-	private void Start()
+	public class ConnectToLobby : MonoBehaviour
 	{
-		onConnectToLobby.onClick.AddListener(OnConnectToLobby);
+		[SerializeField] private Button onConnectToLobby;
+
+
+		private void Start()
+		{
+			onConnectToLobby.onClick.AddListener(OnConnectToLobby);
+		}
+
+		public void OnConnectToLobby()
+		{
+			FusionConnection.Instance.ConnectToLobby();
+		}
 	}
-
-	public void OnConnectToLobby()
-	{
-		FusionConnection.instance.ConnectToLobby();
-	}
-
-
-
 }
