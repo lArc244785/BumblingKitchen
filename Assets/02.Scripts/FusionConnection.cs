@@ -14,6 +14,8 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
 	public List<SessionInfo> sessionList { get; private set; }
 
+	public event Action<NetworkRunner, PlayerRef> OnPlayerLeftEvent;
+
 	private void Awake()
 	{
 		if (Instance == null)
@@ -117,6 +119,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
 	public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
 	{
+		OnPlayerLeftEvent?.Invoke(runner, player);
 	}
 
 	public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)

@@ -28,7 +28,8 @@ namespace BumblingKitchen.PopUp
 
 		public override void Close()
 		{
-			Destroy(gameObject);
+			if (gameObject != null)
+				Destroy(gameObject);
 		}
 
 		public override void Open()

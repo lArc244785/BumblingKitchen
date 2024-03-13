@@ -299,7 +299,7 @@ MonoBehaviour:
     m_Focused:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
-      m_TextColor: {r: 0.93333334, g: 0.93333334, b: 0.93333334, a: 1}
+      m_TextColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_OnNormal:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds:
@@ -313,11 +313,11 @@ MonoBehaviour:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds:
       - {fileID: 1411127090212124673, guid: 0000000000000000d000000000000000, type: 0}
-      m_TextColor: {r: 0.93333334, g: 0.93333334, b: 0.93333334, a: 1}
+      m_TextColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_OnFocused:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
-      m_TextColor: {r: 0.93333334, g: 0.93333334, b: 0.93333334, a: 1}
+      m_TextColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_Border:
       m_Left: 6
       m_Right: 6
@@ -370,7 +370,7 @@ MonoBehaviour:
     m_Focused:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
-      m_TextColor: {r: 0.93333334, g: 0.93333334, b: 0.93333334, a: 1}
+      m_TextColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_OnNormal:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds:
@@ -384,11 +384,11 @@ MonoBehaviour:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds:
       - {fileID: 1411127090212124673, guid: 0000000000000000d000000000000000, type: 0}
-      m_TextColor: {r: 0.93333334, g: 0.93333334, b: 0.93333334, a: 1}
+      m_TextColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_OnFocused:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
-      m_TextColor: {r: 0.93333334, g: 0.93333334, b: 0.93333334, a: 1}
+      m_TextColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_Border:
       m_Left: 6
       m_Right: 6
@@ -1100,11 +1100,11 @@ MonoBehaviour:
   StaticObjectsLayer: 0
   AlignStrength: 1
   ExtraDragForRotationMode: 100
-  GravityStrength: {x: -1.4227869e-10, y: -9.777317, z: -0.0000011655471}
+  GravityStrength: {x: -1.4227863e-10, y: -9.777313, z: -0.0000011655467}
   LimitBodyVelocityInGravityMode: 0
   SetGravityInDirectionOfMouse: 0
   PausePositionReajustment: 1
-  ControlRotation: 0
+  ControlRotation: 1
   MaxVelocity: 10
   CollisionMaxVelocity: 1
   MaxAngularVelocity: 10
