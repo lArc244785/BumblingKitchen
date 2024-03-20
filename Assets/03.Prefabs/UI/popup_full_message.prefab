@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 5702397328061512385}
   - component: {fileID: 1470708673711445092}
   m_Layer: 5
-  m_Name: PopUp Full Message
+  m_Name: popup_full_message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

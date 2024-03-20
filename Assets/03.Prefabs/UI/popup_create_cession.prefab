@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 7007261454774099722}
   - component: {fileID: 2257545412413710558}
   m_Layer: 5
-  m_Name: Popup Create Session
+  m_Name: popup_create_cession
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

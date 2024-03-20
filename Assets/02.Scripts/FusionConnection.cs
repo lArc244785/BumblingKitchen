@@ -22,6 +22,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 		{
 			Instance = this;
 			runner = gameObject.AddComponent<NetworkRunner>();
+			runner.ProvideInput = true;
 		}
 		else
 		{
