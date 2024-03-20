@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
 	public static FusionConnection Instance;
-	public NetworkRunner runner { get; private set; }
+	private NetworkRunner _runner;
 
 	public List<SessionInfo> sessionList { get; private set; }
 
@@ -21,8 +21,8 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 		if (Instance == null)
 		{
 			Instance = this;
-			runner = gameObject.AddComponent<NetworkRunner>();
-			runner.ProvideInput = true;
+			_runner = gameObject.AddComponent<NetworkRunner>();
+			_runner.ProvideInput = true;
 		}
 		else
 		{
@@ -56,7 +56,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 		}
 
 
-		await runner.StartGame(new StartGameArgs()
+		await _runner.StartGame(new StartGameArgs()
 		{
 			GameMode = GameMode.AutoHostOrClient,
 			SessionName = sessionName,
@@ -68,7 +68,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
 	public async void ConnectToLobby()
 	{
-		await runner.JoinSessionLobby(SessionLobby.Shared);
+		await _runner.JoinSessionLobby(SessionLobby.Shared);
 		SceneManager.LoadScene(1);
 	}
 

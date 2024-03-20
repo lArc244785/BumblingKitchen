@@ -2,6 +2,9 @@
 using Fusion;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 namespace BumblingKitchen.SessionRoom
 {
@@ -26,6 +29,7 @@ namespace BumblingKitchen.SessionRoom
 	{
 		[SerializeField] private Button _ready;
 		[SerializeField] private DeshBoard _board;
+		[SerializeField] private TMP_Text _startWaitText;
 
 		[Networked]
 		[Capacity(4)]
@@ -34,11 +38,13 @@ namespace BumblingKitchen.SessionRoom
 
 		private ChangeDetector _changeDetector;
 
+		private TickTimer _readyWaitTimer;
+		private float _readyDelay = 3.0f;
+
 		public override void Spawned()
 		{
 			Debug.Log("Spawned");
 			_changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
-
 
 			string playerName = PlayerPrefs.GetString("Name");
 			int characterID = PlayerPrefs.GetInt("CharacterID");
@@ -46,7 +52,7 @@ namespace BumblingKitchen.SessionRoom
 
 			_ready.onClick.AddListener(() =>
 			{
-				RPC_Ready(Runner.UserId);
+				RPC_OnReayPlayer(Runner.UserId);
 			});
 		}
 
@@ -100,15 +106,32 @@ namespace BumblingKitchen.SessionRoom
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		private void RPC_Ready(NetworkString<_16> userID)
+		private void RPC_OnReayPlayer(NetworkString<_16> userID)
 		{
 			if(TryFindUserInfoIndex(userID.ToString(), out var index))
 			{
 				NetworkUserInfo info = _users[index];
 				info.isReady = !info.isReady;
 				_users.Set(index, info);
-				//RPC_Draw();
+				if(IsAllReady())
+				{
+					_readyWaitTimer = TickTimer.CreateFromSeconds(Runner, _readyDelay);
+				}
+				else
+				{
+					_readyWaitTimer = TickTimer.None;
+				}
 			}
+		}
+
+		private bool IsAllReady()
+		{
+			foreach(NetworkUserInfo info in _users)
+			{
+				if(!info.isReady)
+					return false;
+			}
+			return true;
 		}
 
 		public override void Despawned(NetworkRunner runner, bool hasState)
@@ -132,6 +155,31 @@ namespace BumblingKitchen.SessionRoom
 				}
 			}
 		}
+
+		public override void FixedUpdateNetwork()
+		{
+			if(_readyWaitTimer.IsRunning)
+			{
+				_startWaitText.gameObject.SetActive(true);
+				float? time = _readyWaitTimer.RemainingTime(Runner);
+				_startWaitText.text = $"Start Game {time?.ToString("0")}";
+			}
+			else
+			{
+				_startWaitText.gameObject.SetActive(false);
+			}
+
+			if(_readyWaitTimer.Expired(Runner))
+			{
+				if(Runner.IsSceneAuthority)
+				{
+					Runner.LoadScene(SceneRef.FromIndex(3), LoadSceneMode.Single);
+				}
+			}
+
+		}
+
+
 
 	}
 }
