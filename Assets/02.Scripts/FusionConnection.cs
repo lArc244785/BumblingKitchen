@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
 	public static FusionConnection Instance;
-	private NetworkRunner _runner;
+	public NetworkRunner _runner;
 
 	public List<SessionInfo> sessionList { get; private set; }
 
