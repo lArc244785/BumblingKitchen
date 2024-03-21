@@ -28,7 +28,6 @@ namespace BumblingKitchen
 			data.buttons.Set(NetworkInputData.INTERACTION_BUTTON, _interactionButton);
 			_interactionButton = false;
 
-			Debug.Log("SendData");
 			input.Set(data);
 		}
 
