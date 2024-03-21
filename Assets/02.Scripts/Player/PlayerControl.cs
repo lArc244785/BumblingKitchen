@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using Cinemachine;
 
 namespace BumblingKitchen.Player
 {
@@ -18,6 +19,10 @@ namespace BumblingKitchen.Player
 		public override void Spawned()
 		{
 			base.Spawned();
+			if(HasInputAuthority == true)
+			{
+				GameObject.FindAnyObjectByType<CinemachineVirtualCamera>().Follow = transform;
+			}
 		}
 
 		public override void FixedUpdateNetwork()

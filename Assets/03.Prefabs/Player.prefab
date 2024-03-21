@@ -1429,7 +1429,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 4504839349539742995}
   _sound: {fileID: 4319372207132362051}
-  _stepTime: 0
 --- !u!114 &4504839349539742995
 MonoBehaviour:
   m_ObjectHideFlags: 0
