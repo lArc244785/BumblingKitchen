@@ -13,7 +13,7 @@ namespace BumblingKitchen
 
 		private void Update()
 		{
-			_interactionButton = _interactionButton | Input.GetMouseButton(0);
+			_interactionButton = _interactionButton | Input.GetMouseButtonDown(0);
 		}
 
 

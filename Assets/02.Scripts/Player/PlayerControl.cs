@@ -1,19 +1,29 @@
 using Fusion;
 using UnityEngine;
 using Cinemachine;
+using BumblingKitchen.Interaction;
+using System;
 
 namespace BumblingKitchen.Player
 {
-	public class PlayerControl : NetworkBehaviour
+	public class PlayerControl : NetworkBehaviour, IMoveEvents
 	{
 		private NetworkCharacterController _controller;
 		[Networked] private TickTimer _stepSoundTimer { set; get; }
-		[SerializeField] private NetworkMecanimAnimator _animator;
-		[SerializeField] private PlayerSound _sound;
+		
+		private PlayerSound _sound;
+		private Interactor _interactor;
 
-		private void Awake()
+		private bool _isPrevMove = false;
+
+		public event Action OnBegineMove;
+		public event Action OnEndMove;
+
+		private void Start()
 		{
 			_controller = GetComponent<NetworkCharacterController>();
+			_sound = GetComponent<PlayerSound>();
+			_interactor = GetComponent<Interactor>();
 		}
 
 		public override void Spawned()
@@ -33,7 +43,12 @@ namespace BumblingKitchen.Player
 				{
 					data.direction.Normalize();
 					_controller.Move(data.direction * Runner.DeltaTime * 10);
-					_animator.Animator.SetFloat("Move", 1.0f);
+					
+					if(_isPrevMove == false && HasStateAuthority == true)
+					{
+						OnBegineMove?.Invoke();
+						_isPrevMove = true;
+					}
 
 					if (_stepSoundTimer.IsRunning == false)
 					{
@@ -42,17 +57,18 @@ namespace BumblingKitchen.Player
 				}
 				else
 				{
-					_animator.Animator.SetFloat("Move", 0.0f);
+					if(_isPrevMove == true && HasStateAuthority == true)
+					{
+						OnEndMove?.Invoke();
+						_isPrevMove = false;
+					}
+
 					SetStepSound(TickTimer.None);
 				}
 
 				if (data.buttons.IsSet(NetworkInputData.INTERACTION_BUTTON) == true)
 				{
-					_animator.Animator.SetFloat("Pickup Item", 1.0f);
-				}
-				else
-				{
-					_animator.Animator.SetFloat("Pickup Item", 0.0f);
+					_interactor.OnInteraction();
 				}
 			}
 		}
