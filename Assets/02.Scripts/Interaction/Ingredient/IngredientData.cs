@@ -7,9 +7,11 @@ namespace BumblingKitchen.Interaction
 	{
 		None,
 		Onion,
-		Stake,
+		Meat,
 		Tomato,
 		Bread,
+		Leaf,
+		Cheese,
 	}
 
 	public enum CookingType
@@ -19,6 +21,7 @@ namespace BumblingKitchen.Interaction
 		Slice,
 		Grill,
 		Boil,
+		Fail,
 	}
 
 	[Serializable]
