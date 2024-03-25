@@ -60,7 +60,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
 		await _runner.StartGame(new StartGameArgs()
 		{
-			GameMode = GameMode.AutoHostOrClient,
+			GameMode = GameMode.Shared,
 			SessionName = sessionName,
 			Scene = scene,
 			PlayerCount = 4,

@@ -19,7 +19,7 @@ namespace BumblingKitchen.Player
 		public event Action OnBegineMove;
 		public event Action OnEndMove;
 
-		private void Start()
+		private void Awake()
 		{
 			_controller = GetComponent<NetworkCharacterController>();
 			_sound = GetComponent<PlayerSound>();
