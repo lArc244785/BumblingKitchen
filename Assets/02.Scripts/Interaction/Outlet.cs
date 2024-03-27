@@ -16,9 +16,11 @@ namespace BumblingKitchen
 		private NetworkLinkedList<NetworkId> WaitPlates { get;}
 		= MakeInitializer(new NetworkId[] { });
 
-		[Networked, Capacity(20)]
+		[Networked, Capacity(20), OnChangedRender(nameof(UpdateOutLetPlates))]
 		private NetworkLinkedList<NetworkId> OutLetPlates { get;}
 		= MakeInitializer(new NetworkId[] { });
+
+		public event Action<int, int> OnUpdattingOutletPlates;
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
@@ -80,6 +82,11 @@ namespace BumblingKitchen
 					_waitPlatTimer = TickTimer.None;
 				}
 			}
+		}
+
+		private void UpdateOutLetPlates()
+		{
+			OnUpdattingOutletPlates?.Invoke(OutLetPlates.Count, OutLetPlates.Capacity);
 		}
 	}
 }
