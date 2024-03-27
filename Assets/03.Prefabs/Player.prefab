@@ -1589,7 +1589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1226b0f389637647890c0c7edf252d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pickUpPoint: {fileID: 6004917503971219889}
+  <PickUpPoint>k__BackingField: {fileID: 6004917503971219889}
   _detectedStartLocalPoint: {x: 0, y: 2, z: -0.2}
   _detectDistance: 2
   _detectLayerMask:

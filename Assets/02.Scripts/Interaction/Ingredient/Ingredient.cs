@@ -9,7 +9,6 @@ namespace BumblingKitchen.Interaction
 	{
 		public override InteractionType Type => InteractionType.Ingredient;
 
-		[SerializeField] Recipe _initRecipe;
 		[SerializeField] Transform _modelParent;
 
 		/// <summary>
@@ -21,15 +20,13 @@ namespace BumblingKitchen.Interaction
 
 		private bool _isInitModel = false;
 
-		[field: SerializeField]
-		[Networked, OnChangedRender(nameof(UpdateIngredientData))] NetworkString<_32> NetName { set; get; }
+		public string Name { private set; get; }
 
 		//조리 레시피로 재료를 가공할 때 사용된다.
 		private CookingRecipe _cookingRecipe;
 
 		private float _currentProgress;
 		public CookState CurrentState { get; private set; }
-
 
 		public Action OnCookingStart;
 		public Action<float> OnUpdattingProgress;
@@ -38,19 +35,26 @@ namespace BumblingKitchen.Interaction
 		public Action OnCookingFail;
 		public Action<List<IngredientData>> OnUpdateMixData;
 
+		[Networked] public NetworkString<_32> InitRecipe { get; set; }
+
+		public void InitSetting(string recipeName)
+		{
+			InitRecipe = recipeName;
+		}
+
 		public override void Spawned()
 		{
-			base.Spawned();
-			if (HasStateAuthority)
-			{
-				RPC_ChangeIngredient(_initRecipe.Name);
-			}
+			Recipe recipe = StageRecipeManager.Instance.RecipeTable[InitRecipe.ToString()];
 
-			if (_isInitModel == false)
+			foreach (var item in recipe.MixList)
 			{
-				UpdateIngredientData();
+				MixDataList.Add(item);
 			}
+			Name = recipe.Name;
+			UpdateModel(recipe);
+			OnUpdateMixData?.Invoke(MixDataList);
 		}
+
 
 
 		/// <summary>
@@ -75,6 +79,32 @@ namespace BumblingKitchen.Interaction
 
 			RPC_ChangeIngredient(foundRecipe.Name);
 			return true;
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		private void RPC_ChangeIngredient(NetworkString<_32> name)
+		{
+			Debug.Log($"재료 업데이트 {name}");
+			Recipe newRecipe = StageRecipeManager.Instance.RecipeTable[name.ToString()];
+			MixDataList.Clear();
+			foreach (var item in newRecipe.MixList)
+			{
+				MixDataList.Add(item);
+			}
+
+			OnUpdateMixData?.Invoke(MixDataList);
+			gameObject.name = newRecipe.name;
+			UpdateModel(newRecipe);
+		}
+
+		private void UpdateModel(Recipe newRecipe)
+		{
+			if (_modelObject != null)
+			{
+				Destroy(_modelObject);
+			}
+
+			_modelObject = Instantiate(newRecipe.ModelPrefab, _modelParent, false);
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
@@ -118,44 +148,6 @@ namespace BumblingKitchen.Interaction
 					}
 			}
 
-		}
-
-		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		private void RPC_ChangeIngredient(NetworkString<_32> recipeName)
-		{
-			Recipe recipe = StageRecipeManager.Instance.RecipeTable[recipeName.ToString()];
-			if (recipe == null)
-			{
-				throw new Exception($"There is No RecipeTable[{recipeName.ToString()}].");
-			}
-
-			NetName = recipe.Name;
-		}
-
-		private void UpdateIngredientData()
-		{
-			Debug.Log($"재료 모델 갱신! {NetName.ToString()}");
-
-			if (_isInitModel == false)
-			{
-				_isInitModel = true;
-			}
-
-			Recipe newRecipe = StageRecipeManager.Instance.RecipeTable[NetName.ToString()];
-			MixDataList.Clear();
-			foreach (var item in newRecipe.MixList)
-			{
-				MixDataList.Add(item);
-			}
-
-			if (_modelObject != null)
-			{
-				Destroy(_modelObject);
-			}
-
-			OnUpdateMixData?.Invoke(MixDataList);
-			_modelObject = Instantiate(newRecipe.ModelPrefab, _modelParent, false);
-			gameObject.name = newRecipe.name;
 		}
 
 

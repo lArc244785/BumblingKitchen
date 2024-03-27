@@ -27,7 +27,11 @@ namespace BumblingKitchen.Interaction
 		{
 			if (_putObject == null)
 			{
-				RPC_PutObject(interactor.Drop().Object);
+				if(interactor.HasPickUpObject == true)
+				{
+					RPC_PutObject(interactor.Drop().Object);
+					return true;
+				}
 			}
 			else
 			{
@@ -36,10 +40,10 @@ namespace BumblingKitchen.Interaction
 				{
 					RPC_RelesePutObject();
 				}
-				interactor.Interaction(putObject);
+				return interactor.Interaction(putObject);
 			}
 
-			return true;
+			return false;
 		}
 
 

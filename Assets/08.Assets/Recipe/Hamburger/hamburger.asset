@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
-  m_Name: cheese_slice
+  m_Name: hamburger
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: ChessSlice
+  <Name>k__BackingField: HamBurger
   <MixList>k__BackingField:
+  - {fileID: 11400000, guid: 9018c50e91e9b314a830f1e2d554c597, type: 2}
   - {fileID: 11400000, guid: 7680f85ebebbc0e4ea49b4d3e55e3aa1, type: 2}
-  <ModelPrefab>k__BackingField: {fileID: 6150570049928464905, guid: a34e4ef387c70e74eaa6c05e6141cfdf,
+  - {fileID: 11400000, guid: ccb6ae9b8d12ecb469083c80fdf5a792, type: 2}
+  - {fileID: 11400000, guid: 679272929f55d9649979aea0fbccbe4f, type: 2}
+  <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: 111641ed72b7e9449a580012538484fb,
     type: 3}

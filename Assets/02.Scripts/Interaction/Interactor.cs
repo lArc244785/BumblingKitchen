@@ -6,7 +6,7 @@ namespace BumblingKitchen.Interaction
 {
     public class Interactor : NetworkBehaviour, IHandEvents
     {
-        [SerializeField] private Transform _pickUpPoint;
+        [field:SerializeField] public Transform PickUpPoint { get; private set; }
 
         [SerializeField] private Vector3 _detectedStartLocalPoint;
         [SerializeField] private float _detectDistance;
@@ -27,7 +27,7 @@ namespace BumblingKitchen.Interaction
             return GetPickObject() == target;
 		}
 
-		private bool IsPickUpInteractor(IInteractable target)
+		public bool IsPickUpInteractor(IInteractable target)
 		{
 			return IsPickUpInteractor(target as PickableInteractable);
 		}
@@ -53,7 +53,7 @@ namespace BumblingKitchen.Interaction
             var obj = Runner.FindObject(id);
 			if(obj.TryGetComponent<PickableInteractable>(out var pickUpObject) == true)
 			{
-				obj.transform.SetParent(_pickUpPoint);
+				obj.transform.SetParent(PickUpPoint);
 				obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
 				if(HasStateAuthority == true)
@@ -154,17 +154,17 @@ namespace BumblingKitchen.Interaction
 			Interaction(interactionObject);
 		}
 
-		public void Interaction(IInteractable interactionObject)
+		public bool Interaction(IInteractable interactionObject)
 		{
 			if (GetPickObject()?.Type > interactionObject.Type)
 			{
 				Debug.Log("상호 작용 시작! 픽업 오브젝트가 주체");
-				GetPickObject().TryInteraction(this, interactionObject);
+				return GetPickObject().TryInteraction(this, interactionObject);
 			}
 			else
 			{
 				Debug.Log("상호 작용 시작! 오브젝트가 주체");
-				interactionObject.TryInteraction(this, GetPickObject());
+				return interactionObject.TryInteraction(this, GetPickObject());
 			}
 		}
 

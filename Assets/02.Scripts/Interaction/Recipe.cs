@@ -12,7 +12,7 @@ namespace BumblingKitchen.Interaction
 
 		public bool SameRecipe(List<IngredientData> mixDatas)
 		{
-			if (MixList.Count == mixDatas.Count)
+			if (MixList.Count != mixDatas.Count)
 				return false;
 
 			for(int i = 0; i < MixList.Count; i++)
@@ -21,6 +21,7 @@ namespace BumblingKitchen.Interaction
 					return false;
 			}
 
+			Debug.Log($"동일 레시피 발견 {Name}");
 			return true;
 		}
 

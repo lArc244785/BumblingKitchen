@@ -16,6 +16,7 @@ namespace BumblingKitchen.Interaction
 		[SerializeField] private float _addProgress;
 		[SerializeField] private Transform _putPoint;
 
+		[SerializeField]
 		private Ingredient _putIngredient;
 
 		public event Action OnCookingStart;
@@ -56,12 +57,20 @@ namespace BumblingKitchen.Interaction
 					ingredient.RPC_StartCook(Object, recipeIndex);
 				}
 			}
-			else
-			{
-				//조리가 완료된 상태인 경우 접시와 가능한테 이는 접시가 진행한다.
-			}
 
 			return false;
+		}
+
+		internal Ingredient GetIngredient()
+		{
+			return _putIngredient;
+		}
+
+		internal bool CanDropIngredient()
+		{
+			if (_putIngredient == null)
+				return false;
+			return _putIngredient.CurrentState == CookState.Sucess;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
@@ -118,8 +127,9 @@ namespace BumblingKitchen.Interaction
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
-		private void RPC_RelesePutIngredient()
+		public void RPC_RelesePutIngredient()
 		{
+			_putIngredient.RPC_DoneCook();
 			_putIngredient = null;
 		}
 
@@ -140,13 +150,5 @@ namespace BumblingKitchen.Interaction
 				 _putIngredient?.CurrentState == CookState.Cooking;
 		}
 
-		public override void OnPickUpCall()
-		{
-			Debug.Log("프라이팬 상태 확인 " + CanPutGasRange());
-			if(CanPutGasRange() == false)
-			{
-				_putIngredient.RPC_DoneCook();
-			}
-		}
 	}
 }

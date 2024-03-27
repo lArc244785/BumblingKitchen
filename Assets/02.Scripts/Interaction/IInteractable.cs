@@ -1,4 +1,6 @@
 ﻿
+using Fusion;
+
 namespace BumblingKitchen.Interaction
 {
 	public interface IInteractable

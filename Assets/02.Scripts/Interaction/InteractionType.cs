@@ -4,8 +4,8 @@
 	{
 		None,
 		Ingredient,
-		Plate,
 		FireKitchenTool,
+		Plate,
 		Sink,
 		Table,
 		GasRange,
