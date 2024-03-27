@@ -1,6 +1,6 @@
-using UnityEngine;
 using Fusion;
 using System;
+using UnityEngine;
 
 namespace BumblingKitchen.Interaction
 {
@@ -13,28 +13,27 @@ namespace BumblingKitchen.Interaction
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
-			//interactor 상호 작용 - 손에 아무것도 없는 경우
-			if (interactor.HasPickUpObject == false)
+			if (_putFryingPan == null)
 			{
-				if (_putFryingPan == null)
+				if (interactor.GetPickObject().Type == InteractionType.FireKitchenTool)
 				{
-					return false;
-				}
-				else
-				{
-					interactor.RPC_PickUp(_putFryingPan.Object);
-					RPC_DropObject();
+					var fryingpan = interactor.GetPickObject() as FryingPan;
+					if (fryingpan.CanPutGasRange() == true)
+					{
+						RPC_PutObject(interactor.Drop().Object);
+					}
 				}
 			}
-			//interactor 상호 작용 - 손에 무언가 있는 경우
 			else
 			{
-				Debug.Log("드!랍 " +interactor.GetPickObject().Type);
-				if (_putFryingPan == null && interactor.GetPickObject().Type == InteractionType.FireKitchenTool)
+				var putObject = _putFryingPan;
+				if (interactor.HasPickUpObject == false)
 				{
-					RPC_PutObject(interactor.Drop().Object);
+					RPC_ReleseObject();
 				}
+				interactor.Interaction(putObject);
 			}
+
 			return true;
 		}
 
@@ -55,7 +54,7 @@ namespace BumblingKitchen.Interaction
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
-		private void RPC_DropObject()
+		private void RPC_ReleseObject()
 		{
 			_putFryingPan.IsOnGasRange = false;
 			_putFryingPan = null;

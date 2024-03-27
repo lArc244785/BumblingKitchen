@@ -11,12 +11,9 @@ namespace BumblingKitchen.Interaction
 	{
 		public InteractionType Type => InteractionType.KitchenTool;
 
-
 		[SerializeField] private List<CookingRecipe> _recipeList;
 		[SerializeField] private float _addProgress;
 		[SerializeField] private Transform _putPoint;
-
-		[SerializeField] private CuttinBoardUI _cuttingBoardUI;
 
 		private Ingredient _putIngredient;
 

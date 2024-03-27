@@ -1,6 +1,6 @@
-using UnityEngine;
 using Fusion;
 using System;
+using UnityEngine;
 
 namespace BumblingKitchen.Interaction
 {
@@ -25,31 +25,20 @@ namespace BumblingKitchen.Interaction
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
-			//interactor 상호 작용 - 손에 아무것도 없는 경우
-			if (interactor.HasPickUpObject == false)
+			if (_putObject == null)
 			{
-				if (_putObject == null)
-				{
-					return false;
-				}
-				else
-				{
-					interactor.RPC_PickUp(_putObject.Object);
-					RPC_RelesePutObject();
-				}
+				RPC_PutObject(interactor.Drop().Object);
 			}
-			//interactor 상호 작용 - 손에 무언가 있는 경우
 			else
 			{
-				if (_putObject == null)
+				var putObject = _putObject;
+				if (interactor.HasPickUpObject == false)
 				{
-					RPC_PutObject(interactor.Drop().Object);
+					RPC_RelesePutObject();
 				}
-				else
-				{
-					interactor.Interaction(_putObject);
-				}
+				interactor.Interaction(putObject);
 			}
+
 			return true;
 		}
 

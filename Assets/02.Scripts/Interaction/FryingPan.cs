@@ -20,9 +20,13 @@ namespace BumblingKitchen.Interaction
 
 		public event Action OnCookingStart;
 		public event Action OnDoenCooked;
+
+
+
 		public event Action OnCookingSucess;
 		public event Action<float> OnUpdattingProgress;
 		public event Action<CookingRecipe> OnSettingRecipe;
+		public event Action OnCookingFail;
 
 		public bool IsOnGasRange { set; get; } = false;
 
@@ -73,6 +77,7 @@ namespace BumblingKitchen.Interaction
 			_putIngredient.OnDoneCooked += OnDoenCooked;
 			_putIngredient.OnUpdattingProgress += OnUpdattingProgress;
 			_putIngredient.OnCookingSucess += OnCookingSucess;
+			_putIngredient.OnCookingFail += OnCookingFail;
 
 			OnSettingRecipe?.Invoke(_recipeList[recipeIndex]);
 		}
@@ -109,6 +114,7 @@ namespace BumblingKitchen.Interaction
 			_putIngredient.OnDoneCooked -= OnDoenCooked;
 			_putIngredient.OnUpdattingProgress -= OnUpdattingProgress;
 			_putIngredient.OnCookingSucess -= OnCookingSucess;
+			_putIngredient.OnCookingFail -= OnCookingFail;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
@@ -128,5 +134,19 @@ namespace BumblingKitchen.Interaction
 			}
 		}
 
+		public bool CanPutGasRange()
+		{
+			return _putIngredient?.CurrentState == CookState.None ||
+				 _putIngredient?.CurrentState == CookState.Cooking;
+		}
+
+		public override void OnPickUpCall()
+		{
+			Debug.Log("프라이팬 상태 확인 " + CanPutGasRange());
+			if(CanPutGasRange() == false)
+			{
+				_putIngredient.RPC_DoneCook();
+			}
+		}
 	}
 }

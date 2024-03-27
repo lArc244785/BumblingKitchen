@@ -17,5 +17,10 @@ namespace BumblingKitchen
 			canvas.transform.localPosition = _localPosition;
 			canvas.transform.rotation = Quaternion.Euler(60.0f, 0.0f, 0.0f);
 		}
+
+		protected void Toogle(bool toogle)
+		{
+			canvas.enabled = toogle;
+		}
 	}
 }

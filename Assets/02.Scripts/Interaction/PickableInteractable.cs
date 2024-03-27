@@ -12,9 +12,12 @@ namespace BumblingKitchen.Interaction
 			if(interactor.HasPickUpObject == false)
 			{
 				interactor.RPC_PickUp(Object);
+				OnPickUpCall();
 				return true;
 			}
 			return false;
 		}
+
+		public virtual void OnPickUpCall() { }
 	}
 }
