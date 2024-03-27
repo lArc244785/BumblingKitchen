@@ -15,11 +15,11 @@ namespace BumblingKitchen
 			if (interactable.Type != InteractionType.Plate)
 				return false;
 			
-			Plate plate = interactor.Drop() as Plate;
+			Plate plate = interactor.GetPickObject() as Plate;
 
 			if (plate.IsDirty == true || plate.IsPutIngredient() == false)
 				return false;
-
+			interactor.Drop();
 			var ingredient = plate.SpillIngredient();
 			_outLet.SendPlate(plate);
 			RPC_DeSpawn(ingredient.Object);
