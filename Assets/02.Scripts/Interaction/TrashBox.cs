@@ -14,7 +14,7 @@ namespace BumblingKitchen
 			{
 				case InteractionType.Ingredient:
 					{
-						Runner.Despawn(interactor.Drop().Object);
+						RPC_Despawn(interactor.Drop().Object);
 						return true;
 					}
 					break;

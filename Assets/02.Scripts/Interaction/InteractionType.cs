@@ -12,5 +12,7 @@
 		KitchenTool,
 		Box,
 		TrashBox,
+		Server,
+		Outlet,
 	}
 }

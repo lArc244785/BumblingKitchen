@@ -81,6 +81,12 @@ namespace BumblingKitchen.Interaction
 			return false;
 		}
 
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_SetActive(bool isActive)
+		{
+			gameObject.SetActive(isActive);
+		}
+
 		public Ingredient SpillIngredient()
 		{
 			var spill = _putIngredient;
