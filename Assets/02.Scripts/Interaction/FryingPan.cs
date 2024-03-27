@@ -7,7 +7,7 @@ using System;
 
 namespace BumblingKitchen.Interaction
 {
-	public class FryingPan : PickableInteractable , IInteractable, IGetCookingRecipe
+	public class FryingPan : PickableInteractable , IInteractable, IGetCookingRecipe, ISpillIngredient
 	{
 		public override InteractionType Type => InteractionType.FireKitchenTool;
 
@@ -150,5 +150,11 @@ namespace BumblingKitchen.Interaction
 				 _putIngredient?.CurrentState == CookState.Cooking;
 		}
 
+		public Ingredient SpillIngredient()
+		{
+			var spill = _putIngredient;
+			RPC_RelesePutIngredient();
+			return spill;
+		}
 	}
 }

@@ -1,20 +1,31 @@
 using UnityEngine;
 using Fusion;
+using System;
 
 namespace BumblingKitchen.Interaction
 {
-    public class Plate : PickableInteractable
+    public class Plate : PickableInteractable, ISpillIngredient
     {
 		public override InteractionType Type => InteractionType.Plate;
 
 		private Ingredient _putIngredient;
 		[SerializeField] private Transform _putPoint;
+		[SerializeField] private MeshFilter _model;
+		public bool IsDirty { get; private set; } = false;
+
+		[SerializeField] private Mesh _clearMesh;
+		[SerializeField] private Mesh _dirtyMesh;
 
 		public override bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
 			if(base.TryInteraction(interactor, interactable) == true)
 			{
 				return true;
+			}
+
+			if(IsDirty == true)
+			{
+				return false;
 			}
 
 			switch(interactable.Type)
@@ -70,6 +81,31 @@ namespace BumblingKitchen.Interaction
 			return false;
 		}
 
+		public Ingredient SpillIngredient()
+		{
+			var spill = _putIngredient;
+			RPC_RelesePutIngredient();
+			return spill;
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		private void RPC_RelesePutIngredient()
+		{
+			_putIngredient.transform.SetParent(null);
+			_putIngredient = null;
+			SetDirty(true);
+		}
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_Clear()
+		{
+			SetDirty(false);
+		}
+
+		internal bool IsPutIngredient()
+		{
+			return _putIngredient != null;
+		}
+
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_PutIngredient(NetworkId id)
 		{
@@ -78,5 +114,12 @@ namespace BumblingKitchen.Interaction
 			_putIngredient.transform.localPosition = Vector3.zero;
 			_putIngredient.transform.localRotation = Quaternion.identity;
 		}
+
+		public void SetDirty(bool isDirty)
+		{
+			IsDirty = isDirty;
+			_model.mesh = IsDirty ? _dirtyMesh : _clearMesh;
+		}
+
 	}
 }

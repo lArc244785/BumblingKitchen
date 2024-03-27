@@ -11,6 +11,6 @@
 		GasRange,
 		KitchenTool,
 		Box,
-		TrashCan,
+		TrashBox,
 	}
 }
