@@ -8,6 +8,7 @@
 		FireKitchenTool,
 		Sink,
 		Table,
+		GasRange,
 		KitchenTool,
 		Box,
 		TrashCan,

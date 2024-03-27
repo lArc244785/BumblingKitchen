@@ -19,4 +19,4 @@ MonoBehaviour:
   <Fail>k__BackingField: {fileID: 11400000, guid: 52365dcf445650b4bb7108b2f4ededb2,
     type: 2}
   <SucessProgress>k__BackingField: 1
-  <FailProgress>k__BackingField: 1.5
+  <FailProgress>k__BackingField: 2

@@ -7,16 +7,14 @@ using System;
 
 namespace BumblingKitchen.Interaction
 {
-	public class CuttingBoard : NetworkBehaviour , IInteractable, IGetCookingRecipe
+	public class FryingPan : PickableInteractable , IInteractable, IGetCookingRecipe
 	{
-		public InteractionType Type => InteractionType.KitchenTool;
+		public override InteractionType Type => InteractionType.FireKitchenTool;
 
 
 		[SerializeField] private List<CookingRecipe> _recipeList;
 		[SerializeField] private float _addProgress;
 		[SerializeField] private Transform _putPoint;
-
-		[SerializeField] private CuttinBoardUI _cuttingBoardUI;
 
 		private Ingredient _putIngredient;
 
@@ -26,13 +24,18 @@ namespace BumblingKitchen.Interaction
 		public event Action<float> OnUpdattingProgress;
 		public event Action<CookingRecipe> OnSettingRecipe;
 
+		public bool IsOnGasRange { set; get; } = false;
+
 		void Awake()
 		{
 			OnDoenCooked += ResetCookingEvent;
 		}
 
-		public bool TryInteraction(Interactor interactor, IInteractable interactable)
+		public override bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
+			if(base.TryInteraction(interactor, interactable) == true)
+				return true;
+
 			if(CanPutIngredient() == true)
 			{
 				if (interactor.HasPickUpObject == false)
@@ -51,21 +54,7 @@ namespace BumblingKitchen.Interaction
 			}
 			else
 			{
-				if (_putIngredient == null)
-					return false;
-				if(_putIngredient.CurrentState == CookState.Cooking)
-				{
-					_putIngredient.RPC_Cooking(_addProgress);
-				}
-				else if(_putIngredient.CurrentState == CookState.Sucess)
-				{
-					if (interactor.HasPickUpObject == true)
-						return false;
-
-					_putIngredient.RPC_DoneCook();
-					interactor.RPC_PickUp(_putIngredient.Object);
-					RPC_RelesePutIngredient();
-				}
+				//조리가 완료된 상태인 경우 접시와 가능한테 이는 접시가 진행한다.
 			}
 
 			return false;
@@ -127,5 +116,17 @@ namespace BumblingKitchen.Interaction
 		{
 			_putIngredient = null;
 		}
+
+		public override void FixedUpdateNetwork()
+		{
+			if (HasStateAuthority == false)
+				return;
+
+			if(IsOnGasRange == true && _putIngredient != null)
+			{
+				_putIngredient.RPC_Cooking(_addProgress * Runner.DeltaTime);
+			}
+		}
+
 	}
 }

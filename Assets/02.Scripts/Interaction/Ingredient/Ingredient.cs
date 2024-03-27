@@ -222,8 +222,8 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		public void RPC_StartCook(NetworkObject cookingToolID, int recipeIndex)
 		{
-			var board = Runner.FindObject(cookingToolID).GetComponent<CuttingBoard>();
-			_cookingRecipe = board.GetRecipe(recipeIndex);
+			var cookingRecipe = Runner.FindObject(cookingToolID).GetComponent<IGetCookingRecipe>();
+			_cookingRecipe = cookingRecipe.GetCookingRecipe(recipeIndex);
 			_currentProgress = 0.0f;
 			CurrentState = CookState.Cooking;
 			OnCookingStart?.Invoke();
