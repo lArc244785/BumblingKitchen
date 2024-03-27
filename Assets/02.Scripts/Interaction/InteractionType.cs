@@ -14,5 +14,6 @@
 		TrashBox,
 		Server,
 		Outlet,
+		DryingReck,
 	}
 }

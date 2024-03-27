@@ -19,5 +19,11 @@ namespace BumblingKitchen.Interaction
 		}
 
 		public virtual void OnPickUpCall() { }
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_SetActive(bool isActive)
+		{
+			gameObject.SetActive(isActive);
+		}
 	}
 }
