@@ -7,13 +7,15 @@ namespace BumblingKitchen.Interaction
 {
 	public class Ingredient : PickableInteractable
 	{
+		public override InteractionType Type => InteractionType.Ingredient;
+
 		[SerializeField] Recipe _initRecipe;
 		[SerializeField] Transform _modelParent;
 
 		/// <summary>
 		/// 들어간 재료에 대한 정보를 담는다 추가할 때 마다 정렬된다.
 		/// </summary>
-		public List<NetworkIngredientData> MixDataList { get; } = new();
+		public List<IngredientData> MixDataList { get; } = new();
 		private GameObject _modelObject;
 
 
@@ -21,6 +23,20 @@ namespace BumblingKitchen.Interaction
 
 		[field: SerializeField]
 		[Networked, OnChangedRender(nameof(UpdateIngredientData))] NetworkString<_32> NetName { set; get; }
+
+		//조리 레시피로 재료를 가공할 때 사용된다.
+		private CookingRecipe _cookingRecipe;
+
+		private float _currentProgress;
+		public CookState CurrentState { get; private set; }
+
+
+		public Action OnCookingStart;
+		public Action<float> OnUpdattingProgress;
+		public Action OnCookingSucess;
+		public Action OnDoneCooked;
+		public Action OnCookingFail;
+		public Action<List<IngredientData>> OnUpdateMixData;
 
 		public override void Spawned()
 		{
@@ -61,6 +77,49 @@ namespace BumblingKitchen.Interaction
 			return true;
 		}
 
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_DoneCook()
+		{
+			CurrentState = CookState.None;
+			_cookingRecipe = null;
+			OnDoneCooked?.Invoke();
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_Cooking(float addProgress)
+		{
+			if (CurrentState == CookState.None || CurrentState == CookState.Fail)
+				return;
+
+			_currentProgress += addProgress;
+			OnUpdattingProgress?.Invoke(_currentProgress);
+
+			switch (CurrentState)
+			{
+				case CookState.Cooking:
+					{
+						if(_currentProgress >= _cookingRecipe.SucessProgress)
+						{
+							CurrentState = CookState.Sucess;
+							RPC_ChangeIngredient(_cookingRecipe.Sucess.Name);
+							OnCookingSucess?.Invoke();
+						}
+						break;
+					}
+				case CookState.Sucess:
+					{
+						if(_currentProgress >= _cookingRecipe.FailProgress)
+						{
+							CurrentState = CookState.Fail;
+							RPC_ChangeIngredient(_cookingRecipe.Fail.Name);
+							OnCookingFail?.Invoke();
+						}
+						break;
+					}
+			}
+
+		}
+
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 		private void RPC_ChangeIngredient(NetworkString<_32> recipeName)
 		{
@@ -94,14 +153,15 @@ namespace BumblingKitchen.Interaction
 				Destroy(_modelObject);
 			}
 
+			OnUpdateMixData?.Invoke(MixDataList);
 			_modelObject = Instantiate(newRecipe.ModelPrefab, _modelParent, false);
 			gameObject.name = newRecipe.name;
 		}
 
 
-		private List<NetworkIngredientData> CreateMixIngredient(List<NetworkIngredientData> mixDataList)
+		private List<IngredientData> CreateMixIngredient(List<IngredientData> mixDataList)
 		{
-			List<NetworkIngredientData> newMixIngredient = new();
+			List<IngredientData> newMixIngredient = new();
 			//원본
 			foreach (var ingredient in MixDataList)
 			{
@@ -119,23 +179,6 @@ namespace BumblingKitchen.Interaction
 			return newMixIngredient;
 		}
 
-		public bool CanInteraction(InteractionType type)
-		{
-			return type == InteractionType.Ingredient;
-		}
-
-		public bool CanInteraction(Interactor interactor)
-		{
-			if (interactor.HasPickUpObject == false)
-				return true;
-			return CanInteraction(interactor.GetPickUpObjectType());
-		}
-
-		public void Interaction(Interactor interactor, IInteractable interactionObject)
-		{
-			
-		}
-
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 		private void RPC_DespawnIngredient(NetworkObject despawnObject)
 		{
@@ -150,7 +193,7 @@ namespace BumblingKitchen.Interaction
 			}
 
 			//재료만 상호작용이 가능하다.
-			if (interactable.Type != InteractionType.Interactor)
+			if (interactable.Type != InteractionType.Ingredient)
 			{
 				return false;
 			}
@@ -175,5 +218,16 @@ namespace BumblingKitchen.Interaction
 
 			return false;
 		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_StartCook(NetworkObject cookingToolID, int recipeIndex)
+		{
+			var board = Runner.FindObject(cookingToolID).GetComponent<CuttingBoard>();
+			_cookingRecipe = board.GetRecipe(recipeIndex);
+			_currentProgress = 0.0f;
+			CurrentState = CookState.Cooking;
+			OnCookingStart?.Invoke();
+		}
+
 	}
 }

@@ -12,13 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
   m_Name: meat_leaf_cheese
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: PattyCheese
+  <Name>k__BackingField: PattyLeafCheese
   <MixList>k__BackingField:
-  - ingredientType: 2
-    cookingType: 3
-  - ingredientType: 5
-    cookingType: 2
-  - ingredientType: 6
-    cookingType: 2
+  - {fileID: 11400000, guid: 7680f85ebebbc0e4ea49b4d3e55e3aa1, type: 2}
+  - {fileID: 11400000, guid: 679272929f55d9649979aea0fbccbe4f, type: 2}
+  - {fileID: 11400000, guid: ccb6ae9b8d12ecb469083c80fdf5a792, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: d4dd4043bd0da4a409e61c1289010a91,
     type: 3}

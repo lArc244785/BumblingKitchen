@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
   m_Name: leaf_slice
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Leaf
+  <Name>k__BackingField: LeafSlice
   <MixList>k__BackingField:
-  - ingredientType: 5
-    cookingType: 2
+  - {fileID: 11400000, guid: 679272929f55d9649979aea0fbccbe4f, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 6150570049928464905, guid: 45c39a854449bb44899313fef2270c85,
     type: 3}

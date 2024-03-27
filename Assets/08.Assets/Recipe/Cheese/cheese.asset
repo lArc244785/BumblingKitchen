@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
   m_Name: cheese
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: FailPatty
+  <Name>k__BackingField: Cheese
   <MixList>k__BackingField:
-  - ingredientType: 2
-    cookingType: 5
-  <ModelPrefab>k__BackingField: {fileID: 6150570049928464905, guid: f64a4d97c2e5e6c4fa7f81b0ec02ec66,
+  - {fileID: 11400000, guid: 8b452d188ef2be142979d4b4b914a9b4, type: 2}
+  <ModelPrefab>k__BackingField: {fileID: 6150570049928464905, guid: c474b364c1e4a2648825bf21e4d3a613,
     type: 3}

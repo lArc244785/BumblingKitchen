@@ -48,8 +48,7 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_PickUp(NetworkId id)
 		{
-            if (HasPickUpObject == true)
-                return;
+			Debug.Log("PickUp!");
 
             var obj = Runner.FindObject(id);
 			if(obj.TryGetComponent<PickableInteractable>(out var pickUpObject) == true)

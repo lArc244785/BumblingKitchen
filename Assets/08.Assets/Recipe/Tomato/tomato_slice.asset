@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
   m_Name: tomato_slice
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Tomato
+  <Name>k__BackingField: TomatoSlice
   <MixList>k__BackingField:
-  - ingredientType: 3
-    cookingType: 2
+  - {fileID: 11400000, guid: c601ebd72bc4ef048a798a75c4dba99f, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: 919075dd03254e642bc2f666102616b3,
     type: 3}

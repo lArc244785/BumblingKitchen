@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
   m_Name: patty
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Patty
+  <Name>k__BackingField: PattyRaw
   <MixList>k__BackingField:
-  - ingredientType: 2
-    cookingType: 2
+  - {fileID: 11400000, guid: fb22808d39b615f42b2cf40480218499, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: 0f1be3e3513e0e54d8b197f70466b001,
     type: 3}

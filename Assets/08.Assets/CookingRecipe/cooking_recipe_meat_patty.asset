@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8d911deeee6c54792522ec92c33d0b, type: 3}
   m_Name: cooking_recipe_meat_patty
   m_EditorClassIdentifier: 
-  <Source>k__BackingField:
-    ingredientType: 2
-    cookingType: 1
+  <Source>k__BackingField: {fileID: 11400000, guid: 4741aa84711fc864bbb746ee3cf7e648,
+    type: 2}
   <Sucess>k__BackingField: {fileID: 11400000, guid: 3dc239354ceb224469e82fef77feb3a1,
     type: 2}
   <Fail>k__BackingField: {fileID: 0}

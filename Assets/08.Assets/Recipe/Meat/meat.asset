@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Meat
   <MixList>k__BackingField:
-  - ingredientType: 2
-    cookingType: 1
+  - {fileID: 11400000, guid: 4741aa84711fc864bbb746ee3cf7e648, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 7192638269386965497, guid: 01b123f6ecbe8c34993c5bcf0cf4b035,
     type: 3}

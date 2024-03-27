@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: LeafBurger
   <MixList>k__BackingField:
-  - ingredientType: 4
-    cookingType: 2
-  - ingredientType: 5
-    cookingType: 2
+  - {fileID: 11400000, guid: 9018c50e91e9b314a830f1e2d554c597, type: 2}
+  - {fileID: 11400000, guid: 679272929f55d9649979aea0fbccbe4f, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: eee33c748d212424e8421d4f96d61e45,
     type: 3}

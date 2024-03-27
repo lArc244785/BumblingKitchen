@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: CheeseBurger
   <MixList>k__BackingField:
-  - ingredientType: 4
-    cookingType: 2
-  - ingredientType: 6
-    cookingType: 2
+  - {fileID: 11400000, guid: 9018c50e91e9b314a830f1e2d554c597, type: 2}
+  - {fileID: 11400000, guid: 7680f85ebebbc0e4ea49b4d3e55e3aa1, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: a4fca477754e02940b5e922f36110cce,
     type: 3}

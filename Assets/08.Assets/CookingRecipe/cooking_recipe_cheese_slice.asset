@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8d911deeee6c54792522ec92c33d0b, type: 3}
   m_Name: cooking_recipe_cheese_slice
   m_EditorClassIdentifier: 
-  <Source>k__BackingField:
-    ingredientType: 5
-    cookingType: 1
-  <Sucess>k__BackingField: {fileID: 11400000, guid: 58b18636624e00543958ffa25a947ad6,
+  <Source>k__BackingField: {fileID: 11400000, guid: 8b452d188ef2be142979d4b4b914a9b4,
+    type: 2}
+  <Sucess>k__BackingField: {fileID: 11400000, guid: 8bc0a7bd71941934aaab71e379db96c3,
     type: 2}
   <Fail>k__BackingField: {fileID: 0}
   <SucessProgress>k__BackingField: 1

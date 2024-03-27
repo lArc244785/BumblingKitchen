@@ -23,11 +23,12 @@ namespace BumblingKitchen.Interaction
 
 			foreach(var recipe in _recipeList)
 			{
+				recipe.SortMixList();
 				RecipeTable.Add(recipe.Name, recipe);
 			}
 		}
 
-		public Recipe FindRecipe(List<NetworkIngredientData> mixList)
+		public Recipe FindRecipe(List<IngredientData> mixList)
 		{
 			foreach (var recipe in _recipeList)
 			{

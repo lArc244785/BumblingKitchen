@@ -7,10 +7,10 @@ namespace BumblingKitchen.Interaction
 	public class Recipe : ScriptableObject
 	{
 		[field: SerializeField] public string Name { get; private set; }
-		[field: SerializeField] public List<NetworkIngredientData> MixList { get; private set; }
+		[field: SerializeField] public List<IngredientData> MixList { get; private set; }
 		[field: SerializeField] public GameObject ModelPrefab { get; private set; }
 
-		public bool SameRecipe(List<NetworkIngredientData> mixDatas)
+		public bool SameRecipe(List<IngredientData> mixDatas)
 		{
 			if (MixList.Count == mixDatas.Count)
 				return false;
@@ -22,6 +22,11 @@ namespace BumblingKitchen.Interaction
 			}
 
 			return true;
+		}
+
+		public void SortMixList()
+		{
+			MixList.Sort();
 		}
 	}
 }

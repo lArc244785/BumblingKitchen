@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: PattyCheese
   <MixList>k__BackingField:
-  - ingredientType: 2
-    cookingType: 3
-  - ingredientType: 6
-    cookingType: 2
+  - {fileID: 11400000, guid: 7680f85ebebbc0e4ea49b4d3e55e3aa1, type: 2}
+  - {fileID: 11400000, guid: ccb6ae9b8d12ecb469083c80fdf5a792, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: d4dd4043bd0da4a409e61c1289010a91,
     type: 3}

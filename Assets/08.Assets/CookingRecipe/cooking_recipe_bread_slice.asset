@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8d911deeee6c54792522ec92c33d0b, type: 3}
   m_Name: cooking_recipe_bread_slice
   m_EditorClassIdentifier: 
-  <Source>k__BackingField:
-    ingredientType: 4
-    cookingType: 1
+  <Source>k__BackingField: {fileID: 11400000, guid: 11bf5c1f84b6423479abeaf85d69646c,
+    type: 2}
   <Sucess>k__BackingField: {fileID: 11400000, guid: b3a8a98b31d9a6c47bea279243cd0a7f,
     type: 2}
   <Fail>k__BackingField: {fileID: 0}

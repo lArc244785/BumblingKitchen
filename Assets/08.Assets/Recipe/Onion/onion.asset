@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Onion
   <MixList>k__BackingField:
-  - ingredientType: 1
-    cookingType: 1
+  - {fileID: 11400000, guid: 50abe7b995b95ae49a99add39e2799e3, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 7448376084975113005, guid: 2becf71d8bf4b85479f882c69172f3d8,
     type: 3}

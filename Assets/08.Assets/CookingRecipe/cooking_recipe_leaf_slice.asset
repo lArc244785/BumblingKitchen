@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb8d911deeee6c54792522ec92c33d0b, type: 3}
   m_Name: cooking_recipe_leaf_slice
   m_EditorClassIdentifier: 
-  <Source>k__BackingField:
-    ingredientType: 5
-    cookingType: 1
+  <Source>k__BackingField: {fileID: 11400000, guid: 4221c2d3dcb0fef409698459ed7fe1eb,
+    type: 2}
   <Sucess>k__BackingField: {fileID: 11400000, guid: 58b18636624e00543958ffa25a947ad6,
     type: 2}
   <Fail>k__BackingField: {fileID: 0}

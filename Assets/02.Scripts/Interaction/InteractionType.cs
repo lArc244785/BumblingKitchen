@@ -3,7 +3,6 @@
 	public enum InteractionType
 	{
 		None,
-		Interactor,
 		Ingredient,
 		Plate,
 		FireKitchenTool,

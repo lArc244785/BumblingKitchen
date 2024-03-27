@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: PattyLeaf
   <MixList>k__BackingField:
-  - ingredientType: 2
-    cookingType: 3
-  - ingredientType: 5
-    cookingType: 2
+  - {fileID: 11400000, guid: 679272929f55d9649979aea0fbccbe4f, type: 2}
+  - {fileID: 11400000, guid: ccb6ae9b8d12ecb469083c80fdf5a792, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: e6c2373de66ebb6409d9e294461b09d5,
     type: 3}
