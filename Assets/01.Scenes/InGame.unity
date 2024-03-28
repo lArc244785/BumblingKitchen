@@ -3072,7 +3072,7 @@ PrefabInstance:
     - target: {fileID: 6727870790236378414, guid: d1faff2cd66ab384894d269aa09807b3,
         type: 3}
       propertyPath: m_text
-      value: 9999
+      value: 0000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3085,6 +3085,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1775681054}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1775681056 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6727870790236378414, guid: d1faff2cd66ab384894d269aa09807b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1775681054}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1820240272
 GameObject:
   m_ObjectHideFlags: 0
@@ -3220,6 +3232,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1820240272}
   m_CullTransparentMesh: 1
+--- !u!1 &1826488825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1826488828}
+  - component: {fileID: 1826488829}
+  - component: {fileID: 1826488830}
+  m_Layer: 0
+  m_Name: InGameDataAAA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1826488828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826488825}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1826488829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826488825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 664410937
+  ObjectInterest: 1
+  Flags: 131073
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1826488830}
+--- !u!114 &1826488830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826488825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa402f855364ce1459a2e83df02f3568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Gold: 0
+  _GoelGold: 1000
 --- !u!1 &1834203259
 GameObject:
   m_ObjectHideFlags: 0
@@ -3320,7 +3397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 95180578
   ObjectInterest: 1
-  Flags: 262145
+  Flags: 131073
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1865753796}
@@ -3831,6 +3908,7 @@ GameObject:
   - component: {fileID: 2036240513}
   - component: {fileID: 2036240515}
   - component: {fileID: 2036240514}
+  - component: {fileID: 2036240516}
   m_Layer: 5
   m_Name: Gold
   m_TagString: Untagged
@@ -3898,6 +3976,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2036240512}
   m_CullTransparentMesh: 1
+--- !u!114 &2036240516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036240512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2369e8521f9c34f44a7f00b77c84a39c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gold: {fileID: 1775681056}
 --- !u!1 &2056691029
 GameObject:
   m_ObjectHideFlags: 0
@@ -5257,3 +5348,4 @@ SceneRoots:
   - {fileID: 1834203260}
   - {fileID: 956933910}
   - {fileID: 1935983918}
+  - {fileID: 1826488828}

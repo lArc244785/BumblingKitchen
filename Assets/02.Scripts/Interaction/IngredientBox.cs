@@ -16,6 +16,7 @@ namespace BumblingKitchen.Interaction
 			if (interactor.HasPickUpObject == true)
 				return false;
 
+			InGameData.Instance.RPC_AddSpawnObject(Runner.LocalPlayer);
 			RPC_SpawnIngredient(interactor.Object);
 			return true;
 		}

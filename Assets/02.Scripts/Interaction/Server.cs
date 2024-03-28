@@ -28,7 +28,7 @@ namespace BumblingKitchen
 			_outLet.SendPlate(plate);
 			RPC_DeSpawn(ingredient.Object);
 			_orderManger.OrderCheck(ingredient.Name);
-
+			InGameData.Instance.RPC_AddSendToOrder(Runner.LocalPlayer);
 			return false;
 		}
 

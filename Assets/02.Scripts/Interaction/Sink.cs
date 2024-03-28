@@ -28,7 +28,7 @@ namespace BumblingKitchen.Interaction
 			{
 				if (DirtyPlates.Count > 0)
 				{
-					RPC_Cleaning();
+					RPC_Cleaning(Runner.LocalPlayer);
 					return true;
 				}
 				return false;
@@ -61,7 +61,7 @@ namespace BumblingKitchen.Interaction
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		private void RPC_Cleaning()
+		private void RPC_Cleaning(PlayerRef player)
 		{
 			if (_dryingRack.CanSendCleanPlate() == false)
 				return;
@@ -76,6 +76,7 @@ namespace BumblingKitchen.Interaction
 				_dryingRack.RPC_SendCleanPlate(cleaningPlateID);
 				CurrentCleaningProgress = 0.0f;
 				Debug.Log($"Dirty Plate {DirtyPlates.Count}");
+				InGameData.Instance.RPC_AddCleanPlate(player);
 			}
 		}
 

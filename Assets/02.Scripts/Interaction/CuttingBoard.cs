@@ -59,7 +59,7 @@ namespace BumblingKitchen.Interaction
 					if (interactor.HasPickUpObject == true)
 						return false;
 
-					_putIngredient.RPC_DoneCook();
+					_putIngredient.RPC_DoneCook(Runner.LocalPlayer);
 					interactor.RPC_PickUp(_putIngredient.Object);
 					RPC_RelesePutIngredient();
 				}

@@ -19,7 +19,7 @@ namespace BumblingKitchen
 		[SerializeField] private NetworkPrefabRef _palyerPrefab;
 		[Networked] public GameState State { get; private set; } = GameState.Wait;
 		[Networked] public float PlayTime { get; private set; }
-		private float _endTime = 30.0f;
+		private float _endTime = 120.0f;
 
 		private int _readyPlayer = 0;
 
@@ -35,7 +35,6 @@ namespace BumblingKitchen
 
 		public override void Spawned()
 		{
-			base.Spawned();
 			SpawnPlayer(Runner.LocalPlayer);
 		}
 
@@ -80,7 +79,8 @@ namespace BumblingKitchen
 			if(State == GameState.Play)
 			{
 				PlayTime += Runner.DeltaTime;
-				if (PlayTime == _endTime)
+				Debug.Log($"Time : {PlayTime}");
+				if (PlayTime >= _endTime)
 					NextGameState(GameState.End);
 			}
 		}

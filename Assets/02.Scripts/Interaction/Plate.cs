@@ -64,11 +64,11 @@ namespace BumblingKitchen.Interaction
 						if (_putIngredient == null)
 						{
 							RPC_PutIngredient(ingredient.Object);
-							fryingPan.RPC_RelesePutIngredient();
+							fryingPan.RPC_RelesePutIngredient(Runner.LocalPlayer);
 						}
 						else if(_putIngredient.TryMix(ingredient) == true)
 						{
-							fryingPan.RPC_RelesePutIngredient();
+							fryingPan.RPC_RelesePutIngredient(Runner.LocalPlayer);
 							Runner.Despawn(ingredient.Object);
 						}
 					}

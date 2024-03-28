@@ -59,7 +59,7 @@ namespace BumblingKitchen
 		{
 			int randomIndex = Random.Range(0, _orderableList.Count);
 			float startTime = GameManager.Instance.PlayTime;
-			float endTime = startTime + 30.0f;
+			float endTime = startTime + 60.0f;
 
 			OrderData newOrder = new OrderData(
 				randomIndex,
@@ -98,7 +98,7 @@ namespace BumblingKitchen
 			if (_orderList.Count == 0)
 				return;
 
-			if (Time.time >= _orderList[0].EndTiem)
+			if (GameManager.Instance.PlayTime >= _orderList[0].EndTiem)
 			{
 				RPC_RemoveOrderReuslt(0, false);
 			}
@@ -108,6 +108,7 @@ namespace BumblingKitchen
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_RemoveOrderReuslt(int index,NetworkBool isSucess)
 		{
+			string recipeName = _orderList[index].RecipeName;
 			_orderList[index].gameObject.SetActive(false);
 			Destroy(_orderList[index].gameObject);
 			_orderList.RemoveAt(index);
@@ -121,10 +122,13 @@ namespace BumblingKitchen
 
 			for (int i = 0; i < _orderList.Count; i++)
 			{
+				//오더가 있는 음식인 경우
 				if (_orderableList[i].Name == recipeName)
 				{
 					Debug.Log($"동일한 이름 발견: {i} 번째의 {_orderableList[i].Name}");
 					RPC_RemoveOrderReuslt(i, true);
+					var recipe = StageRecipeManager.Instance.RecipeTable[recipeName];
+					InGameData.Instance.RPC_AddGold(recipe.SellGold, Runner.LocalPlayer);
 					break;
 				}
 			}

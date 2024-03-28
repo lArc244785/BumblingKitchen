@@ -109,8 +109,20 @@ namespace BumblingKitchen.Interaction
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
-		public void RPC_DoneCook()
+		public void RPC_DoneCook(PlayerRef player)
 		{
+			if(HasStateAuthority == true)
+			{
+				if(CurrentState == CookState.Sucess)
+				{
+					InGameData.Instance.RPC_AddSuccesCooking(player);
+				}
+				else if (CurrentState == CookState.Fail)
+				{
+					InGameData.Instance.RPC_AddFailCooking(player);
+				}
+			}
+
 			CurrentState = CookState.None;
 			_cookingRecipe = null;
 			OnDoneCooked?.Invoke();

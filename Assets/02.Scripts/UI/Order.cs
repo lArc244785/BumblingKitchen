@@ -16,9 +16,11 @@ namespace BumblingKitchen
 		[SerializeField] private CookingInfoUI _cookingInfoUIPrefab;
 
 		public float EndTiem { get; private set; }
+		public String RecipeName { get; private set; }
 
 		public void InitSetting(Recipe recipe, float startTime, float endTime)
 		{
+			RecipeName = recipe.Name;
 			EndTiem = endTime;
 			//슬라이더 설정
 			_slider.minValue = startTime;

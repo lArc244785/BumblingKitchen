@@ -21,3 +21,4 @@ MonoBehaviour:
     type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: 1715d6711a660f64ba4be82335182613,
     type: 3}
+  <SellGold>k__BackingField: 200
