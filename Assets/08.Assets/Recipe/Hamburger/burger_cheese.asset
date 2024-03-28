@@ -16,5 +16,7 @@ MonoBehaviour:
   <MixList>k__BackingField:
   - {fileID: 11400000, guid: 9018c50e91e9b314a830f1e2d554c597, type: 2}
   - {fileID: 11400000, guid: 7680f85ebebbc0e4ea49b4d3e55e3aa1, type: 2}
-  <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: a4fca477754e02940b5e922f36110cce,
+  <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: cd289c3efb1b6574385cfdb12c886b41,
+    type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 36da5732c7e36704b981cd4bcbf5f1b1,
     type: 3}

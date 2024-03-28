@@ -17,3 +17,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11bf5c1f84b6423479abeaf85d69646c, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 6150570049928464905, guid: 06bac425d8e517244bfc9756d7125581,
     type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: df471547c94e6134c8c4067a20061f52,
+    type: 3}

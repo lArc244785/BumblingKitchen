@@ -9,6 +9,7 @@ namespace BumblingKitchen.Interaction
 		[field: SerializeField] public string Name { get; private set; }
 		[field: SerializeField] public List<IngredientData> MixList { get; private set; }
 		[field: SerializeField] public GameObject ModelPrefab { get; private set; }
+		[field: SerializeField] public Sprite Icon { get; private set; }
 
 		public bool SameRecipe(List<IngredientData> mixDatas)
 		{

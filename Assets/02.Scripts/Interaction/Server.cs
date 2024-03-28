@@ -9,9 +9,13 @@ namespace BumblingKitchen
 		public InteractionType Type => InteractionType.Server;
 
 		[SerializeField] private Outlet _outLet;
+		[SerializeField] private OrderManger _orderManger;
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
+			if (interactor.HasPickUpObject == false)
+				return false;
+
 			if (interactable.Type != InteractionType.Plate)
 				return false;
 			
@@ -23,7 +27,7 @@ namespace BumblingKitchen
 			var ingredient = plate.SpillIngredient();
 			_outLet.SendPlate(plate);
 			RPC_DeSpawn(ingredient.Object);
-			//_order.SendOrder(ingredient);
+			_orderManger.OrderCheck(ingredient.Name);
 
 			return false;
 		}

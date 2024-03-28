@@ -93,7 +93,8 @@ namespace BumblingKitchen.Interaction
 			}
 
 			OnUpdateMixData?.Invoke(MixDataList);
-			gameObject.name = newRecipe.name;
+			gameObject.name = newRecipe.Name;
+			Name = newRecipe.Name;
 			UpdateModel(newRecipe);
 		}
 
