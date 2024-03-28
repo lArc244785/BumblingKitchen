@@ -26,6 +26,11 @@ namespace BumblingKitchen.Player
 			_interactor = GetComponent<Interactor>();
 		}
 
+		private void Start()
+		{
+			GameManager.Instance.OnEnddingGame += () => SetStepSound(TickTimer.None);
+		}
+
 		public override void Spawned()
 		{
 			base.Spawned();
@@ -37,6 +42,9 @@ namespace BumblingKitchen.Player
 
 		public override void FixedUpdateNetwork()
 		{
+			if ((GameManager.Instance.State == GameState.Play) == false)
+				return;
+
 			if (GetInput(out NetworkInputData data))
 			{
 				if (data.direction.sqrMagnitude > 0.1f)

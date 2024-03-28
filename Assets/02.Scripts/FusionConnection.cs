@@ -68,8 +68,15 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 		});
 	}
 
+	public async void ExitSessionToTitle()
+	{
+		await _runner.Shutdown();
+		SceneManager.LoadScene(0);
+	}
+
 	public async void ConnectToLobby()
 	{
+		connectPlayers.Clear();
 		await _runner.JoinSessionLobby(SessionLobby.Shared);
 		SceneManager.LoadScene(1);
 	}

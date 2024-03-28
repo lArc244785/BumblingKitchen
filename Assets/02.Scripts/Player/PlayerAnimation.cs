@@ -20,6 +20,8 @@ namespace BumblingKitchen.Player
 
 			_hand.OnPickUp += PickUp;
 			_hand.OnDrop += Drop;
+
+			GameManager.Instance.OnEnddingGame += Stop;
 		}
 
 		private void Move()
@@ -53,7 +55,6 @@ namespace BumblingKitchen.Player
 		{
 			_animator.SetFloat("PickUp Item", value);
 		}
-
 
 		private void OnDestroy()
 		{

@@ -27,27 +27,38 @@ namespace BumblingKitchen
 		[SerializeField] private List<Recipe> _orderableList;
 
 		[SerializeField] private Transform _orderPerent;
-
+		
 		private List<Order> _orderList = new List<Order>();
 
 		private TickTimer _singUpOrderTimer;
 
-		[Networked, OnChangedRender(nameof(UpdateOrderTime))] public float OrderTime { set; get; }
+		private bool _isOrderRun = false;
 
-		public override void Spawned()
+		private void Start()
 		{
-			base.Spawned();
-			if (HasStateAuthority)
-			{
-				_singUpOrderTimer = TickTimer.CreateFromSeconds(Runner, 5.0f);
-				OrderTime = Time.time;
-			}
+			GameManager.Instance.OnStarttingGame += StartOrder;
+			GameManager.Instance.OnEnddingGame += StopOrder;
+		}
+
+		private void StartOrder()
+		{
+			if (HasStateAuthority == false)
+				return;
+			_isOrderRun = true;
+			_singUpOrderTimer = TickTimer.CreateFromSeconds(Runner, 5.0f);
+		}
+
+		private void StopOrder()
+		{
+			if (HasStateAuthority == false)
+				return;
+			_isOrderRun = false;
 		}
 
 		public void RandomOrder()
 		{
 			int randomIndex = Random.Range(0, _orderableList.Count);
-			float startTime = Time.time;
+			float startTime = GameManager.Instance.PlayTime;
 			float endTime = startTime + 30.0f;
 
 			OrderData newOrder = new OrderData(
@@ -68,12 +79,15 @@ namespace BumblingKitchen
 			_orderList.Add(newOrder);
 		}
 
-		public override void FixedUpdateNetwork()
+		public override void Render()
 		{
+			UpdateOrderTime();
+
 			if (HasStateAuthority == false)
 				return;
 
-			OrderTime = Time.time;
+			if (_isOrderRun == false)
+				return;
 
 			if (_singUpOrderTimer.Expired(Runner) == true)
 			{
@@ -116,11 +130,13 @@ namespace BumblingKitchen
 			}
 		}
 
+	
+
 		private void UpdateOrderTime()
 		{
 			foreach(var order in _orderList)
 			{
-				order.Draw(OrderTime);
+				order.Draw(GameManager.Instance.PlayTime);
 			}
 		}
 	}

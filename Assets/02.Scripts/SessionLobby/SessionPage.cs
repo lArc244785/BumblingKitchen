@@ -44,6 +44,9 @@ namespace BumblingKitchen.SessionLobby
 				return;
 			}
 
+			if (_topIndex == 0)
+				return;
+
 			for (int i = 0; i < cells.Length; i++)
 			{
 				int sessionIndex = _topIndex + i;
