@@ -10,7 +10,8 @@ namespace BumblingKitchen.Player
 	{
 		private NetworkCharacterController _controller;
 		[Networked] private TickTimer _stepSoundTimer { set; get; }
-		
+		private LocalInput _localInput;
+
 		private PlayerSound _sound;
 		private Interactor _interactor;
 
@@ -37,6 +38,7 @@ namespace BumblingKitchen.Player
 			if(HasInputAuthority == true)
 			{
 				GameObject.FindAnyObjectByType<CinemachineVirtualCamera>().Follow = transform;
+				_localInput = FindAnyObjectByType<LocalInput>();
 			}
 		}
 

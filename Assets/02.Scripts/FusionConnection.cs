@@ -1,3 +1,4 @@
+using BumblingKitchen;
 using Fusion;
 using Fusion.Sockets;
 using System;
@@ -65,6 +66,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 			Scene = scene,
 			PlayerCount = 4,
 			SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+			ObjectProvider = _runner.GetComponent<NetworkObjectPool>()
 		});
 	}
 
