@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
-  m_Name: patty_grill
+  m_Name: meat_grill
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Patty
+  <Name>k__BackingField: MeatGrill
   <MixList>k__BackingField:
   - {fileID: 11400000, guid: ccb6ae9b8d12ecb469083c80fdf5a792, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: ca5cf1b6c8ab4cc4681bc6cac093cc3f,
     type: 3}
+  <Icon>k__BackingField: {fileID: 0}
+  <SellGold>k__BackingField: 0
+  <PoolObjectType>k__BackingField: 21

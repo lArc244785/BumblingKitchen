@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using BumblingKitchen;
 
 namespace BumblingKitchen.Interaction
 {
@@ -11,6 +12,7 @@ namespace BumblingKitchen.Interaction
 		[field: SerializeField] public GameObject ModelPrefab { get; private set; }
 		[field: SerializeField] public Sprite Icon { get; private set; }
 		[field: SerializeField] public int SellGold { get; private set; }
+		[field: SerializeField] public PoolObjectType PoolObjectType { get; private set; }
 		
 
 		public bool SameRecipe(List<IngredientData> mixDatas)

@@ -17,3 +17,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4221c2d3dcb0fef409698459ed7fe1eb, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 6150570049928464905, guid: a668b00d95b67dc4ebd2ce3d9af4ce2a,
     type: 3}
+  <Icon>k__BackingField: {fileID: 0}
+  <SellGold>k__BackingField: 0
+  <PoolObjectType>k__BackingField: 17

@@ -15,7 +15,7 @@ namespace BumblingKitchen.Interaction
 		/// 들어간 재료에 대한 정보를 담는다 추가할 때 마다 정렬된다.
 		/// </summary>
 		public List<IngredientData> MixDataList { get; } = new();
-		private GameObject _modelObject;
+		private PooledObject _modelObject;
 
 
 		private bool _isInitModel = false;
@@ -102,10 +102,13 @@ namespace BumblingKitchen.Interaction
 		{
 			if (_modelObject != null)
 			{
-				Destroy(_modelObject);
+				_modelObject.Relese();
 			}
 
-			_modelObject = Instantiate(newRecipe.ModelPrefab, _modelParent, false);
+			_modelObject = PoolManager.Instance.GetPooledObject(newRecipe.PoolObjectType);
+			_modelObject.transform.parent = _modelParent;
+			_modelObject.transform.localPosition = Vector3.zero;
+			_modelObject.transform.rotation = Quaternion.identity;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
   m_Name: burger_meat_cheese
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: MeatCheeseBurger
+  <Name>k__BackingField: BreadMeatCheese
   <MixList>k__BackingField:
   - {fileID: 11400000, guid: 9018c50e91e9b314a830f1e2d554c597, type: 2}
   - {fileID: 11400000, guid: 7680f85ebebbc0e4ea49b4d3e55e3aa1, type: 2}
@@ -22,3 +22,4 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: 21300000, guid: dcd5d187080f86c4781f95d5a506542f,
     type: 3}
   <SellGold>k__BackingField: 300
+  <PoolObjectType>k__BackingField: 6

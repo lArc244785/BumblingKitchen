@@ -19,3 +19,5 @@ MonoBehaviour:
     type: 3}
   <Icon>k__BackingField: {fileID: 21300000, guid: a85e544c261b9104cb03a7a2b001ed8b,
     type: 3}
+  <SellGold>k__BackingField: 0
+  <PoolObjectType>k__BackingField: 14

@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fb97579057f56348ace66a653c68193, type: 3}
   m_Name: meat_leaf
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: PattyLeaf
+  <Name>k__BackingField: MeatLeaf
   <MixList>k__BackingField:
   - {fileID: 11400000, guid: 679272929f55d9649979aea0fbccbe4f, type: 2}
   - {fileID: 11400000, guid: ccb6ae9b8d12ecb469083c80fdf5a792, type: 2}
   <ModelPrefab>k__BackingField: {fileID: 3967046558602847555, guid: e6c2373de66ebb6409d9e294461b09d5,
     type: 3}
+  <Icon>k__BackingField: {fileID: 0}
+  <SellGold>k__BackingField: 0
+  <PoolObjectType>k__BackingField: 10
