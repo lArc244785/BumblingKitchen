@@ -45,7 +45,7 @@ namespace BumblingKitchen
 				if (stack.Count > 0)
 				{
 					instance = stack.Pop();
-				}
+				}	
 			}
 
 			if (instance == null)

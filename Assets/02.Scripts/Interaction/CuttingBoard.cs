@@ -52,6 +52,7 @@ namespace BumblingKitchen.Interaction
 					return false;
 				if(_putIngredient.CurrentState == CookState.Cooking)
 				{
+					interactor.InvokeCutEvent();
 					_putIngredient.RPC_Cooking(_addProgress);
 				}
 				else if(_putIngredient.CurrentState == CookState.Sucess)

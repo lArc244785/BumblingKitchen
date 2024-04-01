@@ -28,6 +28,7 @@ namespace BumblingKitchen.Interaction
 			{
 				if (DirtyPlates.Count > 0)
 				{
+					interactor.InvokeCleanEvent();
 					RPC_Cleaning(Runner.LocalPlayer);
 					return true;
 				}
