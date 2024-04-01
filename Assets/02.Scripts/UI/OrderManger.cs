@@ -34,6 +34,15 @@ namespace BumblingKitchen
 
 		private bool _isOrderRun = false;
 
+		private AudioSource _audioSource;
+		[SerializeField] private AudioClip _succeseSound;
+		[SerializeField] private AudioClip _failSound;
+
+		private void Awake()
+		{
+			_audioSource = GetComponent<AudioSource>();
+		}
+
 		private void Start()
 		{
 			GameManager.Instance.OnStarttingGame += StartOrder;
@@ -113,7 +122,6 @@ namespace BumblingKitchen
 			Destroy(_orderList[index].gameObject);
 			_orderList.RemoveAt(index);
 
-			Debug.Log($"오더 결과 : {isSucess}");
 		}
 
 		public void OrderCheck(string recipeName)
@@ -123,18 +131,30 @@ namespace BumblingKitchen
 			for (int i = 0; i < _orderList.Count; i++)
 			{
 				//오더가 있는 음식인 경우
-				if (_orderableList[i].Name == recipeName)
+				if (_orderList[i].RecipeName == recipeName)
 				{
 					Debug.Log($"동일한 이름 발견: {i} 번째의 {_orderableList[i].Name}");
 					RPC_RemoveOrderReuslt(i, true);
 					var recipe = StageRecipeManager.Instance.RecipeTable[recipeName];
 					InGameData.Instance.RPC_AddGold(recipe.SellGold, Runner.LocalPlayer);
-					break;
+					RPC_OrderCheckResult(true);
+					return;
 				}
 			}
+			RPC_OrderCheckResult(false);
 		}
 
-	
+		private void RPC_OrderCheckResult(NetworkBool isSucess)
+		{
+			if (isSucess == true)
+			{
+				_audioSource.PlayOneShot(_succeseSound);
+			}
+			else
+			{
+				_audioSource.PlayOneShot(_failSound);
+			}
+		}
 
 		private void UpdateOrderTime()
 		{

@@ -52,7 +52,7 @@ namespace BumblingKitchen.Interaction
 					return false;
 				if(_putIngredient.CurrentState == CookState.Cooking)
 				{
-					interactor.InvokeCutEvent();
+					RPC_Effect();
 					_putIngredient.RPC_Cooking(_addProgress);
 				}
 				else if(_putIngredient.CurrentState == CookState.Sucess)
@@ -67,6 +67,14 @@ namespace BumblingKitchen.Interaction
 			}
 
 			return false;
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		private void RPC_Effect()
+		{
+			var effect = PoolManager.Instance.GetPooledObject(PoolObjectType.Effect_CuttingBoard);
+			effect.transform.position = _putPoint.position;
+			effect.transform.rotation = _putPoint.rotation;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]

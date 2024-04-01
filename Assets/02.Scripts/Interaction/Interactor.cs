@@ -4,8 +4,8 @@ using System;
 
 namespace BumblingKitchen.Interaction
 {
-    public class Interactor : NetworkBehaviour, IHandEvents, ICutEvent, ICleanEvent
-    {
+    public class Interactor : NetworkBehaviour, IHandEvents
+	{
         [field:SerializeField] public Transform PickUpPoint { get; private set; }
 
         [SerializeField] private Vector3 _detectedStartLocalPoint;
@@ -18,10 +18,8 @@ namespace BumblingKitchen.Interaction
 
 		public event Action OnPickUp;
 		public event Action OnDrop;
-		public event Action OnCutEvent;
-		public event Action OnCleanEvent;
 
-        public bool IsPickUpInteractor(PickableInteractable target)
+		public bool IsPickUpInteractor(PickableInteractable target)
 		{
 			if (target == null)
 				return false;
@@ -183,16 +181,6 @@ namespace BumblingKitchen.Interaction
 			Gizmos.color = Color.green;
 			Ray ray = new(detectPoint, Vector3.down);
 			Gizmos.DrawLine(ray.origin, ray.GetPoint(_detectDistance));
-		}
-
-		public void InvokeCutEvent()
-		{
-			OnCutEvent?.Invoke();
-		}
-
-		public void InvokeCleanEvent()
-		{
-			OnCleanEvent?.Invoke();
 		}
 	}
 }

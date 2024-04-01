@@ -79,7 +79,6 @@ namespace BumblingKitchen
 			if(State == GameState.Play)
 			{
 				PlayTime += Runner.DeltaTime;
-				Debug.Log($"Time : {PlayTime}");
 				if (PlayTime >= _endTime)
 					NextGameState(GameState.End);
 			}

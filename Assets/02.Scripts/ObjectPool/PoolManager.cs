@@ -6,7 +6,7 @@ namespace BumblingKitchen
 	public enum PoolObjectType
 	{
 		None,
-		CuttingBoardEffect,
+		Effect_CuttingBoard,
 		IngredientModel_BreadCheese,
 		IngredientModel_BreadLeaf,
 		IngredientModel_BreadLeafCheese,
@@ -30,6 +30,7 @@ namespace BumblingKitchen
 		IngredientModel_Tomato,
 		IngredientModel_TomatoSlice,
 		IngredientModel_Trash,
+		Effect_WashDish,
 	}
 
 	public class PoolManager : MonoBehaviour

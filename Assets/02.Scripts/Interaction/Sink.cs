@@ -22,14 +22,16 @@ namespace BumblingKitchen.Interaction
 		public event Action<int, int> OnUpdateDirtyPlates;
 		public event Action<float> OnUpdateProgress;
 
+		[SerializeField] private Transform _effectPoint;
+
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
 			if (interactor.HasPickUpObject == false)
 			{
 				if (DirtyPlates.Count > 0)
 				{
-					interactor.InvokeCleanEvent();
 					RPC_Cleaning(Runner.LocalPlayer);
+					RPC_EffectPlay();
 					return true;
 				}
 				return false;
@@ -53,6 +55,14 @@ namespace BumblingKitchen.Interaction
 			}
 
 			return false;
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		private void RPC_EffectPlay()
+		{
+			var effect = PoolManager.Instance.GetPooledObject(PoolObjectType.Effect_WashDish);
+			effect.transform.position = _effectPoint.position;
+			effect.transform.rotation = _effectPoint.rotation;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
