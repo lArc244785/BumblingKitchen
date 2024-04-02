@@ -8,19 +8,24 @@ using TMPro;
 
 namespace BumblingKitchen.SessionRoom
 {
-	public struct NetworkUserInfo : INetworkStruct
+	public struct NetworkUserInfo : INetworkStruct, IEquatable<NetworkUserInfo>
 	{
-		public NetworkString<_16> playerId;
+		public PlayerRef playerRef;
 		public NetworkString<_16> playerName;
 		public int characterId;
 		public NetworkBool isReady;
 
-		public NetworkUserInfo(NetworkString<_16> playerId, NetworkString<_16> playerName, int characterId, NetworkBool isReady)
+		public NetworkUserInfo(PlayerRef playerRef, NetworkString<_16> playerName, int characterId, NetworkBool isReady)
 		{
-			this.playerId = playerId;
+			this.playerRef = playerRef;
 			this.playerName = playerName;
 			this.characterId = characterId;
 			this.isReady = isReady;
+		}
+
+		public bool Equals(NetworkUserInfo other)
+		{
+			return (playerRef == other.playerRef);
 		}
 	}
 
@@ -28,6 +33,7 @@ namespace BumblingKitchen.SessionRoom
 	public class SessionRoom: NetworkBehaviour
 	{
 		[SerializeField] private Button _ready;
+		[SerializeField] private Button _exit;
 		[SerializeField] private DeshBoard _board;
 		[SerializeField] private TMP_Text _startWaitText;
 
@@ -49,12 +55,19 @@ namespace BumblingKitchen.SessionRoom
 
 			string playerName = PlayerPrefs.GetString("Name");
 			int characterID = PlayerPrefs.GetInt("CharacterID");
-			RPC_AddUserInfo(new NetworkUserInfo(Runner.UserId, playerName, characterID, false));
+			RPC_AddUserInfo(new NetworkUserInfo(Runner.LocalPlayer, playerName, characterID, false));
 
 			_ready.onClick.AddListener(() =>
 			{
-				RPC_OnReayPlayer(Runner.UserId);
+				RPC_OnReayPlayer(Runner.LocalPlayer);
 			});
+
+			_exit.onClick.AddListener(() =>
+			{
+				FusionConnection.Instance.ExitSessionToTitle();
+			});
+
+			FusionConnection.Instance.OnPlayerLeftEvent += PlayerLeft;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -69,21 +82,22 @@ namespace BumblingKitchen.SessionRoom
 			_board.Draw(_users);
 		}
 
-
 		private void PlayerLeft(NetworkRunner runner, PlayerRef player)
 		{
-			Debug.Log("Player Left!!!!");
-			if (TryFindUesrInfo(runner.UserId, out var info))
+			if (HasStateAuthority == false)
+				return;
+
+			if (TryFindUesrInfo(player, out var info))
 			{
 				_users.Remove(info);
 			}
 		}
 
-		private bool TryFindUesrInfo(string playerId, out NetworkUserInfo info)
+		private bool TryFindUesrInfo(PlayerRef player, out NetworkUserInfo info)
 		{
 			info = default;
 
-			if (TryFindUserInfoIndex(playerId, out var index))
+			if (TryFindUserInfoIndex(player, out var index))
 			{
 				info = _users[index];
 				return true;
@@ -92,12 +106,12 @@ namespace BumblingKitchen.SessionRoom
 			return false;
 		}
 
-		private bool TryFindUserInfoIndex(string playerId, out int index)
+		private bool TryFindUserInfoIndex(PlayerRef player, out int index)
 		{
 			index = -1;
 			for (int i = 0; i < _users.Count; i++)
 			{
-				if (_users[i].playerId == playerId)
+				if (_users[i].playerRef.Equals(player) == true)
 				{
 					index = i;
 					return true;
@@ -107,9 +121,9 @@ namespace BumblingKitchen.SessionRoom
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		private void RPC_OnReayPlayer(NetworkString<_16> userID)
+		private void RPC_OnReayPlayer(PlayerRef player)
 		{
-			if(TryFindUserInfoIndex(userID.ToString(), out var index))
+			if(TryFindUserInfoIndex(player, out var index))
 			{
 				NetworkUserInfo info = _users[index];
 				info.isReady = !info.isReady;
@@ -140,10 +154,7 @@ namespace BumblingKitchen.SessionRoom
 		public override void Despawned(NetworkRunner runner, bool hasState)
 		{
 			base.Despawned(runner, hasState);
-			if(runner.IsServer)
-			{
-				FusionConnection.Instance.OnPlayerLeftEvent -= PlayerLeft;
-			}
+			FusionConnection.Instance.OnPlayerLeftEvent -= PlayerLeft;
 		}
 
 		public override void Render()
