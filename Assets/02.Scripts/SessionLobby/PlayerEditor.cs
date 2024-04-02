@@ -37,11 +37,14 @@ namespace BumblingKitchen.SessionLobby
 
 			_inputName.onEndEdit.AddListener(SetCharacterName);
 			_nextCharacter.onClick.AddListener(NextCharacter);
+
+			
 		}
 
 		private string RandomName()
 		{
-			return "User-" + Random.Range(0, 9999);
+			int random = Random.Range(0, 999);
+			return "User-" + random.ToString("D3");
 		}
 
 		/// <summary>
