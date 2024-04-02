@@ -29,15 +29,13 @@ namespace BumblingKitchen
 		public static GameManager Instance { get; private set; }
 
 		public bool IsMove => State == GameState.Play;
-
-		private bool isSpawnPlayer = false;
-
 		//Master Only
 		private Dictionary<PlayerRef, bool> _playerReadyTable;
 
 		private TickTimer _playWaitTimer;
 		private TickTimer _endWaitTimer;
 
+		private TickTimer _stabilizationTimer;
 
 		private void Awake()
 		{
@@ -47,27 +45,16 @@ namespace BumblingKitchen
 
 		public override void Spawned()
 		{
-			Debug.Log($"Manger Spawned {gameObject.name}");
+			_stabilizationTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
 
-			//if (HasStateAuthority == true)
-			//{
-			//	if (_playerReadyTable != null)
-			//		return;
-
-			//	Debug.Log($"Spawned {gameObject.name}");
-
-			//	_playerReadyTable = new();
-			//	foreach(var player in FusionConnection.Instance.connectPlayers)
-			//	{
-			//		_playerReadyTable.Add(player, false);
-			//	}
-			//}
-
-			//if(isSpawnPlayer == false)
-			//{
-			//	SpawnPlayer(Runner.LocalPlayer);
-			//	isSpawnPlayer = true;
-			//}
+			if (HasStateAuthority == true)
+			{
+				_playerReadyTable = new();
+				foreach (var player in FusionConnection.Instance.connectPlayers)
+				{
+					_playerReadyTable.Add(player, false);
+				}
+			}
 		}
 
 		private void SpawnPlayer(PlayerRef inputPlayer)
@@ -92,6 +79,16 @@ namespace BumblingKitchen
 		private void PlayerReady(NetworkRunner runner, NetworkObject obj)
 		{
 			RPC_PlayerReady(runner.LocalPlayer);
+		}
+
+		public override void FixedUpdateNetwork()
+		{
+			base.FixedUpdateNetwork();
+			if(_stabilizationTimer.Expired(Runner) == true)
+			{
+				SpawnPlayer(Runner.LocalPlayer);
+				_stabilizationTimer = TickTimer.None;
+			}
 		}
 
 		public override void Render()
@@ -188,6 +185,11 @@ namespace BumblingKitchen
 		private void RPC_CallFInshedReady()
 		{
 			OnFinshedReady?.Invoke();
+		}
+
+		private void OnDestroy()
+		{
+			Debug.Log("TA : Destroy");
 		}
 	}
 }

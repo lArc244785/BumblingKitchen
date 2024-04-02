@@ -28,6 +28,12 @@ namespace BumblingKitchen.Interaction
 			OnDoenCooked += ResetCookingEvent;
 		}
 
+		public override void Spawned()
+		{
+			base.Spawned();
+			Debug.Log("TA : CuttingBoard");
+		}
+
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
 			if(CanPutIngredient() == true)
