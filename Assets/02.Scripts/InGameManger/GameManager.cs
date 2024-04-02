@@ -47,25 +47,27 @@ namespace BumblingKitchen
 
 		public override void Spawned()
 		{
-			if(HasStateAuthority == true)
-			{
-				if (_playerReadyTable != null)
-					return;
+			Debug.Log($"Manger Spawned {gameObject.name}");
 
-				Debug.Log($"Spawned {gameObject.name}");
+			//if (HasStateAuthority == true)
+			//{
+			//	if (_playerReadyTable != null)
+			//		return;
 
-				_playerReadyTable = new();
-				foreach(var player in FusionConnection.Instance.connectPlayers)
-				{
-					_playerReadyTable.Add(player, false);
-				}
-			}
+			//	Debug.Log($"Spawned {gameObject.name}");
 
-			if(isSpawnPlayer == false)
-			{
-				SpawnPlayer(Runner.LocalPlayer);
-				isSpawnPlayer = true;
-			}
+			//	_playerReadyTable = new();
+			//	foreach(var player in FusionConnection.Instance.connectPlayers)
+			//	{
+			//		_playerReadyTable.Add(player, false);
+			//	}
+			//}
+
+			//if(isSpawnPlayer == false)
+			//{
+			//	SpawnPlayer(Runner.LocalPlayer);
+			//	isSpawnPlayer = true;
+			//}
 		}
 
 		private void SpawnPlayer(PlayerRef inputPlayer)
