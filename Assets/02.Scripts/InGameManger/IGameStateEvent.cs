@@ -9,7 +9,7 @@ namespace BumblingKitchen
 	internal interface IGameStateEvent
 	{
 		public event Action OnFinshedReady;
-		public event Action OnStarttingGame;
+		public event Action OnReadying;
 		public event Action OnEnddingGame;
 	}
 }

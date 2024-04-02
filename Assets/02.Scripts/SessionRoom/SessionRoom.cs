@@ -186,6 +186,7 @@ namespace BumblingKitchen.SessionRoom
 			{
 				if(Runner.IsSceneAuthority)
 				{
+					PlayerPrefs.SetInt("InGameStage", 4);
 					Runner.LoadScene(SceneRef.FromIndex(3), LoadSceneMode.Single);
 				}
 			}

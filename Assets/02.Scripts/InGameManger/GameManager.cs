@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using Fusion;
+﻿using Fusion;
 using System;
-using Random = UnityEngine.Random;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 
 namespace BumblingKitchen
 {
@@ -11,32 +9,37 @@ namespace BumblingKitchen
 	{
 		None,
 		Wait,
+		Ready,
 		Play,
 		End,
 	}
 
 	public class GameManager : NetworkBehaviour, IGameStateEvent
 	{
+		private int _gameTime = 10;
+
 		[SerializeField] private CharacterSpawner _characterSpanwer;
 		[SerializeField] private NetworkPrefabRef _inGameData;
-		[Networked] public GameState State { get; private set; } = GameState.Wait;
-		[Networked] public float PlayTime { get; private set; }
+		[Networked, OnChangedRender(nameof(OnChangeGameState))] public GameState State { get; private set; } = GameState.Wait;
+		[Networked] public TickTimer PlayTickTimer { private set; get; }
 		private float _endTime = 120.0f;
 
-		public event Action OnStarttingGame;
+		public event Action OnReadying;
+		public event Action OnPlaying;
 		public event Action OnEnddingGame;
 		public event Action OnFinshedReady;
 
 		public static GameManager Instance { get; private set; }
 
 		public bool IsMove => State == GameState.Play;
-		//Master Only
-		private Dictionary<PlayerRef, bool> _playerReadyTable;
 
-		private TickTimer _playWaitTimer;
+
+		private TickTimer _readyWaitTimer;
+		private TickTimer _readyToPlayWaitTimer;
 		private TickTimer _endWaitTimer;
-
 		private TickTimer _stabilizationTimer;
+
+		private InGameLoad _load;
 
 		private void Awake()
 		{
@@ -44,17 +47,43 @@ namespace BumblingKitchen
 
 		}
 
+		private void OnChangeGameState()
+		{
+			switch (State)
+			{
+				case GameState.Ready:
+					OnReadying?.Invoke();
+					break;
+				case GameState.Play:
+					OnPlaying?.Invoke();
+					break;
+				case GameState.End:
+					OnEnddingGame?.Invoke();
+					break;
+			}
+		}
+
 		public override void Spawned()
 		{
 			_stabilizationTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
+		}
 
-			if (HasStateAuthority == true)
+		public override void Render()
+		{
+			switch (State)
 			{
-				_playerReadyTable = new();
-				foreach (var player in FusionConnection.Instance.connectPlayers)
-				{
-					_playerReadyTable.Add(player, false);
-				}
+				case GameState.Wait:
+					WaitRender();
+					break;
+				case GameState.Ready:
+					ReadyRender();
+					break;
+				case GameState.Play:
+					PlayRender();
+					break;
+				case GameState.End:
+					EndRender();
+					break;
 			}
 		}
 
@@ -68,59 +97,100 @@ namespace BumblingKitchen
 		//플레이어블 캐릭터가 소환이 완료되고 CallBack한다.
 		private void PlayerReady(NetworkRunner runner, NetworkObject obj)
 		{
-			RPC_PlayerReady(runner.LocalPlayer);
+			Debug.Log("Spawned Player");
+			_load.SpawedPlayerCharacter(runner);
+			Runner.MoveGameObjectToScene(obj.gameObject, SceneRef.FromIndex(4));
 		}
 
-		public override void Render()
+		private void SetUpLoad(InGameLoad load)
+		{
+			_load = load;
+			if (HasStateAuthority == true)
+			{
+				_load.OnCompeleteLoad += GameReadyWait;
+			}
+		}
+
+		private void GameReadyWait()
+		{
+			_readyWaitTimer = TickTimer.CreateFromSeconds(Runner, 0.5f);
+		}
+
+		private void GameReady()
+		{
+			Debug.Log("GameReady");
+			State = GameState.Ready;
+			Runner.Spawn(_inGameData);
+			_readyToPlayWaitTimer = TickTimer.CreateFromSeconds(Runner, 5.6f);
+		}
+
+		private void GameStart()
+		{
+			State = GameState.Play;
+			PlayTickTimer = TickTimer.CreateFromSeconds(Runner, _gameTime);
+		}
+
+		private void EndRender()
+		{
+			if (HasStateAuthority == false)
+				return;
+
+			if (_endWaitTimer.Expired(Runner) == true)
+			{
+				GoToResult();
+			}
+		}
+
+		private void ReadyRender()
+		{
+			if (HasStateAuthority == false)
+				return;
+
+			if (_readyToPlayWaitTimer.Expired(Runner) == true)
+			{
+				GameStart();
+				_readyToPlayWaitTimer = TickTimer.None;
+			}
+		}
+
+		private void WaitRender()
 		{
 			if (_stabilizationTimer.Expired(Runner) == true)
 			{
-				Debug.Log("AA : Spawn");
+				SetUpLoad(GameObject.Find("Loading").GetComponent<InGameLoad>());
+				_load.CompleteLoadInGame();
 				SpawnPlayer(Runner.LocalPlayer);
 				_stabilizationTimer = TickTimer.None;
 			}
 
-			if (HasStateAuthority == false)
-				return;
-
-			//게임 시작하기전에 대기하고 시작한다.
-			if(_playWaitTimer.Expired(Runner) == true)
+			if(HasStateAuthority == true)
 			{
-				NextGameState(GameState.Play);
-				_playWaitTimer = TickTimer.None;
-			}
-
-			if(State == GameState.Play)
-			{
-				PlayTime += Runner.DeltaTime;
-				if (PlayTime >= _endTime)
-					NextGameState(GameState.End);
-			}
-
-			//게임이 종료 후 대기하였다가 결과 씬으로 넘겨준다.
-			if(State == GameState.End && _endWaitTimer.Expired(Runner) == true)
-			{
-				GoToResult();
-				_endWaitTimer = TickTimer.None;
+				if (_readyWaitTimer.Expired(Runner) == true)
+				{
+					GameReady();
+					_readyWaitTimer = TickTimer.None;
+				}
 			}
 		}
 
-		private void NextGameState(GameState nextState)
+		private void PlayRender()
 		{
-			switch (nextState)
-			{
-				case GameState.Play:
-					Runner.Spawn(_inGameData);
-					Debug.Log("GameStart!");
-					RPC_CallGameStartEvent();
-					break;
-				case GameState.End:
-					RPC_CallGameEndEvent();
-					_endWaitTimer = TickTimer.CreateFromSeconds(Runner, 1.5f);
-					break;
-			}
+			if (HasStateAuthority == false)
+				return;
 
-			State = nextState;
+			if (PlayTickTimer.Expired(Runner) == true)
+			{
+				GameEnd();
+				PlayTickTimer = TickTimer.None;
+			}
+		}
+
+		private void GameEnd()
+		{
+			if (HasStateAuthority == false)
+				return;
+			State = GameState.End;
+			_endWaitTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
 		}
 
 		private void GoToResult()
@@ -129,50 +199,35 @@ namespace BumblingKitchen
 				return;
 
 			Debug.Log("게임 종료 결과 씬으로 옮겨주세요");
-			Runner.LoadScene(SceneRef.FromIndex(4), LoadSceneMode.Single);
+			Runner.LoadScene(SceneRef.FromIndex(5), LoadSceneMode.Single);
 		}
 
 		public int GetEndTime()
 		{
-			int playTime = (int)PlayTime;
-			return (int)_endTime - playTime;
-		}
+			float? time = PlayTickTimer.RemainingTime(Runner);
 
-		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-		private void RPC_CallGameStartEvent()
-		{
-			OnStarttingGame?.Invoke();
-		}
-		
-		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-		private void RPC_CallGameEndEvent()
-		{
-			OnEnddingGame?.Invoke();
-		}
-
-		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		private void RPC_PlayerReady(PlayerRef player)
-		{
-			Debug.Log("PlayerReady");
-			if (_playerReadyTable.ContainsKey(player) == false)
-				return;
-
-			_playerReadyTable[player] = true;
-
-			foreach(var isReay in _playerReadyTable.Values)
+			if (time == null)
 			{
-				if (isReay == false)
-					return;
+				return _gameTime;
 			}
-
-			_playWaitTimer = TickTimer.CreateFromSeconds(Runner, 5.5f);
-			RPC_CallFInshedReady();
+			else
+			{
+				return (int)time;
+			}
 		}
 
-		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-		private void RPC_CallFInshedReady()
+		public int GetPlayTime()
 		{
-			OnFinshedReady?.Invoke();
+			float? time = PlayTickTimer.RemainingTime(Runner);
+			if (time == null)
+			{
+				return -1;
+			}
+			else
+			{
+				int result = _gameTime - (int)time;
+				return result;
+			}
 		}
 	}
 }

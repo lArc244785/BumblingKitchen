@@ -45,7 +45,7 @@ namespace BumblingKitchen
 
 		private void Start()
 		{
-			GameManager.Instance.OnStarttingGame += StartOrder;
+			GameManager.Instance.OnPlaying += StartOrder;
 			GameManager.Instance.OnEnddingGame += StopOrder;
 		}
 
@@ -67,7 +67,7 @@ namespace BumblingKitchen
 		public void RandomOrder()
 		{
 			int randomIndex = Random.Range(0, _orderableList.Count);
-			float startTime = GameManager.Instance.PlayTime;
+			float startTime = GameManager.Instance.GetPlayTime();
 			float endTime = startTime + 60.0f;
 
 			OrderData newOrder = new OrderData(
@@ -107,7 +107,7 @@ namespace BumblingKitchen
 			if (_orderList.Count == 0)
 				return;
 
-			if (GameManager.Instance.PlayTime >= _orderList[0].EndTiem)
+			if (GameManager.Instance.GetPlayTime() >= _orderList[0].EndTiem)
 			{
 				RPC_RemoveOrderReuslt(0, false);
 			}
@@ -160,7 +160,7 @@ namespace BumblingKitchen
 		{
 			foreach(var order in _orderList)
 			{
-				order.Draw(GameManager.Instance.PlayTime);
+				order.Draw(GameManager.Instance.GetPlayTime());
 			}
 		}
 	}

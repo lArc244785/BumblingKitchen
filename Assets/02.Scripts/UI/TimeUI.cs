@@ -8,17 +8,18 @@ namespace BumblingKitchen
 	public class TimeUI : MonoBehaviour
 	{
 		[SerializeField] private TMP_Text _text;
+		private bool isRun = false;
 
-		private bool _isTimerRuner = false;
-		
 		private void Start()
 		{
-			GameManager.Instance.OnStarttingGame += () => _isTimerRuner = true;
+			GameManager.Instance.OnReadying += () => isRun = true;
 		}
 
 		private void Update()
 		{
-			if (_isTimerRuner == false)
+			if (GameManager.Instance == null)
+				return;
+			if (isRun == false)
 				return;
 
 			int time = GameManager.Instance.GetEndTime();

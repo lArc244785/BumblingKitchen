@@ -5434,7 +5434,6 @@ MonoBehaviour:
   _inGameData:
     RawGuidValue: aa5f83b142c5bd94291294a1fdeeb062
   _State: 1
-  _PlayTime: 0
 --- !u!4 &1865753797
 Transform:
   m_ObjectHideFlags: 0

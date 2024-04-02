@@ -15,7 +15,7 @@ namespace BumblingKitchen
 
 		private void Start()
 		{
-			GameManager.Instance.OnStarttingGame += _audioSource.Play;
+			GameManager.Instance.OnPlaying += _audioSource.Play;
 			GameManager.Instance.OnEnddingGame += _audioSource.Stop;
 		}
 	}

@@ -18,7 +18,7 @@ namespace BumblingKitchen
 
 		private void Start()
 		{
-			GameManager.Instance.OnFinshedReady += OnGameStartUI;
+			GameManager.Instance.OnReadying += OnGameStartUI;
 			GameManager.Instance.OnEnddingGame += OnGameEndUI;
 			_canvas.enabled = false;
 		}

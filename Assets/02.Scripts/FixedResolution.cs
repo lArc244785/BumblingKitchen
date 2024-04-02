@@ -7,7 +7,7 @@ public class FixedResolution : MonoBehaviour
 
 	private void Start()
 	{
-        _camera = Camera.main;
+        _camera = GetComponent<Camera>();
         SetResolution(); // 초기에 게임 해상도 고정
         GL.Clear(true, true, Color.black);
     }
