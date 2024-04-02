@@ -2427,6 +2427,7 @@ MonoBehaviour:
   _nextCharacter: {fileID: 2042741347}
   _preview: {fileID: 1870495193}
   _characterName: {fileID: 1503757264}
+  _exit: {fileID: 1647296092}
   _previewCharacters:
   - {fileID: 21300000, guid: e5478d2f6bf61bd4dbe9862d086dc887, type: 3}
   - {fileID: 21300000, guid: d473b596fbbba6f4a91c88baddcb5148, type: 3}

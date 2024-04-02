@@ -13,6 +13,7 @@ namespace BumblingKitchen.SessionLobby
 		[SerializeField] private Button _nextCharacter;
 		[SerializeField] private Image _preview;
 		[SerializeField] private TMP_Text _characterName;
+		[SerializeField] private Button _exit;
 
 		[SerializeField] private List<Sprite> _previewCharacters;
 		[SerializeField] private List<String> _characterNames;
@@ -37,8 +38,7 @@ namespace BumblingKitchen.SessionLobby
 
 			_inputName.onEndEdit.AddListener(SetCharacterName);
 			_nextCharacter.onClick.AddListener(NextCharacter);
-
-			
+			_exit.onClick.AddListener(() => FusionConnection.Instance.ExitSessionToTitle());
 		}
 
 		private string RandomName()
