@@ -4,7 +4,7 @@ using System;
 
 namespace BumblingKitchen.Interaction
 {
-    public class Interactor : NetworkBehaviour, IHandEvents
+    public class Interactor : NetworkBehaviour, IHandEvents, ICutEvent, ICleanEvent
 	{
         [field:SerializeField] public Transform PickUpPoint { get; private set; }
 
@@ -18,6 +18,8 @@ namespace BumblingKitchen.Interaction
 
 		public event Action OnPickUp;
 		public event Action OnDrop;
+		public event Action OnCutEvent;
+		public event Action OnCleanEvent;
 
 		public bool IsPickUpInteractor(PickableInteractable target)
 		{
@@ -88,6 +90,18 @@ namespace BumblingKitchen.Interaction
 				NetPickObjectID = default;
 				OnDrop?.Invoke();
 			}
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_OnCutEvent()
+		{
+			OnCutEvent?.Invoke();
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.All)]
+		public void RPC_OnCleanEvent()
+		{
+			OnCleanEvent?.Invoke();
 		}
 
 		/// <summary>

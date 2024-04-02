@@ -44,7 +44,7 @@ namespace BumblingKitchen.Player
 
 		public override void FixedUpdateNetwork()
 		{
-			if ((GameManager.Instance.State == GameState.Play) == false)
+			if ((GameManager.Instance.IsMove) == false)
 				return;
 
 			if (GetInput(out NetworkInputData data))

@@ -3,6 +3,7 @@ using Fusion;
 using System;
 using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 namespace BumblingKitchen
 {
@@ -14,28 +15,57 @@ namespace BumblingKitchen
 		End,
 	}
 
-	public class GameManager : NetworkBehaviour
+	public class GameManager : NetworkBehaviour, IGameStateEvent
 	{
 		[SerializeField] private NetworkPrefabRef _palyerPrefab;
 		[Networked] public GameState State { get; private set; } = GameState.Wait;
 		[Networked] public float PlayTime { get; private set; }
 		private float _endTime = 120.0f;
 
-		private int _readyPlayer = 0;
-
 		public event Action OnStarttingGame;
 		public event Action OnEnddingGame;
+		public event Action OnFinshedReady;
 
 		public static GameManager Instance { get; private set; }
+
+		public bool IsMove => State == GameState.Play;
+
+		private bool isSpawnPlayer = false;
+
+		//Master Only
+		private Dictionary<PlayerRef, bool> _playerReadyTable;
+
+		private TickTimer _playWaitTimer;
+		private TickTimer _endWaitTimer;
+
 
 		private void Awake()
 		{
 			Instance = this;
+
 		}
 
 		public override void Spawned()
 		{
-			SpawnPlayer(Runner.LocalPlayer);
+			if(HasStateAuthority == true)
+			{
+				if (_playerReadyTable != null)
+					return;
+
+				Debug.Log($"Spawned {gameObject.name}");
+
+				_playerReadyTable = new();
+				foreach(var player in FusionConnection.Instance.connectPlayers)
+				{
+					_playerReadyTable.Add(player, false);
+				}
+			}
+
+			if(isSpawnPlayer == false)
+			{
+				SpawnPlayer(Runner.LocalPlayer);
+				isSpawnPlayer = true;
+			}
 		}
 
 		private void SpawnPlayer(PlayerRef inputPlayer)
@@ -56,19 +86,10 @@ namespace BumblingKitchen
 			Debug.Log($"Spawn {inputPlayer.PlayerId}");
 		}
 
-		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		private void RPC_PlayerReady()
-		{
-			_readyPlayer++;
-			if (FusionConnection.Instance.connectPlayers.Count == _readyPlayer)
-			{
-				NextGameState(GameState.Play);
-			}
-		}
-
+		//플레이어블 캐릭터가 소환이 완료되고 CallBack한다.
 		private void PlayerReady(NetworkRunner runner, NetworkObject obj)
 		{
-			RPC_PlayerReady();
+			RPC_PlayerReady(runner.LocalPlayer);
 		}
 
 		public override void Render()
@@ -76,11 +97,25 @@ namespace BumblingKitchen
 			if (HasStateAuthority == false)
 				return;
 
+			//게임 시작하기전에 대기하고 시작한다.
+			if(_playWaitTimer.Expired(Runner) == true)
+			{
+				NextGameState(GameState.Play);
+				_playWaitTimer = TickTimer.None;
+			}
+
 			if(State == GameState.Play)
 			{
 				PlayTime += Runner.DeltaTime;
 				if (PlayTime >= _endTime)
 					NextGameState(GameState.End);
+			}
+
+			//게임이 종료 후 대기하였다가 결과 씬으로 넘겨준다.
+			if(State == GameState.End && _endWaitTimer.Expired(Runner) == true)
+			{
+				GoToResult();
+				_endWaitTimer = TickTimer.None;
 			}
 		}
 
@@ -94,14 +129,14 @@ namespace BumblingKitchen
 					break;
 				case GameState.End:
 					RPC_CallGameEndEvent();
-					Next();
+					_endWaitTimer = TickTimer.CreateFromSeconds(Runner, 1.5f);
 					break;
 			}
 
 			State = nextState;
 		}
 
-		private void Next()
+		private void GoToResult()
 		{
 			if (Runner.IsSceneAuthority == false)
 				return;
@@ -121,10 +156,36 @@ namespace BumblingKitchen
 		{
 			OnStarttingGame?.Invoke();
 		}
+		
 		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 		private void RPC_CallGameEndEvent()
 		{
 			OnEnddingGame?.Invoke();
+		}
+
+		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+		private void RPC_PlayerReady(PlayerRef player)
+		{
+			Debug.Log("PlayerReady");
+			if (_playerReadyTable.ContainsKey(player) == false)
+				return;
+
+			_playerReadyTable[player] = true;
+
+			foreach(var isReay in _playerReadyTable.Values)
+			{
+				if (isReay == false)
+					return;
+			}
+
+			_playWaitTimer = TickTimer.CreateFromSeconds(Runner, 5.5f);
+			RPC_CallFInshedReady();
+		}
+
+		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+		private void RPC_CallFInshedReady()
+		{
+			OnFinshedReady?.Invoke();
 		}
 	}
 }

@@ -54,6 +54,7 @@ namespace BumblingKitchen.Interaction
 				{
 					RPC_Effect();
 					_putIngredient.RPC_Cooking(_addProgress);
+					interactor.RPC_OnCutEvent();
 				}
 				else if(_putIngredient.CurrentState == CookState.Sucess)
 				{
