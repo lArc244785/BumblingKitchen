@@ -39,6 +39,7 @@ namespace BumblingKitchen.SessionRoom
 		private ChangeDetector _changeDetector;
 
 		private TickTimer _readyWaitTimer;
+		private TickTimer _readyWaitDrawTimer;
 		private float _readyDelay = 3.0f;
 
 		public override void Spawned()
@@ -116,10 +117,12 @@ namespace BumblingKitchen.SessionRoom
 				if(IsAllReady())
 				{
 					_readyWaitTimer = TickTimer.CreateFromSeconds(Runner, _readyDelay);
+					_readyWaitDrawTimer = TickTimer.CreateFromSeconds(Runner, 0.0f);
 				}
 				else
 				{
 					_readyWaitTimer = TickTimer.None;
+					RPC_DrawReadyWaitText(-1.0f);
 				}
 			}
 		}
@@ -160,13 +163,12 @@ namespace BumblingKitchen.SessionRoom
 		{
 			if(_readyWaitTimer.IsRunning)
 			{
-				_startWaitText.gameObject.SetActive(true);
-				float? time = _readyWaitTimer.RemainingTime(Runner);
-				_startWaitText.text = $"Start Game {time?.ToString("0")}";
-			}
-			else
-			{
-				_startWaitText.gameObject.SetActive(false);
+				if (_readyWaitDrawTimer.Expired(Runner) == true)
+				{
+					float t = _readyWaitTimer.RemainingTime(Runner) ?? 0.0f;
+					RPC_DrawReadyWaitText(t);
+					_readyWaitDrawTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
+				}
 			}
 
 			if(_readyWaitTimer.Expired(Runner))
@@ -179,6 +181,18 @@ namespace BumblingKitchen.SessionRoom
 
 		}
 
+
+		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+		private void RPC_DrawReadyWaitText(float time)
+		{
+			if(time <= 0.0f)
+			{
+				_startWaitText.text = String.Empty;
+				return;
+			}
+
+			_startWaitText.text = $"Ready Wait {time.ToString("F0")}";
+		}
 
 
 	}

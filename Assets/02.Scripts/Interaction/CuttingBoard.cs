@@ -31,7 +31,6 @@ namespace BumblingKitchen.Interaction
 		public override void Spawned()
 		{
 			base.Spawned();
-			Debug.Log("TA : CuttingBoard");
 		}
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)

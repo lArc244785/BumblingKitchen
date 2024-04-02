@@ -9,10 +9,8 @@ namespace BumblingKitchen.Player
 	public class PlayerControl : NetworkBehaviour, IMoveEvents
 	{
 		private NetworkCharacterController _controller;
-		[Networked] private TickTimer _stepSoundTimer { set; get; }
 		private LocalInput _localInput;
 
-		private PlayerSound _sound;
 		private Interactor _interactor;
 
 		private bool _isPrevMove = false;
@@ -23,13 +21,7 @@ namespace BumblingKitchen.Player
 		private void Awake()
 		{
 			_controller = GetComponent<NetworkCharacterController>();
-			_sound = GetComponent<PlayerSound>();
 			_interactor = GetComponent<Interactor>();
-		}
-
-		private void Start()
-		{
-			GameManager.Instance.OnEnddingGame += () => SetStepSound(TickTimer.None);
 		}
 
 		public override void Spawned()
@@ -56,24 +48,23 @@ namespace BumblingKitchen.Player
 					
 					if(_isPrevMove == false && HasStateAuthority == true)
 					{
-						OnBegineMove?.Invoke();
+						if(HasStateAuthority == true)
+						{
+							RPC_OnBegineMove();
+						}
 						_isPrevMove = true;
-					}
-
-					if (_stepSoundTimer.IsRunning == false)
-					{
-						SetStepSound(TickTimer.CreateFromSeconds(Runner, 0.5f));
 					}
 				}
 				else
 				{
 					if(_isPrevMove == true && HasStateAuthority == true)
 					{
-						OnEndMove?.Invoke();
+						if(HasStateAuthority == true)
+						{
+							RPC_OnEndMove();
+						}
 						_isPrevMove = false;
 					}
-
-					SetStepSound(TickTimer.None);
 				}
 
 				if (data.buttons.IsSet(NetworkInputData.INTERACTION_BUTTON) == true)
@@ -83,22 +74,16 @@ namespace BumblingKitchen.Player
 			}
 		}
 
-		public override void Render()
+		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+		private void RPC_OnBegineMove()
 		{
-			base.Render();
-			if (_stepSoundTimer.Expired(Runner) == true)
-			{
-				_sound.PlayStep();
-				SetStepSound(TickTimer.None);
-			}
+			OnBegineMove?.Invoke();
 		}
 
-		private void SetStepSound(TickTimer timer)
+		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+		private void RPC_OnEndMove()
 		{
-			if (HasStateAuthority == true)
-			{
-				_stepSoundTimer = timer;
-			}
+			OnEndMove?.Invoke();
 		}
 
 	}

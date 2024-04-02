@@ -31,11 +31,6 @@ namespace BumblingKitchen
 
 		public override void Spawned()
 		{
-			if(Instance != null)
-			{
-				Runner.Despawn(Instance.Object);
-			}
-
 			Debug.Log("InitData!");
 			Instance = this;
 			DontDestroyOnLoad(gameObject);

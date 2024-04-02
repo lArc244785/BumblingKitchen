@@ -60,8 +60,8 @@ namespace BumblingKitchen.Interaction
 				if(HasStateAuthority == true)
 				{
 					NetPickObjectID = obj;
-					OnPickUp?.Invoke();
 				}
+				OnPickUp?.Invoke();
 			}
 			else
 			{
@@ -84,11 +84,11 @@ namespace BumblingKitchen.Interaction
 		{
 			var pickedObject = Runner.FindObject(NetPickObjectID);
 			pickedObject.transform.SetParent(null);
+			OnDrop?.Invoke();
 
-			if(HasInputAuthority == true)
+			if (HasInputAuthority == true)
 			{
 				NetPickObjectID = default;
-				OnDrop?.Invoke();
 			}
 		}
 

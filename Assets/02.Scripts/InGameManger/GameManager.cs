@@ -18,7 +18,7 @@ namespace BumblingKitchen
 	public class GameManager : NetworkBehaviour, IGameStateEvent
 	{
 		[SerializeField] private CharacterSpawner _characterSpanwer;
-		[SerializeField] private NetworkPrefabRef _palyerPrefab;
+		[SerializeField] private NetworkPrefabRef _inGameData;
 		[Networked] public GameState State { get; private set; } = GameState.Wait;
 		[Networked] public float PlayTime { get; private set; }
 		private float _endTime = 120.0f;
@@ -71,18 +71,15 @@ namespace BumblingKitchen
 			RPC_PlayerReady(runner.LocalPlayer);
 		}
 
-		public override void FixedUpdateNetwork()
+		public override void Render()
 		{
-			base.FixedUpdateNetwork();
-			if(_stabilizationTimer.Expired(Runner) == true)
+			if (_stabilizationTimer.Expired(Runner) == true)
 			{
+				Debug.Log("AA : Spawn");
 				SpawnPlayer(Runner.LocalPlayer);
 				_stabilizationTimer = TickTimer.None;
 			}
-		}
 
-		public override void Render()
-		{
 			if (HasStateAuthority == false)
 				return;
 
@@ -113,6 +110,7 @@ namespace BumblingKitchen
 			switch (nextState)
 			{
 				case GameState.Play:
+					Runner.Spawn(_inGameData);
 					Debug.Log("GameStart!");
 					RPC_CallGameStartEvent();
 					break;
@@ -175,11 +173,6 @@ namespace BumblingKitchen
 		private void RPC_CallFInshedReady()
 		{
 			OnFinshedReady?.Invoke();
-		}
-
-		private void OnDestroy()
-		{
-			Debug.Log("TA : Destroy");
 		}
 	}
 }
