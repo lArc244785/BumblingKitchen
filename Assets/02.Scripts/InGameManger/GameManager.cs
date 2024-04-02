@@ -17,6 +17,7 @@ namespace BumblingKitchen
 
 	public class GameManager : NetworkBehaviour, IGameStateEvent
 	{
+		[SerializeField] private CharacterSpawner _characterSpanwer;
 		[SerializeField] private NetworkPrefabRef _palyerPrefab;
 		[Networked] public GameState State { get; private set; } = GameState.Wait;
 		[Networked] public float PlayTime { get; private set; }
@@ -59,20 +60,9 @@ namespace BumblingKitchen
 
 		private void SpawnPlayer(PlayerRef inputPlayer)
 		{
-			if (inputPlayer != Runner.LocalPlayer)
-				return;
-
-			float x = Random.RandomRange(-1.0f, 1.0f);
-			float z = Random.RandomRange(-1.0f, 1.0f);
-			Vector3 spawnPoint = new Vector3(x, 0.0f, z);
-
-			var player = Runner.Spawn(
-				_palyerPrefab,
-				spawnPoint,
-				Quaternion.identity,
-				inputPlayer,
-				PlayerReady); ;
-			Debug.Log($"Spawn {inputPlayer.PlayerId}");
+			int playerID = Runner.LocalPlayer.PlayerId - 1;
+			int characterID = PlayerPrefs.GetInt("CharacterID");
+			_characterSpanwer.SpawnPlayerCharacter(Runner, playerID, characterID, PlayerReady);
 		}
 
 		//플레이어블 캐릭터가 소환이 완료되고 CallBack한다.

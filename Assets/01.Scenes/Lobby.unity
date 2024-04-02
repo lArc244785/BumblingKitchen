@@ -2428,15 +2428,15 @@ MonoBehaviour:
   _preview: {fileID: 1870495193}
   _characterName: {fileID: 1503757264}
   _previewCharacters:
-  - {fileID: 21300000, guid: 3e4bce5241c7642d392b39886c15f562, type: 3}
-  - {fileID: 21300000, guid: f802ceda35f5c4662a240c6ceef56a64, type: 3}
-  - {fileID: 21300000, guid: ee6c8f37bd0f143a89513cadc662c0b0, type: 3}
-  - {fileID: 21300000, guid: 3f423f18bae754a7dbae893a08d00eef, type: 3}
+  - {fileID: 21300000, guid: e5478d2f6bf61bd4dbe9862d086dc887, type: 3}
+  - {fileID: 21300000, guid: d473b596fbbba6f4a91c88baddcb5148, type: 3}
+  - {fileID: 21300000, guid: 2e5b6b060a4e53e4a9b366da34413ccd, type: 3}
+  - {fileID: 21300000, guid: 07cd1b8cf93d1954cb618a0529ee446e, type: 3}
   _characterNames:
-  - A
-  - B
-  - C
-  - D
+  - Barbarian
+  - Knight
+  - Mage
+  - Rogue
 --- !u!1 &1037716033
 GameObject:
   m_ObjectHideFlags: 0
@@ -3731,7 +3731,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d7e46c7d742f5489891d6e506f211ede, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e5478d2f6bf61bd4dbe9862d086dc887, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
