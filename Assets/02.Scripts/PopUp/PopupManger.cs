@@ -25,6 +25,7 @@ namespace BumblingKitchen.PopUp
 		public void RegistrationPopUp(PopUpBase popUp)
 		{
 			popUp.transform.SetParent(transform, false);
+			popUp.Init(this);
 			if(_popups.TryPop(out var popup))
 			{
 				popup.Close();
@@ -35,7 +36,7 @@ namespace BumblingKitchen.PopUp
 
 		public void ClosePopUp()
 		{
-			_popups.Pop().Close();
+			_popups.Pop().DestoryPopUp();
 			if (_popups.TryPeek(out var popUp))
 			{
 				popUp.Open();

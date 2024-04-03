@@ -25,16 +25,5 @@ namespace BumblingKitchen.PopUp
 			OnCreate?.Invoke(_sessionName.text);
 			Close();
 		}
-
-		public override void Close()
-		{
-			if (gameObject != null)
-				Destroy(gameObject);
-		}
-
-		public override void Open()
-		{
-			gameObject.SetActive(true);
-		}
 	}
 }
