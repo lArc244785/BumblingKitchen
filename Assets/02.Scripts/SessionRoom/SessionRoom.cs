@@ -48,6 +48,11 @@ namespace BumblingKitchen.SessionRoom
 		private TickTimer _readyWaitDrawTimer;
 		private float _readyDelay = 3.0f;
 
+		private void Awake()
+		{
+			PlayerPrefs.SetInt("InGameStage", 4);
+		}
+
 		public override void Spawned()
 		{
 			Debug.Log("Spawned");
@@ -186,12 +191,14 @@ namespace BumblingKitchen.SessionRoom
 			{
 				if(Runner.IsSceneAuthority)
 				{
-					PlayerPrefs.SetInt("InGameStage", 4);
 					Runner.LoadScene(SceneRef.FromIndex(3), LoadSceneMode.Single);
+					Runner.SessionInfo.IsOpen = false;
 				}
 			}
-
 		}
+
+		
+
 
 
 		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]

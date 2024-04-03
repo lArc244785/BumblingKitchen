@@ -3,7 +3,6 @@ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -39,25 +38,36 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
 	public bool CreateSession(string playerName, string sessionName)
 	{
-		foreach (SessionInfo session in sessionList)
-		{
-			if (session.Name == sessionName)
-				return false;
-		}
+		//동일한 이름을 가진 세션은 만들 수 없다.
+		if (TryFindSession(sessionName, out var info) == true)
+			return false;
 
 		ConnectToSession(playerName, sessionName);
 		return true;
 	}
 
+	private bool TryFindSession(string sessionName, out SessionInfo info)
+	{
+		info = null;
+		foreach (SessionInfo session in sessionList)
+		{
+			if (session.Name == sessionName)
+			{
+				info = session;
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public async void ConnectToSession(string playerName, string sessionName)
 	{
 		var scene = SceneRef.FromIndex(2);
-		var sceneInfo = new NetworkSceneInfo();
-		if (scene.IsValid)
-		{
-			sceneInfo.AddSceneRef(scene, LoadSceneMode.Single);
-		}
-
+		//var sceneInfo = new NetworkSceneInfo();
+		//if (scene.IsValid)
+		//{
+		//	sceneInfo.AddSceneRef(scene, LoadSceneMode.Single);
+		//}
 
 		await _runner.StartGame(new StartGameArgs()
 		{
