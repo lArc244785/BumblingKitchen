@@ -4,16 +4,16 @@ namespace BumblingKitchen.PopUp
 {
 	public abstract class PopUpBase : MonoBehaviour
 	{
-		private PopupManger _manger;
+		protected PopupManger manger;
 
 		public void Init(PopupManger manager)
 		{
-			_manger = manager;
+			manger = manager;
 		}
 
 		public virtual void Close()
 		{
-			_manger.ClosePopUp();
+			manger.ClosePopUp();
 		}
 
 		public virtual void Open()

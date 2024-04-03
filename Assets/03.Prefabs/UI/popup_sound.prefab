@@ -1554,6 +1554,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: slider_master
       objectReference: {fileID: 0}
+    - target: {fileID: 3555036164277188604, guid: 813c8aeb7725e26448bc80d8827f657e,
+        type: 3}
+      propertyPath: m_MinValue
+      value: 0.0001
+      objectReference: {fileID: 0}
     - target: {fileID: 3555036164759085322, guid: 813c8aeb7725e26448bc80d8827f657e,
         type: 3}
       propertyPath: m_AnchorMax.x

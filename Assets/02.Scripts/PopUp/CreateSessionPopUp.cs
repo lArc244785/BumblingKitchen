@@ -11,6 +11,7 @@ namespace BumblingKitchen.PopUp
 		[SerializeField] private Button _create;
 		[SerializeField] private Button _cancle;
 		[SerializeField] private TMP_InputField _sessionName;
+		[SerializeField] private PopUpLoading _popupLoading;
 
 		public event Action<string> OnCreate;
 
@@ -24,6 +25,8 @@ namespace BumblingKitchen.PopUp
 		{
 			OnCreate?.Invoke(_sessionName.text);
 			Close();
+			var loading = Instantiate(_popupLoading);
+			manger.RegistrationPopUp(loading);
 		}
 	}
 }

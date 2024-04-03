@@ -102,9 +102,10 @@ namespace BumblingKitchen.PopUp
 
 		private void UpdateMixer()
 		{
-			float master = Mathf.Lerp(-80.0f, 20.0f, _masterVolume);
-			float bgm = Mathf.Lerp(-80.0f, 20.0f, _masterVolume);
-			float sfx = Mathf.Lerp(-80.0f, 20.0f, _masterVolume);
+			Debug.Log("UpDate Mixer");
+			float master = Mathf.Log10(_masterVolume) * 20.0f;
+			float bgm = Mathf.Log10(_bgmVolume) * 20.0f;
+			float sfx = Mathf.Log10(_sfxVolume) * 20.0f;
 
 			_mixer.SetFloat("Master", master);
 			_mixer.SetFloat("BGM", bgm);

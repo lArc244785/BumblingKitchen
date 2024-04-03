@@ -589,6 +589,8 @@ MonoBehaviour:
   _create: {fileID: 893584307225283549}
   _cancle: {fileID: 4482491434680055241}
   _sessionName: {fileID: 5364896975637671439}
+  _popupLoading: {fileID: 5589538717554040655, guid: 9684d42b363540843b831b6ac4f65cbe,
+    type: 3}
 --- !u!1 &5399899404472976147
 GameObject:
   m_ObjectHideFlags: 0

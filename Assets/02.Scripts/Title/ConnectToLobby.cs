@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Fusion;
+using BumblingKitchen.PopUp;
 
 namespace BumblingKitchen.Title
 {
@@ -12,6 +13,8 @@ namespace BumblingKitchen.Title
 		[SerializeField] private Button _connetButton;
 		[SerializeField] private Button _exitButton;
 		[SerializeField] private FusionConnection _connectorPrefab;
+		[SerializeField] private PopupManger _popUpManager;
+		[SerializeField] private PopUpLoading _popUpLoading;
 
 		private void Awake()
 		{
@@ -26,6 +29,8 @@ namespace BumblingKitchen.Title
 
 		private void OnConnetingLobby()
 		{
+			var popUpLoading = Instantiate(_popUpLoading);
+			_popUpManager.RegistrationPopUp(popUpLoading);
 			FusionConnection.Instance.ConnectToLobby();
 		}
 
