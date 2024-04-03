@@ -9,11 +9,16 @@ namespace BumblingKitchen
 {
     public class LocalInput : MonoBehaviour, INetworkRunnerCallbacks
     {
-		private bool _interactionButton;
+		public Vector3 Dircation { set; get; }
+		public bool Interaction { set; get; }
+
 
 		private void Update()
 		{
-			_interactionButton = _interactionButton | Input.GetMouseButtonDown(0);
+			if (SystemInfo.deviceType == DeviceType.Desktop)
+			{
+				Interaction = Interaction | Input.GetMouseButtonDown(0);
+			}
 		}
 
 
@@ -24,9 +29,9 @@ namespace BumblingKitchen
 			float h = Input.GetAxisRaw("Horizontal");
 			float v = Input.GetAxisRaw("Vertical");
 
-			data.direction = new Vector3(h,0.0f,v);
-			data.buttons.Set(NetworkInputData.INTERACTION_BUTTON, _interactionButton);
-			_interactionButton = false;
+			data.direction = Dircation;
+			data.buttons.Set(NetworkInputData.INTERACTION_BUTTON, Interaction);
+			Interaction = false;
 
 			input.Set(data);
 		}
