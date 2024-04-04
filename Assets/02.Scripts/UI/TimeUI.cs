@@ -19,13 +19,17 @@ namespace BumblingKitchen
 		{
 			if (GameManager.Instance == null)
 				return;
-			if (isRun == false)
-				return;
-
 			int time = GameManager.Instance.GetEndTime();
-			int min = time / 60;
-			int sec = time % 60;
-			_text.text = $"{min.ToString("D2")}:{sec.ToString("D2")}";
+			if (time == -1)
+			{
+				_text.text = $"--:--";
+			}
+			else
+			{
+				int min = time / 60;
+				int sec = time % 60;
+				_text.text = $"{min.ToString("D2")}:{sec.ToString("D2")}";
+			}
 		}
 	}
 }
