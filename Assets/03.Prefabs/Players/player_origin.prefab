@@ -6248,7 +6248,6 @@ MonoBehaviour:
   - {fileID: 743819917344310680}
   - {fileID: 8477254404627495204}
   - {fileID: 2305339254691841423}
-  - {fileID: 8471095372185531968}
 --- !u!143 &4969126290731146012
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6442,8 +6441,6 @@ MonoBehaviour:
   _detectLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _NetPickObjectID:
-    Raw: 0
 --- !u!114 &8471095372185531968
 MonoBehaviour:
   m_ObjectHideFlags: 0

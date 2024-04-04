@@ -19,7 +19,7 @@ namespace BumblingKitchen
 
 	public class InGameData : NetworkBehaviour
 	{
-		[Networked] public int Gold { get; set; }
+		[Networked, OnChangedRender(nameof(UpdateGold))] public int Gold { get; set; }
 		[Networked] public int GoelGold { get; set; }
 		[Networked, Capacity(4)]
 		public NetworkLinkedList<IngamePlayerData> PlayerDataList { get; }
@@ -33,6 +33,8 @@ namespace BumblingKitchen
 		{
 			Debug.Log("InitData!");
 			Instance = this;
+			GoldUI goldUI = FindObjectOfType<GoldUI>();
+			goldUI.Init(this);
 			DontDestroyOnLoad(gameObject);
 
 			if (HasStateAuthority == false)
@@ -49,7 +51,7 @@ namespace BumblingKitchen
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 		public void RPC_AddGold(int gold, PlayerRef player)
 		{
-			Debug.Log("AddGold");
+			Debug.Log($"AddGold {gold}");
 			int playerIndex = FindIndex(player);
 			Gold += gold;
 

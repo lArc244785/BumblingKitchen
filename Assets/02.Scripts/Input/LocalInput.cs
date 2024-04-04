@@ -26,8 +26,12 @@ namespace BumblingKitchen
 		{
 			var data = new NetworkInputData();
 
-			float h = Input.GetAxisRaw("Horizontal");
-			float v = Input.GetAxisRaw("Vertical");
+			if(SystemInfo.deviceType == DeviceType.Desktop)
+			{
+				float h = Input.GetAxisRaw("Horizontal");
+				float v = Input.GetAxisRaw("Vertical");
+				Dircation = new Vector3(h, 0.0f, v).normalized;
+			}
 
 			data.direction = Dircation;
 			data.buttons.Set(NetworkInputData.INTERACTION_BUTTON, Interaction);

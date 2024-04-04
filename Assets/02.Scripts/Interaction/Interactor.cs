@@ -12,9 +12,8 @@ namespace BumblingKitchen.Interaction
         [SerializeField] private float _detectDistance;
         [SerializeField] private LayerMask _detectLayerMask;
 
-		[field: SerializeField]
-		[Networked] private NetworkId NetPickObjectID { set; get; } = default(NetworkId);
-		public bool HasPickUpObject => NetPickObjectID != default;
+		private NetworkId _pickObjectID;
+		public bool HasPickUpObject => _pickObjectID != default;
 
 		public event Action OnPickUp;
 		public event Action OnDrop;
@@ -26,7 +25,7 @@ namespace BumblingKitchen.Interaction
 			if (target == null)
 				return false;
 
-			if (NetPickObjectID == null)
+			if (_pickObjectID == null)
 				return false;
 
             return GetPickObject() == target;
@@ -39,10 +38,10 @@ namespace BumblingKitchen.Interaction
 
 		public PickableInteractable GetPickObject()
 		{
-			if (NetPickObjectID == default)
+			if (_pickObjectID == default)
 				return null;
 
-			return Runner.FindObject(NetPickObjectID).GetComponent<PickableInteractable>();
+			return Runner.FindObject(_pickObjectID).GetComponent<PickableInteractable>();
 		}
 
 
@@ -56,11 +55,7 @@ namespace BumblingKitchen.Interaction
 			{
 				obj.transform.SetParent(PickUpPoint);
 				obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-
-				if(HasStateAuthority == true)
-				{
-					NetPickObjectID = obj;
-				}
+				_pickObjectID = obj;
 				OnPickUp?.Invoke();
 			}
 			else
@@ -82,14 +77,11 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_RelesePickUpObject()
 		{
-			var pickedObject = Runner.FindObject(NetPickObjectID);
+			var pickedObject = Runner.FindObject(_pickObjectID);
 			pickedObject.transform.SetParent(null);
 			OnDrop?.Invoke();
 
-			if (HasInputAuthority == true)
-			{
-				NetPickObjectID = default;
-			}
+			_pickObjectID = default;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]

@@ -7,7 +7,6 @@ namespace BumblingKitchen.Interaction
 	{
 		[SerializeField] private Transform _spawnPoint;
 		[SerializeField] private NetworkPrefabRef _prefab;
-		[SerializeField] private Recipe _spawnIngredient;
 
 		public InteractionType Type => InteractionType.Box;
 
@@ -29,17 +28,9 @@ namespace BumblingKitchen.Interaction
 				_prefab, 
 				interactor.PickUpPoint.position,
 				interactor.PickUpPoint.rotation, 
-				inputAuthority : null,
-				InitBeforeSpawn);
+				inputAuthority : null);
 			
 			interactor.RPC_PickUp(netObject);
-		}
-
-		private void InitBeforeSpawn(NetworkRunner runner, NetworkObject obj)
-		{
-			Debug.Log("스폰이 완료되고 초기화를 진행합니다.");
-			var ingredeint = obj.GetComponent<Ingredient>();
-			ingredeint.InitSetting(_spawnIngredient.Name);
 		}
 	}
 }

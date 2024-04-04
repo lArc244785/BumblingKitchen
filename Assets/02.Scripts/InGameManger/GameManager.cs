@@ -16,13 +16,13 @@ namespace BumblingKitchen
 
 	public class GameManager : NetworkBehaviour, IGameStateEvent
 	{
-		private int _gameTime = 10;
+		private int _gameTime = 60;
 
 		[SerializeField] private CharacterSpawner _characterSpanwer;
 		[SerializeField] private NetworkPrefabRef _inGameData;
 		[Networked, OnChangedRender(nameof(OnChangeGameState))] public GameState State { get; private set; } = GameState.Wait;
 		[Networked] public TickTimer PlayTickTimer { private set; get; }
-		private float _endTime = 120.0f;
+		private float _endTime = 180.0f;
 
 		public event Action OnReadying;
 		public event Action OnPlaying;
@@ -40,6 +40,7 @@ namespace BumblingKitchen
 		private TickTimer _stabilizationTimer;
 
 		private InGameLoad _load;
+		private NetworkObjectPool _networkObjectPool;
 
 		private void Awake()
 		{
@@ -161,6 +162,7 @@ namespace BumblingKitchen
 				_load.CompleteLoadInGame();
 				SpawnPlayer(Runner.LocalPlayer);
 				_stabilizationTimer = TickTimer.None;
+				FindObjectOfType<GameStartEnd>().Init();
 			}
 
 			if(HasStateAuthority == true)
@@ -204,6 +206,9 @@ namespace BumblingKitchen
 
 		public int GetEndTime()
 		{
+			if (State == GameState.Wait)
+				return 0;
+
 			float? time = PlayTickTimer.RemainingTime(Runner);
 
 			if (time == null)

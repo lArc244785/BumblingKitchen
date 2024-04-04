@@ -35,17 +35,12 @@ namespace BumblingKitchen.Interaction
 		public Action OnCookingFail;
 		public Action<List<IngredientData>> OnUpdateMixData;
 
-		[Networked] public NetworkString<_32> InitRecipe { get; set; }
-
-		public void InitSetting(string recipeName)
-		{
-			InitRecipe = recipeName;
-		}
+		[SerializeField] private Recipe _initRecipe;
 
 		public override void Spawned()
 		{
-			Recipe recipe = StageRecipeManager.Instance.RecipeTable[InitRecipe.ToString()];
-
+			MixDataList.Clear();
+			Recipe recipe = _initRecipe;
 			foreach (var item in recipe.MixList)
 			{
 				MixDataList.Add(item);
@@ -53,9 +48,8 @@ namespace BumblingKitchen.Interaction
 			Name = recipe.Name;
 			UpdateModel(recipe);
 			OnUpdateMixData?.Invoke(MixDataList);
+			gameObject.name = recipe.Name;
 		}
-
-
 
 		/// <summary>
 		/// 두개의 재료를 합칠고자할 때 사용.
@@ -220,8 +214,10 @@ namespace BumblingKitchen.Interaction
 
 				if(interactor.IsPickUpInteractor(pickableObject) == true)
 				{
-					Runner.Despawn(interactor.Drop().Object);
+					interactor.Drop();
 				}
+
+				RPC_DespawnIngredient(ingredient.Object);
 			}
 
 			return false;
@@ -237,5 +233,10 @@ namespace BumblingKitchen.Interaction
 			OnCookingStart?.Invoke();
 		}
 
+		public override void Despawned(NetworkRunner runner, bool hasState)
+		{
+			base.Despawned(runner, hasState);
+			MixDataList.Clear();
+		}
 	}
 }

@@ -14,13 +14,13 @@ namespace BumblingKitchen
 		{
 			_startUI.Init(_canvas);
 			_endUI.Init(_canvas);
+			_canvas.enabled = false;
 		}
 
-		private void Start()
+		public void Init()
 		{
 			GameManager.Instance.OnReadying += OnGameStartUI;
 			GameManager.Instance.OnEnddingGame += OnGameEndUI;
-			_canvas.enabled = false;
 		}
 
 		private void OnGameStartUI()

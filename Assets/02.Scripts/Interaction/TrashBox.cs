@@ -10,6 +10,9 @@ namespace BumblingKitchen
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
+			if (interactor.HasPickUpObject == false)
+				return false;
+
 			switch (interactable.Type)
 			{
 				case InteractionType.Ingredient:

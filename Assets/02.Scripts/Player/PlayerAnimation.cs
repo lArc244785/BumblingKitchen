@@ -5,7 +5,7 @@ using System;
 
 namespace BumblingKitchen.Player
 {
-	public class PlayerAnimation : NetworkBehaviour
+	public class PlayerAnimation : MonoBehaviour
 	{
 		[SerializeField] private Animator _animator;
 		private IMoveEvents _move;
@@ -26,63 +26,39 @@ namespace BumblingKitchen.Player
 			_hand.OnDrop += Drop;
 			_cut.OnCutEvent += Cut;
 			_clean.OnCleanEvent += Clean;
-
-			GameManager.Instance.OnEnddingGame += Stop;
 		}
 
 		private void Clean()
 		{
-			RPC_Clean();
+			_animator.SetTrigger("Clean");
 		}
 
 		private void Cut()
 		{
-			RPC_Cut();
+			_animator.SetTrigger("Cut");
 		}
 
 		private void Move()
 		{
-			RPC_SetMove(1.0f);
+			_animator.SetFloat("Move", 1.0f);
 		}
 
 		private void Stop()
 		{
-			RPC_SetMove(0.0f);
-		}
-		
-		[Rpc(RpcSources.All, RpcTargets.All)]
-		private void RPC_Cut()
-		{
-			_animator.SetTrigger("Cut");
-		}
-
-		[Rpc(RpcSources.All, RpcTargets.All)]
-		private void RPC_Clean()
-		{
-			_animator.SetTrigger("Clean");
-		}
-
-		[Rpc(RpcSources.All, RpcTargets.All)]
-		private void RPC_SetMove(float value)
-		{
-			_animator.SetFloat("Move", value);
+			_animator.SetFloat("Move", 0.0f);
 		}
 
 		private void PickUp()
 		{
-			RPC_SetPickUpItem(1.0f);
+			_animator.SetFloat("PickUp Item", 1.0f);
 		}
 
 		private void Drop()
 		{
-			RPC_SetPickUpItem(0.0f);
+			_animator.SetFloat("PickUp Item", 0.0f);
 		}
 
-		[Rpc(RpcSources.All, RpcTargets.All)]
-		private void RPC_SetPickUpItem(float value)
-		{
-			_animator.SetFloat("PickUp Item", value);
-		}
+
 
 		private void OnDestroy()
 		{

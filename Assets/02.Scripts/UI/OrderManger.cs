@@ -126,14 +126,11 @@ namespace BumblingKitchen
 
 		public void OrderCheck(string recipeName)
 		{
-			Debug.Log($"오더 체크 진행 : {recipeName}");
-
 			for (int i = 0; i < _orderList.Count; i++)
 			{
 				//오더가 있는 음식인 경우
 				if (_orderList[i].RecipeName == recipeName)
 				{
-					Debug.Log($"동일한 이름 발견: {i} 번째의 {_orderableList[i].Name}");
 					RPC_RemoveOrderReuslt(i, true);
 					var recipe = StageRecipeManager.Instance.RecipeTable[recipeName];
 					InGameData.Instance.RPC_AddGold(recipe.SellGold, Runner.LocalPlayer);

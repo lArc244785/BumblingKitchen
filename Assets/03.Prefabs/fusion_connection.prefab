@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 186191928261255812}
   - component: {fileID: 7837358622394577338}
   - component: {fileID: 7963679324538064129}
-  - component: {fileID: -3030652598551043070}
   m_Layer: 0
   m_Name: fusion_connection
   m_TagString: Untagged
@@ -60,19 +59,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006c57f5ca7c68e41a040447468eca31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3030652598551043070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8388139931374351640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d96696bdf2d547e45aba9a82bedd8d97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DelayIfSceneManagerIsBusy: 1
-  _poolableObjects:
-  - {fileID: 8749163372172896356, guid: c2c4c6d679b2f874e9456d465cd7af16, type: 3}
-  - {fileID: 1845274875367962278, guid: aa64d201fef7115459d5b2eff8c2dbb0, type: 3}

@@ -1,27 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace BumblingKitchen
 {
-    public class GoldUI : MonoBehaviour
-    {
-        [SerializeField] private TMP_Text _gold;
+	public class GoldUI : MonoBehaviour
+	{
+		[SerializeField] private TMP_Text _gold;
 
-		public void Start()
+		public void Init(InGameData data)
 		{
-			//InGameData.Instance.OnUpdateGold += DrawGold;
+			data.OnUpdateGold += DrawGold;
 		}
 
 		private void DrawGold(int gold)
 		{
 			_gold.text = gold.ToString("D4");
-		}
-
-		private void OnDestroy()
-		{
-			//InGameData.Instance.OnUpdateGold -= DrawGold;
 		}
 	}
 }

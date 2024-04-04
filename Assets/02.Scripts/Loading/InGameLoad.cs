@@ -69,8 +69,11 @@ namespace BumblingKitchen
 
 		private void LoadInGameScene()
 		{
-			int ingameSceneIndex = PlayerPrefs.GetInt("InGameStage");
-			Runner.LoadScene(SceneRef.FromIndex(ingameSceneIndex), LoadSceneMode.Additive);
+			if(HasStateAuthority == true)
+			{
+				int ingameSceneIndex = PlayerPrefs.GetInt("InGameStage");
+				Runner.LoadScene(SceneRef.FromIndex(ingameSceneIndex), LoadSceneMode.Additive);
+			}
 		}
 
 		public override void Render()

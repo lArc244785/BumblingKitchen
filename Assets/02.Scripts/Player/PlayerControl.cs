@@ -32,6 +32,11 @@ namespace BumblingKitchen.Player
 				GameObject.FindAnyObjectByType<CinemachineVirtualCamera>().Follow = transform;
 				_localInput = FindAnyObjectByType<LocalInput>();
 			}
+
+			if(HasStateAuthority == true)
+			{
+				GameManager.Instance.OnEnddingGame += RPC_OnEndMove;
+			}
 		}
 
 		public override void FixedUpdateNetwork()

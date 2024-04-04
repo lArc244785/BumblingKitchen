@@ -19,7 +19,7 @@ namespace BumblingKitchen
 
 		private void EndMove()
 		{
-			_particleSystem.loop = false;
+			_particleSystem.Stop();
 		}
 
 		private void StartMove()

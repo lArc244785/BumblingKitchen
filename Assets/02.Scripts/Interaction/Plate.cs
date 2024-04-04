@@ -40,6 +40,7 @@ namespace BumblingKitchen.Interaction
 							{
 								interactor.Drop();
 							}
+							ingredient.InvokePickUpObject();
 							RPC_PutIngredient(ingredient.Object);
 						}
 						else if(_putIngredient.TryMix(ingredient) == true)
@@ -49,7 +50,8 @@ namespace BumblingKitchen.Interaction
 							{
 								interactor.Drop();
 							}
-							Runner.Despawn(ingredient.Object);
+							ingredient.InvokePickUpObject();
+							RPC_DespawnObject(ingredient.Object);
 						}
 					}
 					break;
@@ -69,7 +71,7 @@ namespace BumblingKitchen.Interaction
 						else if(_putIngredient.TryMix(ingredient) == true)
 						{
 							fryingPan.RPC_RelesePutIngredient(Runner.LocalPlayer);
-							Runner.Despawn(ingredient.Object);
+							RPC_DespawnObject(ingredient.Object);
 						}
 					}
 					break;
@@ -83,6 +85,12 @@ namespace BumblingKitchen.Interaction
 			var spill = _putIngredient;
 			RPC_RelesePutIngredient();
 			return spill;
+		}
+		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+		private void RPC_DespawnObject(NetworkId despawnObjectId)
+		{
+			var despawnObject = Runner.FindObject(despawnObjectId);
+			Runner.Despawn(despawnObject);
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]

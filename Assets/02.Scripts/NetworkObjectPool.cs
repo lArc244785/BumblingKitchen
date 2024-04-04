@@ -8,74 +8,95 @@ namespace BumblingKitchen
 {
 	public class NetworkObjectPool : NetworkObjectProviderDefault
 	{
-		[SerializeField] private List<NetworkObject> _poolableObjects = new List<NetworkObject>();
-		private Dictionary<NetworkObjectTypeId, Stack<NetworkObject>> _free = new Dictionary<NetworkObjectTypeId, Stack<NetworkObject>>();
+        [SerializeField] private List<NetworkObject> _poolableObjects;
 
-		protected override NetworkObject InstantiatePrefab(NetworkRunner runner, NetworkObject prefab)
-		{
-			if (IsPoolableObject(prefab) == true)
-			{
-				NetworkObject instance = GetFromObjectPool(prefab);
-				instance.transform.position = Vector3.zero;
-				return instance;
-			}
+        private Dictionary<NetworkObjectTypeId, Stack<NetworkObject>> _free = new();
 
-			return Instantiate(prefab);
-		}
+        protected override NetworkObject InstantiatePrefab(NetworkRunner runner, NetworkObject prefab)
+        {
+            if (ShouldPool(runner, prefab))
+            {
+                Debug.Log("Object Pool");
+                var instance = GetObjectFromPool(prefab);
 
-		protected override void DestroyPrefabInstance(NetworkRunner runner, NetworkPrefabId prefabId, NetworkObject instance)
-		{
-			if (_free.TryGetValue(prefabId, out var stack) == true)
-			{
-				instance.gameObject.SetActive(false);
-				stack.Push(instance);
-			}
-			else
-			{
-				Destroy(instance.gameObject);
-			}
-		}
+                instance.transform.position = Vector3.zero;
+
+                return instance;
+            }
+
+            return Instantiate(prefab);
+        }
+
+        protected override void DestroyPrefabInstance(NetworkRunner runner, NetworkPrefabId prefabId, NetworkObject instance)
+        {
+            if (_free.TryGetValue(instance.NetworkTypeId, out var stack))
+            {
+                Debug.Log("Input Object Pool");
+                instance.gameObject.SetActive(false);
+                stack.Push(instance);
+            }
+            else
+            {
+                Debug.Log("Desotry");
+                Destroy(instance.gameObject);
+            }
+        }
 
 
-		private NetworkObject GetFromObjectPool(NetworkObject prefab)
-		{
-			NetworkObject instance = null;
-			if (_free.TryGetValue(prefab.NetworkTypeId, out var stack) == true)
-			{
-				if (stack.Count > 0)
-				{
-					instance = stack.Pop();
-				}	
-			}
+        private NetworkObject GetObjectFromPool(NetworkObject prefab)
+        {
+            NetworkObject instance = null;
 
-			if (instance == null)
-			{
-				instance = GetNewInstance(prefab);
-			}
+            if (_free.TryGetValue(prefab.NetworkTypeId, out var stack))
+            {
+                while (stack.Count > 0 && instance == null)
+                {
+                    instance = stack.Pop();
+                }
+            }
 
-			instance.gameObject.SetActive(true);
-			return instance;
-		}
+            if (instance == null)
+                instance = GetNewInstance(prefab);
 
-		private NetworkObject GetNewInstance(NetworkObject prefab)
-		{
-			NetworkObject instance = Instantiate(prefab);
+            instance.gameObject.SetActive(true);
+            return instance;
+        }
 
-			if (_free.TryGetValue(prefab.NetworkTypeId, out var stack) == false)
-			{
-				_free.Add(prefab.NetworkTypeId, new Stack<NetworkObject>());
-			}
-			return instance;
-		}
+        private NetworkObject GetNewInstance(NetworkObject prefab)
+        {
+            NetworkObject instance = Instantiate(prefab);
 
-		private bool IsPoolableObject(NetworkObject prefab)
-		{
-			foreach (var poolableObject in _poolableObjects)
-			{
-				if (poolableObject == prefab)
-					return true;
-			}
-			return false;
-		}
-	}
+            if (_free.TryGetValue(prefab.NetworkTypeId, out var stack) == false)
+            {
+                stack = new Stack<NetworkObject>();
+                _free.Add(prefab.NetworkTypeId, stack);
+                Debug.Log($"free add {prefab.NetworkTypeId}");
+            }
+
+            return instance;
+        }
+
+        private bool ShouldPool(NetworkRunner runner, NetworkObject prefab)
+        {
+            if (_poolableObjects.Count == 0)
+            {
+                return true;
+            }
+
+            return IsPoolableObject(prefab);
+        }
+
+        private bool IsPoolableObject(NetworkObject networkObject)
+        {
+            foreach (var poolableObject in _poolableObjects)
+            {
+                if (networkObject == poolableObject)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
 }
