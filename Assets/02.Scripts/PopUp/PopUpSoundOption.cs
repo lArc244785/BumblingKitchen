@@ -24,6 +24,8 @@ namespace BumblingKitchen.PopUp
 		private float _prevBgmVolume;
 		private float _prevSfxVolume;
 
+		public override PopUpType Type => PopUpType.SoundOption;
+
 		private void Awake()
 		{
 			if(PlayerPrefs.HasKey("MasterVolume") == true)

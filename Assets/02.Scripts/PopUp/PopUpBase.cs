@@ -2,9 +2,19 @@
 
 namespace BumblingKitchen.PopUp
 {
+	public enum PopUpType
+	{
+		None,
+		Message,
+		CreateSession,
+		SoundOption,
+		Loading,
+	}
+
 	public abstract class PopUpBase : MonoBehaviour
 	{
 		protected PopupManger manger;
+		public abstract PopUpType Type { get; }
 
 		public void Init(PopupManger manager)
 		{

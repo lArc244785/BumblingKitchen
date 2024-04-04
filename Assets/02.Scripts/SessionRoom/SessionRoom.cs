@@ -36,6 +36,7 @@ namespace BumblingKitchen.SessionRoom
 		[SerializeField] private Button _exit;
 		[SerializeField] private DeshBoard _board;
 		[SerializeField] private TMP_Text _startWaitText;
+		[SerializeField] protected TMP_Text _sessionName;
 
 		[Networked]
 		[Capacity(4)]
@@ -58,6 +59,7 @@ namespace BumblingKitchen.SessionRoom
 			Debug.Log("Spawned");
 			_changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
 
+			_sessionName.text = Runner.SessionInfo.Name;
 			string playerName = PlayerPrefs.GetString("Name");
 			int characterID = PlayerPrefs.GetInt("CharacterID");
 			RPC_AddUserInfo(new NetworkUserInfo(Runner.LocalPlayer, playerName, characterID, false));

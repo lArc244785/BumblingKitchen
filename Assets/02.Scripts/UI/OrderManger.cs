@@ -54,6 +54,7 @@ namespace BumblingKitchen
 			if (HasStateAuthority == false)
 				return;
 			_isOrderRun = true;
+			RandomOrder();
 			_singUpOrderTimer = TickTimer.CreateFromSeconds(Runner, 5.0f);
 		}
 

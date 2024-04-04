@@ -16,6 +16,7 @@ namespace BumblingKitchen
 
 	public class GameManager : NetworkBehaviour, IGameStateEvent
 	{
+		private bool _isSpawned = false;
 		private int _gameTime = 180;
 
 		[SerializeField] private CharacterSpawner _characterSpanwer;
@@ -155,6 +156,7 @@ namespace BumblingKitchen
 
 		private void WaitRender()
 		{
+			//안정화 완료
 			if (_stabilizationTimer.Expired(Runner) == true)
 			{
 				SetUpLoad(GameObject.Find("Loading").GetComponent<InGameLoad>());
@@ -162,6 +164,7 @@ namespace BumblingKitchen
 				SpawnPlayer(Runner.LocalPlayer);
 				_stabilizationTimer = TickTimer.None;
 				FindObjectOfType<GameStartEnd>().Init();
+				_isSpawned = true;
 			}
 
 			if(HasStateAuthority == true)
@@ -205,9 +208,9 @@ namespace BumblingKitchen
 
 		public int GetEndTime()
 		{
-			if (Runner == null)
+			if (_isSpawned == false)
 			{
-				return -1;
+				return _gameTime;
 			}
 
 			float? time = PlayTickTimer.RemainingTime(Runner);
@@ -224,7 +227,7 @@ namespace BumblingKitchen
 
 		public int GetPlayTime()
 		{
-			if(Runner == null)
+			if (_isSpawned == false)
 			{
 				return -1;
 			}

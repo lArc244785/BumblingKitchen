@@ -43,5 +43,13 @@ namespace BumblingKitchen.PopUp
 			}
 		}
 
+		public bool IsPeekPopUpType(PopUpType type)
+		{
+			if (_popups.Count == 0)
+				return false;
+
+			return _popups.Peek().Type == type;
+		}
+
 	}
 }

@@ -129,6 +129,9 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		public void RPC_RelesePutIngredient(PlayerRef player)
 		{
+			if (_putIngredient == null)
+				return;
+
 			_putIngredient.RPC_DoneCook(player);
 			_putIngredient = null;
 		}
@@ -152,6 +155,9 @@ namespace BumblingKitchen.Interaction
 
 		public Ingredient SpillIngredient()
 		{
+			if (_putIngredient == null)
+				return null;
+
 			var spill = _putIngredient;
 			RPC_RelesePutIngredient(Runner.LocalPlayer);
 			return spill;

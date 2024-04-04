@@ -1,6 +1,4 @@
 using BumblingKitchen.PopUp;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +17,9 @@ namespace BumblingKitchen
 
 		private void PopUpSoundOption()
 		{
+			if (_manager.IsPeekPopUpType(PopUpType.SoundOption) == true)
+				return;
+
 			var soundPopUp = Instantiate(_soundPopUp);
 			_manager.RegistrationPopUp(soundPopUp);
 		}

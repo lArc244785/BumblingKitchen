@@ -8,9 +8,12 @@ namespace BumblingKitchen.PopUp
 {
 	public class MessagePopUp : PopUpBase
 	{
+		public override PopUpType Type => PopUpType.Message;
+
 		[SerializeField] private TMP_Text _title;
 		[SerializeField] private TMP_Text _message;
 		[SerializeField] private Button _closeButton;
+
 
 		public void Init(string title, string message)
 		{

@@ -86,12 +86,15 @@ namespace BumblingKitchen
 				OnLoadSceneStabilization?.Invoke();
 			}
 
-			if(_finshWaitTimer.Expired(Runner) == true)
+			if (Runner.IsSceneAuthority == true)
 			{
-				OnCompeleteLoad?.Invoke();
-				Runner.UnloadScene(SceneRef.FromIndex(3));
-				
-				_finshWaitTimer = TickTimer.None;
+				if (_finshWaitTimer.Expired(Runner) == true)
+				{
+					OnCompeleteLoad?.Invoke();
+					Runner.UnloadScene(SceneRef.FromIndex(3));
+
+					_finshWaitTimer = TickTimer.None;
+				}
 			}
 		}
 

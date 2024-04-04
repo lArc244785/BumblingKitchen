@@ -17,7 +17,7 @@ namespace BumblingKitchen
 		{
 			if (SystemInfo.deviceType == DeviceType.Desktop)
 			{
-				Interaction = Interaction | Input.GetMouseButtonDown(0);
+				Interaction = Interaction | Input.GetKeyDown(KeyCode.Space);
 			}
 		}
 

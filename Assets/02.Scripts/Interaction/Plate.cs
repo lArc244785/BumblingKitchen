@@ -96,8 +96,12 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_RelesePutIngredient()
 		{
-			_putIngredient.transform.SetParent(null);
-			_putIngredient = null;
+			if(_putIngredient != null)
+			{
+				_putIngredient.transform.SetParent(null);
+				_putIngredient = null;
+			}
+
 			SetDirty(true);
 		}
 		[Rpc(RpcSources.All, RpcTargets.All)]

@@ -13,6 +13,8 @@ namespace BumblingKitchen.PopUp
 		[SerializeField] private TMP_InputField _sessionName;
 		[SerializeField] private PopUpLoading _popupLoading;
 
+		public override PopUpType Type => PopUpType.CreateSession;
+
 		public event Action<string> OnCreate;
 
 		private void Awake()
