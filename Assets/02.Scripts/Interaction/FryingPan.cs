@@ -15,6 +15,7 @@ namespace BumblingKitchen.Interaction
 		[SerializeField] private List<CookingRecipe> _recipeList;
 		[SerializeField] private float _addProgress;
 		[SerializeField] private Transform _putPoint;
+		[SerializeField] private Transform _effectPoint;
 
 		[SerializeField]
 		private Ingredient _putIngredient;
@@ -29,11 +30,48 @@ namespace BumblingKitchen.Interaction
 		public event Action<CookingRecipe> OnSettingRecipe;
 		public event Action OnCookingFail;
 
-		public bool IsOnGasRange { set; get; } = false;
+		private Action<bool> OnUpdateOnGasRange;
+
+		private bool _isOnGasRange = false;
+
+		public bool IsOnGasRange
+		{
+			set
+			{
+				_isOnGasRange = value;
+				OnUpdateOnGasRange?.Invoke(_isOnGasRange);
+			}
+			get
+			{
+				return _isOnGasRange;
+			}
+		}
+
+		private EffectLoopParticle _smoke;
 
 		void Awake()
 		{
 			OnDoenCooked += ResetCookingEvent;
+			OnUpdateOnGasRange += EffectSmoke;
+		}
+
+		private void EffectSmoke(bool isOnGasRange)
+		{
+			if(isOnGasRange == true)
+			{
+				Debug.Log("[Effect] Start Smoke");
+				var newSmoke = PoolManager.Instance.GetPooledObject(PoolObjectType.Effect_CookingSmoke);
+				newSmoke.transform.SetParent(_effectPoint, false);
+				newSmoke.transform.localPosition = Vector3.zero;
+				newSmoke.transform.rotation = Quaternion.identity;
+				_smoke = newSmoke.GetComponent<EffectLoopParticle>();
+			}
+			else
+			{
+				Debug.Log("[Effect] Stop Smoke");
+				_smoke?.StopParticle();
+				_smoke = null;
+			}
 		}
 
 		public override bool TryInteraction(Interactor interactor, IInteractable interactable)
@@ -162,5 +200,6 @@ namespace BumblingKitchen.Interaction
 			RPC_RelesePutIngredient(Runner.LocalPlayer);
 			return spill;
 		}
+
 	}
 }

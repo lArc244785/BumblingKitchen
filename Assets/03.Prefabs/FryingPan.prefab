@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4633094664471910646}
   - component: {fileID: 158893912744281878}
   - component: {fileID: 6524593492040023097}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,6 +302,7 @@ Transform:
   - {fileID: 3041154814195458084}
   - {fileID: 5340242117060370294}
   - {fileID: 4767073543994222141}
+  - {fileID: 6627777713987851684}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6848651401601230253
@@ -320,6 +321,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5e31d43a2e190af468e508dbc733292c, type: 2}
   _addProgress: 1
   _putPoint: {fileID: 5340242117060370294}
+  _effectPoint: {fileID: 6627777713987851684}
+  _putIngredient: {fileID: 0}
 --- !u!114 &7694175420809766737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +379,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.25837684, z: 1}
   m_Center: {x: 0, y: 0.12516236, z: 0}
+--- !u!1 &8224770950707059573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6627777713987851684}
+  m_Layer: 6
+  m_Name: effectPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6627777713987851684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8224770950707059573}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5605642887269179614}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1001 &995783589432792971
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,7 +10,15 @@ namespace BumblingKitchen
 		private void Awake()
 		{
 			_pooledObject = GetComponent<PooledObject>();
-			_effects = transform.GetComponentsInChildren<IEffectEnd>();
+
+			if (transform.childCount == 0)
+			{
+				_effects = GetComponents<IEffectEnd>();
+			}
+			else
+			{
+				_effects = transform.GetComponentsInChildren<IEffectEnd>();
+			}
 		}
 
 		private void LateUpdate()

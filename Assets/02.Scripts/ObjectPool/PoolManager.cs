@@ -31,6 +31,8 @@ namespace BumblingKitchen
 		IngredientModel_TomatoSlice,
 		IngredientModel_Trash,
 		Effect_WashDish,
+		Effect_Dust,
+		Effect_CookingSmoke,
 	}
 
 	public class PoolManager : MonoBehaviour

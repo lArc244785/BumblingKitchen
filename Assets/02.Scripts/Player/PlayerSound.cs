@@ -16,7 +16,7 @@ public class PlayerSound : MonoBehaviour
 	private IHandEvents _handEvents;
 	private IMoveEvents _moveEvents;
 
-	private IEnumerator _stepCorutine;
+	private IEnumerator _stepCoroutine;
 
 	private void Awake()
 	{
@@ -58,21 +58,21 @@ public class PlayerSound : MonoBehaviour
 
 	private void StartStep()
 	{
-		if(_stepCorutine != null)
+		if(_stepCoroutine != null)
 		{
-			StopCoroutine(_stepCorutine);
+			StopCoroutine(_stepCoroutine);
 		}
-		_stepCorutine = StepSoundCortutine();
-		StartCoroutine(_stepCorutine);
+		_stepCoroutine = StepSoundCortutine();
+		StartCoroutine(_stepCoroutine);
 	}
 
 	private void StopStep()
 	{
-		if (_stepCorutine != null)
+		if (_stepCoroutine != null)
 		{
-			StopCoroutine(_stepCorutine);
+			StopCoroutine(_stepCoroutine);
 		}
-		_stepCorutine = null;
+		_stepCoroutine = null;
 	}
 
 	private IEnumerator StepSoundCortutine()

@@ -340,6 +340,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b71bbd14094bc94a869f26796e9a235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &37866400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37866401}
+  - component: {fileID: 37866402}
+  m_Layer: 0
+  m_Name: Pool Effect_CookingSmoke
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &37866401
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37866400}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1148565774}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &37866402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37866400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c854df6b0020143b67811c7cab5617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Type>k__BackingField: 27
+  _prefab: {fileID: 7217044848622605421, guid: afe8d3f95be917544b191e65f876fed6, type: 3}
+  _initAmount: 4
 --- !u!1 &47877416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1643,11 +1690,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 362246276}
     m_Modifications:
-    - target: {fileID: 64230327170876291, guid: 638e4112a26be6742b73418c89885498,
-        type: 3}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 649212647202618937, guid: 638e4112a26be6742b73418c89885498,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -3313,7 +3355,7 @@ Canvas:
   m_GameObject: {fileID: 719805001}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1937426133}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -5901,6 +5943,8 @@ Transform:
   - {fileID: 7334342}
   - {fileID: 296259096}
   - {fileID: 532773051}
+  - {fileID: 1906349285}
+  - {fileID: 37866401}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1150326882
@@ -10194,6 +10238,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899099518}
   m_Mesh: {fileID: -3579656462404434382, guid: 91c8ddd56b7c4a54ea31c37009950109, type: 3}
+--- !u!1 &1906349284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1906349285}
+  - component: {fileID: 1906349286}
+  m_Layer: 0
+  m_Name: Pool Effect_Dust
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1906349285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906349284}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1148565774}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1906349286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906349284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c854df6b0020143b67811c7cab5617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Type>k__BackingField: 26
+  _prefab: {fileID: -1153588207832815921, guid: 2d9ace1da60befd42b57ff4c04bf6ec2,
+    type: 3}
+  _initAmount: 20
 --- !u!1 &1923009224
 GameObject:
   m_ObjectHideFlags: 0
@@ -10396,7 +10488,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 1937426133}
-  m_PlaneDistance: 80
+  m_PlaneDistance: 90
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

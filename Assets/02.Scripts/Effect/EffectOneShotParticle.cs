@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BumblingKitchen
 {
-    public class EffectParticle : MonoBehaviour, IEffectEnd
+    public class EffectOneShotParticle : MonoBehaviour, IEffectEnd
     {
 		private ParticleSystem _particle;
 
