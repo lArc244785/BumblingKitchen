@@ -35,12 +35,25 @@ namespace BumblingKitchen.Interaction
 		public Action OnCookingFail;
 		public Action<List<IngredientData>> OnUpdateMixData;
 
-		[SerializeField] private Recipe _initRecipe;
+		//[SerializeField] private Recipe _initRecipe;
 
 		public override void Spawned()
 		{
+			//MixDataList.Clear();
+			//Recipe recipe = _initRecipe;
+			//foreach (var item in recipe.MixList)
+			//{
+			//	MixDataList.Add(item);
+			//}
+			//Name = recipe.Name;
+			//UpdateModel(recipe);
+			//OnUpdateMixData?.Invoke(MixDataList);
+			//gameObject.name = recipe.Name;
+		}
+
+		public void Init(Recipe recipe)
+		{
 			MixDataList.Clear();
-			Recipe recipe = _initRecipe;
 			foreach (var item in recipe.MixList)
 			{
 				MixDataList.Add(item);
@@ -50,6 +63,7 @@ namespace BumblingKitchen.Interaction
 			OnUpdateMixData?.Invoke(MixDataList);
 			gameObject.name = recipe.Name;
 		}
+
 
 		/// <summary>
 		/// 두개의 재료를 합칠고자할 때 사용.

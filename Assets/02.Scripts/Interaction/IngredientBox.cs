@@ -6,7 +6,8 @@ namespace BumblingKitchen.Interaction
 	public class IngredientBox : NetworkBehaviour, IInteractable
 	{
 		[SerializeField] private Transform _spawnPoint;
-		[SerializeField] private NetworkPrefabRef _prefab;
+		[SerializeField] private Ingredient _prefab;
+		[SerializeField] private Recipe _initRecipe;
 
 		public InteractionType Type => InteractionType.Box;
 
@@ -25,11 +26,16 @@ namespace BumblingKitchen.Interaction
 		{
 			var interactor = Runner.FindObject(pickUpUserID).GetComponent<Interactor>();
 			var netObject = Runner.Spawn(
-				_prefab, 
+				_prefab,
 				interactor.PickUpPoint.position,
-				interactor.PickUpPoint.rotation, 
-				inputAuthority : null);
-			
+				interactor.PickUpPoint.rotation,
+				inputAuthority: null,
+				(runner, obj) =>
+				{
+					obj.GetComponent<Ingredient>().Init(_initRecipe);
+				}
+				).GetComponent<NetworkObject>();
+
 			interactor.RPC_PickUp(netObject);
 		}
 	}

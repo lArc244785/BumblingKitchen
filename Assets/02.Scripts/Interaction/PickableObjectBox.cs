@@ -6,7 +6,7 @@ namespace BumblingKitchen.Interaction
 	public class PickableObjectBox : NetworkBehaviour, IInteractable
 	{
 		[SerializeField] private Transform _spawnPoint;
-		[SerializeField] private NetworkPrefabRef _prefab;
+		[SerializeField] private PickableInteractable _prefab;
 
 		public InteractionType Type => InteractionType.Box;
 
@@ -27,7 +27,7 @@ namespace BumblingKitchen.Interaction
 			var netObject = Runner.Spawn(
 				_prefab, 
 				interactor.PickUpPoint.position,
-				interactor.PickUpPoint.rotation);
+				interactor.PickUpPoint.rotation).GetComponent<NetworkObject>();
 			
 			interactor.RPC_PickUp(netObject);
 		}
