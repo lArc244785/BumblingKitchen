@@ -16,6 +16,8 @@ namespace BumblingKitchen.Interaction
 		[SerializeField] private Mesh _clearMesh;
 		[SerializeField] private Mesh _dirtyMesh;
 
+		public event Action OnSpawned;
+
 		public override bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
 			if(base.TryInteraction(interactor, interactable) == true)
@@ -129,6 +131,5 @@ namespace BumblingKitchen.Interaction
 			IsDirty = isDirty;
 			_model.mesh = IsDirty ? _dirtyMesh : _clearMesh;
 		}
-
 	}
 }

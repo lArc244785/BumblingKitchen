@@ -35,24 +35,14 @@ namespace BumblingKitchen.Interaction
 		public Action OnCookingFail;
 		public Action<List<IngredientData>> OnUpdateMixData;
 
-		//[SerializeField] private Recipe _initRecipe;
+		[Networked] private NetworkString<_32> RecipeName { get; set; }
 
 		public override void Spawned()
 		{
-			//MixDataList.Clear();
-			//Recipe recipe = _initRecipe;
-			//foreach (var item in recipe.MixList)
-			//{
-			//	MixDataList.Add(item);
-			//}
-			//Name = recipe.Name;
-			//UpdateModel(recipe);
-			//OnUpdateMixData?.Invoke(MixDataList);
-			//gameObject.name = recipe.Name;
-		}
+			if (RecipeName.ToString().Equals(string.Empty))
+				return;
 
-		public void Init(Recipe recipe)
-		{
+			Recipe recipe = StageRecipeManager.Instance.RecipeTable[RecipeName.ToString()];
 			MixDataList.Clear();
 			foreach (var item in recipe.MixList)
 			{
@@ -62,6 +52,21 @@ namespace BumblingKitchen.Interaction
 			UpdateModel(recipe);
 			OnUpdateMixData?.Invoke(MixDataList);
 			gameObject.name = recipe.Name;
+		}
+
+		public void Init(Recipe recipe)
+		{
+			RecipeName = recipe.Name;
+
+			//MixDataList.Clear();
+			//foreach (var item in recipe.MixList)
+			//{
+			//	MixDataList.Add(item);
+			//}
+			//Name = recipe.Name;
+			//UpdateModel(recipe);
+			//OnUpdateMixData?.Invoke(MixDataList);
+			//gameObject.name = recipe.Name;
 		}
 
 
