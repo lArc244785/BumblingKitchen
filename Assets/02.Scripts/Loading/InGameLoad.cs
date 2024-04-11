@@ -6,57 +6,100 @@ using System.Collections.Generic;
 
 namespace BumblingKitchen
 {
+	public enum LoadProcess
+	{
+		None,
+		LoadStabilization,
+		LoadInGameScene,
+		SpawnPlayer,
+		WaitAllClientStabilization,
+		SetupPoolNetworkobject,
+		Complent,
+		Total
+	}
+
+
 	public class InGameLoad : NetworkBehaviour
 	{
-		public event Action OnLoadSceneStabilization;
-		public event Action OnInGameLoaded;
-		public event Action OnSpawnedPlayer;
-		public event Action OnSpawnedAllPlayer;
+		[SerializeField] private LoadProcess _process;
 
-		public event Action OnCompeleteLoad;
+		private event Action OnSpawnPlayer;
+		public event Action OnSpawningNetworkPooledObjects;
+		public event Action OnCompeleteProcess;
 
 		private TickTimer _stabilizationTimer;
-		private TickTimer _finshWaitTimer;
-
-		private int _compeleteCheck;
+		private TickTimer _complentWaitTimer;
 
 		//Master Only
 		private Dictionary<PlayerRef, bool> _playerReadyTable;
 
 		public event Action<float> OnUpdateProgress;
 
-		private void CompeletCheck()
+		private void UpdateProgress()
 		{
-			_compeleteCheck++;
-			OnUpdateProgress?.Invoke((float)_compeleteCheck / 4.0f);
+			int currentProcess = (int)_process;
+			int totalProcess = (int)LoadProcess.Total;
+
+			float progress = (float)currentProcess / (float)totalProcess;
+			OnUpdateProgress?.Invoke(progress);
 		}
 
 		private void Awake()
 		{
-			OnLoadSceneStabilization += CompeletCheck;
-			OnInGameLoaded += CompeletCheck;
-			OnSpawnedPlayer += CompeletCheck;
-			OnSpawnedAllPlayer += CompeletCheck;
-
-			OnLoadSceneStabilization += LoadInGameScene;
-			OnSpawnedAllPlayer += FinshWait;
-
 			_stabilizationTimer = TickTimer.None;
-			_finshWaitTimer = TickTimer.None;
+			_complentWaitTimer = TickTimer.None;
 		}
-
-		private void FinshWait()
-		{
-			Debug.Log("FinshWait");
-			_finshWaitTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
-		}
-
 		public override void Spawned()
 		{
 			base.Spawned();
-			Debug.Log("Loading Spawned");
-			_stabilizationTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
+			StartProcess();
+		}
 
+
+		private void StartProcess()
+		{
+			_process = LoadProcess.None;
+			NextProcess(LoadProcess.LoadStabilization);
+		}
+
+		private void NextProcess(LoadProcess process)
+		{
+			_process = process;
+			switch (_process)
+			{
+				case LoadProcess.LoadStabilization:
+					_stabilizationTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
+					break;
+				case LoadProcess.LoadInGameScene:
+					LoadInGameScene();
+					break;
+				case LoadProcess.SpawnPlayer:
+					OnSpawnPlayer?.Invoke();
+					break;
+				case LoadProcess.WaitAllClientStabilization:
+					RPC_PlayerReady(Runner.LocalPlayer);
+					break;
+				case LoadProcess.SetupPoolNetworkobject:
+					OnSpawningNetworkPooledObjects?.Invoke();
+					break;
+				case LoadProcess.Complent:
+					WaitComplent();
+					break;
+			}
+			UpdateProgress();
+		}
+
+
+		private void WaitComplent()
+		{
+			Debug.Log("FinshWait");
+			_complentWaitTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
+		}
+
+
+
+		private void SetupPlayerReadyTable()
+		{
 			if (HasStateAuthority == true)
 			{
 				_playerReadyTable = new();
@@ -78,30 +121,36 @@ namespace BumblingKitchen
 
 		public override void Render()
 		{
-			if(_stabilizationTimer.Expired(Runner) == true)
+			//해당 타이머를 초과할 때까지 생존하면 안정화가 되었다고 판다.
+			if(_process == LoadProcess.LoadStabilization &&
+				_stabilizationTimer.Expired(Runner) == true)
 			{
 				Debug.Log("Loading Stabilization");
 				_stabilizationTimer = TickTimer.None;
 				GameObject.Find("Canvas Loading").GetComponent<LoadingUI>().Init(this);
-				OnLoadSceneStabilization?.Invoke();
+				SetupPlayerReadyTable();
+				NextProcess(LoadProcess.LoadInGameScene);
 			}
 
-			if (Runner.IsSceneAuthority == true)
+			//프로세스를 완료 후 잠시 대기하였다가 끝낸다.
+			if(_process == LoadProcess.Complent &&
+				_complentWaitTimer.Expired(Runner) == true)
 			{
-				if (_finshWaitTimer.Expired(Runner) == true)
-				{
-					OnCompeleteLoad?.Invoke();
-					Runner.UnloadScene(SceneRef.FromIndex(3));
-
-					_finshWaitTimer = TickTimer.None;
-				}
+				OnCompeleteProcess?.Invoke();
+				Runner.UnloadScene(SceneRef.FromIndex(3));
+				_complentWaitTimer = TickTimer.None;
 			}
+		}
+
+		public void InGameStabilizationed(Action spawnPlayer)
+		{
+			OnSpawnPlayer = spawnPlayer;
+			NextProcess(LoadProcess.SpawnPlayer);
 		}
 
 		public void SpawedPlayerCharacter(NetworkRunner runner)
 		{
-			OnSpawnedPlayer?.Invoke();
-			RPC_PlayerReady(runner.LocalPlayer);
+			NextProcess(LoadProcess.WaitAllClientStabilization);
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -125,17 +174,19 @@ namespace BumblingKitchen
 		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 		private void RPC_CompleteSpawnAllPlayer()
 		{
-			OnSpawnedAllPlayer?.Invoke();
+			NextProcess(LoadProcess.SetupPoolNetworkobject);
 		}
+
+		[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+		public void RPC_SpawnedNetworkObject()
+		{
+			NextProcess(LoadProcess.Complent);
+		}
+
 
 		private void OnDestroy()
 		{
 			_stabilizationTimer = TickTimer.None;
-		}
-
-		public void CompleteLoadInGame()
-		{
-			OnInGameLoaded?.Invoke();
 		}
 	}
 }

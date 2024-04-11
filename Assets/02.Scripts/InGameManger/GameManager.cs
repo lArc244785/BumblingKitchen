@@ -88,7 +88,7 @@ namespace BumblingKitchen
 			}
 		}
 
-		private void SpawnPlayer(PlayerRef inputPlayer)
+		private void SpawnPlayer()
 		{
 			int playerID = Runner.LocalPlayer.PlayerId - 1;
 			int characterID = PlayerPrefs.GetInt("CharacterID");
@@ -108,8 +108,17 @@ namespace BumblingKitchen
 			_load = load;
 			if (HasStateAuthority == true)
 			{
-				_load.OnCompeleteLoad += GameReadyWait;
+				_load.OnSpawningNetworkPooledObjects += SpawnNetworkObject;
+				_load.OnCompeleteProcess += GameReadyWait;
 			}
+		}
+
+		private void SpawnNetworkObject()
+		{
+			var netObjSetup = GameObject.Find("NetworkObjectSetUp").GetComponent<InGameNetworkObjectSetup>();
+			netObjSetup.OnCompletSpawn += _load.RPC_SpawnedNetworkObject;
+			netObjSetup.SetUpNetworkObject();
+			_load.OnCompeleteProcess += netObjSetup.AllDespawn;
 		}
 
 		private void GameReadyWait()
@@ -160,11 +169,10 @@ namespace BumblingKitchen
 			if (_stabilizationTimer.Expired(Runner) == true)
 			{
 				SetUpLoad(GameObject.Find("Loading").GetComponent<InGameLoad>());
-				_load.CompleteLoadInGame();
-				SpawnPlayer(Runner.LocalPlayer);
 				_stabilizationTimer = TickTimer.None;
 				FindObjectOfType<GameStartEnd>().Init();
 				_isSpawned = true;
+				_load.InGameStabilizationed(SpawnPlayer);
 			}
 
 			if(HasStateAuthority == true)
