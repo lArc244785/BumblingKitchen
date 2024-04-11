@@ -9,7 +9,7 @@ namespace BumblingKitchen
     {
 		[SerializeField] private Canvas _canvas;
 		private LocalInput _localInput;
-		[SerializeField] Joystick _joystick;
+		[SerializeField] JoyStick _joystick;
 		[SerializeField] Button _interaction;
 
 		private void Awake()
@@ -26,7 +26,8 @@ namespace BumblingKitchen
 
 		private void Update()
 		{
-			_localInput.Dircation = _joystick.Direction3D.normalized;
+			Vector3 diraction3D = new Vector3(_joystick.Diraction.x, 0.0f, _joystick.Diraction.y);
+			_localInput.Dircation = diraction3D;
 		}
 	}
 }
