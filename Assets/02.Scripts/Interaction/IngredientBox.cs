@@ -11,6 +11,8 @@ namespace BumblingKitchen.Interaction
 
 		public InteractionType Type => InteractionType.Box;
 
+		public NetworkId NetworkId => Object.Id;
+
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
 			if (interactor.HasPickUpObject == true)

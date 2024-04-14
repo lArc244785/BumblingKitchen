@@ -6,10 +6,11 @@ namespace BumblingKitchen.Interaction
 {
 	public class Table : NetworkBehaviour, IInteractable
 	{
+		public InteractionType Type => InteractionType.Table;
+		public NetworkId NetworkId => Object.Id;
+
 		[SerializeField] private LayerMask _putObjectLayer;
 		[SerializeField] private Transform _putPoint;
-
-		public InteractionType Type => InteractionType.Table;
 		[SerializeField] private PickableInteractable _putObject;
 
 		void Start()
@@ -29,7 +30,7 @@ namespace BumblingKitchen.Interaction
 			{
 				if(interactor.HasPickUpObject == true)
 				{
-					RPC_PutObject(interactor.Drop().Object);
+					RPC_PutObject(interactor.Drop().NetworkId);
 					return true;
 				}
 			}
@@ -40,7 +41,7 @@ namespace BumblingKitchen.Interaction
 				{
 					RPC_RelesePutObject();
 				}
-				return interactor.Interaction(putObject);
+				return interactor.TryInteraction(putObject);
 			}
 
 			return false;

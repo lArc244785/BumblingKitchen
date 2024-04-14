@@ -83,9 +83,9 @@ namespace BumblingKitchen.Interaction
 			{
 				if (interactor.HasPickUpObject == false)
 					return false;
-				if (interactor.GetPickObject().Type != InteractionType.Ingredient)
+				if (interactor.PickUpObject.Type != InteractionType.Ingredient)
 					return false;
-				Ingredient ingredient = interactor.GetPickObject() as Ingredient;
+				Ingredient ingredient = interactor.PickUpObject as Ingredient;
 				if (ingredient.MixDataList.Count > 1)
 					return false;
 				if (CanCook(ingredient.MixDataList[0], out var recipeIndex))

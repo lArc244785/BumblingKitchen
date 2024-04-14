@@ -8,6 +8,8 @@ namespace BumblingKitchen.Interaction
 	{
 		public virtual InteractionType Type => InteractionType.None;
 
+		public NetworkId NetworkId => Object.Id;
+
 		public event Action OnPickUpObject;
 
 		public virtual bool TryInteraction(Interactor interactor, IInteractable interactable)

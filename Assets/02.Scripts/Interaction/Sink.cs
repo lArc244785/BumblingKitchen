@@ -7,13 +7,14 @@ namespace BumblingKitchen.Interaction
 	public class Sink : NetworkBehaviour, IInteractable
 	{
 		public InteractionType Type => InteractionType.Sink;
+		public NetworkId NetworkId => Object.Id;
 
 		[Networked, Capacity(5), OnChangedRender(nameof(UpdateDirtyPlate))]
 		private NetworkLinkedList<NetworkId> DirtyPlates { get; }
 		= MakeInitializer(new NetworkId[] { });
 
 		[SerializeField] private float _addCleaning;
-		[field:SerializeField] public float CleanPlateProgress { get; private set; }
+		[field: SerializeField] public float CleanPlateProgress { get; private set; }
 
 		[SerializeField] private DryingRack _dryingRack;
 
@@ -42,15 +43,13 @@ namespace BumblingKitchen.Interaction
 				switch (interactable.Type)
 				{
 					case InteractionType.Plate:
-						{
-							if (DirtyPlates.Count == DirtyPlates.Capacity)
-								return false;
+						if (DirtyPlates.Count == DirtyPlates.Capacity)
+							return false;
 
-							Plate plate = interactor.Drop() as Plate;
-							RPC_AddDirtyPlates(plate.Object);
-							plate.RPC_SetActive(false);
-							return true;
-						}
+						Plate plate = interactor.Drop() as Plate;
+						RPC_AddDirtyPlates(plate.Object);
+						plate.RPC_SetActive(false);
+						return true;
 						break;
 				}
 			}

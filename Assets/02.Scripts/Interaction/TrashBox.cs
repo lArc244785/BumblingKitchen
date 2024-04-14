@@ -1,4 +1,3 @@
-using UnityEngine;
 using BumblingKitchen.Interaction;
 using Fusion;
 
@@ -7,6 +6,7 @@ namespace BumblingKitchen
 	public class TrashBox : NetworkBehaviour, IInteractable
 	{
 		public InteractionType Type => InteractionType.TrashBox;
+		public NetworkId NetworkId => Object.Id;
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
@@ -16,30 +16,24 @@ namespace BumblingKitchen
 			switch (interactable.Type)
 			{
 				case InteractionType.Ingredient:
-					{
-						RPC_Despawn(interactor.Drop().Object);
-						return true;
-					}
+					RPC_Despawn(interactor.Drop().NetworkId);
+					return true;
 					break;
 				case InteractionType.Plate:
+					Plate plate = interactable as Plate;
+					if (plate.IsPutIngredient() == true)
 					{
-						Plate plate = interactable as Plate;
-						if(plate.IsPutIngredient() == true)
-						{
-							RPC_Despawn(plate.SpillIngredient().Object);
-						}
-						else
-						{
-							return false;
-						}
-						return true;
+						RPC_Despawn(plate.SpillIngredient().Object);
 					}
+					else
+					{
+						return false;
+					}
+					return true;
 					break;
 				case InteractionType.FireKitchenTool:
-					{
-						FryingPan pan = interactable as FryingPan;
-						RPC_Despawn(pan.SpillIngredient().Object);
-					}
+					FryingPan pan = interactable as FryingPan;
+					RPC_Despawn(pan.SpillIngredient().Object);
 					break;
 			}
 
@@ -47,9 +41,10 @@ namespace BumblingKitchen
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		private void RPC_Despawn(NetworkObject netObject)
+		private void RPC_Despawn(NetworkId id)
 		{
-			Runner.Despawn(netObject);
+			var despawnObject = Runner.FindObject(id);
+			Runner.Despawn(despawnObject);
 		}
 	}
 }

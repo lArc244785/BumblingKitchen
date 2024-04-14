@@ -9,6 +9,7 @@ namespace BumblingKitchen.Interaction
 		[SerializeField] private PickableInteractable _prefab;
 
 		public InteractionType Type => InteractionType.Box;
+		public NetworkId NetworkId => Object.Id;
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{

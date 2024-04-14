@@ -12,38 +12,26 @@ namespace BumblingKitchen.Interaction
         [SerializeField] private float _detectDistance;
         [SerializeField] private LayerMask _detectLayerMask;
 
-		private NetworkId _pickObjectID;
-		public bool HasPickUpObject => _pickObjectID != default;
+		public IInteractable PickUpObject { get; private set; }
+
+		//private NetworkId _pickObjectID;
+		public bool HasPickUpObject => PickUpObject != null;
 
 		public event Action OnPickUp;
 		public event Action OnDrop;
 		public event Action OnCutEvent;
 		public event Action OnCleanEvent;
 
-		public bool IsPickUpInteractor(PickableInteractable target)
+		public bool IsPickUpInteractor(IInteractable target)
 		{
 			if (target == null)
 				return false;
 
-			if (_pickObjectID == null)
+			if (PickUpObject == target)
+				return true;
+			else
 				return false;
-
-            return GetPickObject() == target;
 		}
-
-		public bool IsPickUpInteractor(IInteractable target)
-		{
-			return IsPickUpInteractor(target as PickableInteractable);
-		}
-
-		public PickableInteractable GetPickObject()
-		{
-			if (_pickObjectID == default)
-				return null;
-
-			return Runner.FindObject(_pickObjectID).GetComponent<PickableInteractable>();
-		}
-
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
         public void RPC_PickUp(NetworkId id)
@@ -51,11 +39,11 @@ namespace BumblingKitchen.Interaction
 			Debug.Log("PickUp!");
 
             var obj = Runner.FindObject(id);
-			if(obj.TryGetComponent<PickableInteractable>(out var pickUpObject) == true)
+			if(obj.TryGetComponent<IInteractable>(out var pickUpObject) == true)
 			{
 				obj.transform.SetParent(PickUpPoint);
 				obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-				_pickObjectID = obj;
+				PickUpObject = pickUpObject;
 				OnPickUp?.Invoke();
 			}
 			else
@@ -65,11 +53,11 @@ namespace BumblingKitchen.Interaction
 		}
 
 	
-		public PickableInteractable Drop()
+		public IInteractable Drop()
 		{
 			if (HasPickUpObject == false)
 				return null;
-			var dropObject = GetPickObject();
+			var dropObject = PickUpObject;
 			RPC_RelesePickUpObject();
 			return dropObject;
 		}
@@ -77,11 +65,11 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_RelesePickUpObject()
 		{
-			var pickedObject = Runner.FindObject(_pickObjectID);
+			var pickedObject = Runner.FindObject(PickUpObject.NetworkId);
 			pickedObject.transform.SetParent(null);
 			OnDrop?.Invoke();
 
-			_pickObjectID = default;
+			PickUpObject = null;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
@@ -146,7 +134,7 @@ namespace BumblingKitchen.Interaction
 		/// <summary>
 		/// 캐릭터가 바라보는 방향에서 일정 지점에서 있는 오브젝트를 탐색하고 가장 우선순위가 높은 오브젝트와 상호작용을 시도합니다.
 		/// </summary>
-		public void OnInteraction()
+		public void Interaction()
 		{
             var interactionObject = DetectedInteractable();
 
@@ -156,29 +144,21 @@ namespace BumblingKitchen.Interaction
 				return;
 			}
 
-			Interaction(interactionObject);
+			TryInteraction(interactionObject);
 		}
 
-		public bool Interaction(IInteractable interactionObject)
+		public bool TryInteraction(IInteractable interactionObject)
 		{
-			if (GetPickObject()?.Type > interactionObject.Type)
+			if (PickUpObject?.Type > interactionObject.Type)
 			{
 				Debug.Log("상호 작용 시작! 픽업 오브젝트가 주체");
-				return GetPickObject().TryInteraction(this, interactionObject);
+				return PickUpObject.TryInteraction(this, interactionObject);
 			}
 			else
 			{
 				Debug.Log("상호 작용 시작! 오브젝트가 주체");
-				return interactionObject.TryInteraction(this, GetPickObject());
+				return interactionObject.TryInteraction(this, PickUpObject);
 			}
-		}
-
-
-        public InteractionType GetPickUpObjectType()
-		{
-            if (HasPickUpObject == false)
-                return InteractionType.None;
-            return GetPickObject().Type;
 		}
 
 		private void OnDrawGizmos()

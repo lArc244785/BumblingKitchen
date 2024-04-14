@@ -74,7 +74,7 @@ namespace BumblingKitchen.Player
 
 				if (data.buttons.IsSet(NetworkInputData.INTERACTION_BUTTON) == true)
 				{
-					_interactor.OnInteraction();
+					_interactor.Interaction();
 				}
 			}
 		}

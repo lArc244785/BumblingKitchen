@@ -7,6 +7,7 @@ namespace BumblingKitchen
 	public class Server : NetworkBehaviour, IInteractable
 	{
 		public InteractionType Type => InteractionType.Server;
+		public NetworkId NetworkId => Object.Id;
 
 		[SerializeField] private Outlet _outLet;
 		[SerializeField] private OrderManger _orderManger;
@@ -19,7 +20,7 @@ namespace BumblingKitchen
 			if (interactable.Type != InteractionType.Plate)
 				return false;
 			
-			Plate plate = interactor.GetPickObject() as Plate;
+			Plate plate = interactor.PickUpObject as Plate;
 
 			if (plate.IsDirty == true || plate.IsPutIngredient() == false)
 				return false;

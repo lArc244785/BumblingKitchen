@@ -7,9 +7,11 @@ namespace BumblingKitchen.Interaction
 	public class DryingRack : NetworkBehaviour, IInteractable
 	{
 		public InteractionType Type => InteractionType.DryingReck;
+		public NetworkId NetworkId => Object.Id;
 
 		[Networked, Capacity(5),OnChangedRender(nameof(UpdateCleanPlats))]
 		private NetworkLinkedList<NetworkId> CleanPlates { get; } = MakeInitializer(new NetworkId[] { });
+
 
 		public Action<int, int> OnUpdateCleanPlates;
 

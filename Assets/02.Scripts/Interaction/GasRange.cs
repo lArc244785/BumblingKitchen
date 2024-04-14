@@ -9,18 +9,21 @@ namespace BumblingKitchen.Interaction
 		[SerializeField] private Transform _putPoint;
 
 		public InteractionType Type => InteractionType.GasRange;
+
+		public NetworkId NetworkId => Object.Id;
+
 		[SerializeField] private FryingPan _putFryingPan;
 
 		public bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
 			if (_putFryingPan == null)
 			{
-				if (interactor.GetPickObject().Type == InteractionType.FireKitchenTool)
+				if (interactor.PickUpObject.Type == InteractionType.FireKitchenTool)
 				{
-					var fryingpan = interactor.GetPickObject() as FryingPan;
+					var fryingpan = interactor.PickUpObject as FryingPan;
 					if (fryingpan.CanPutGasRange() == true)
 					{
-						RPC_PutObject(interactor.Drop().Object);
+						RPC_PutObject(interactor.Drop().NetworkId);
 					}
 				}
 			}
@@ -31,7 +34,7 @@ namespace BumblingKitchen.Interaction
 				{
 					RPC_ReleseObject();
 				}
-				interactor.Interaction(putObject);
+				interactor.TryInteraction(putObject);
 			}
 
 			return true;

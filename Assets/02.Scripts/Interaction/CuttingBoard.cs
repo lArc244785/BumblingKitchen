@@ -11,6 +11,8 @@ namespace BumblingKitchen.Interaction
 	{
 		public InteractionType Type => InteractionType.KitchenTool;
 
+		public NetworkId NetworkId => Object.Id;
+
 		[SerializeField] private List<CookingRecipe> _recipeList;
 		[SerializeField] private float _addProgress;
 		[SerializeField] private Transform _putPoint;
@@ -39,9 +41,9 @@ namespace BumblingKitchen.Interaction
 			{
 				if (interactor.HasPickUpObject == false)
 					return false;
-				if (interactor.GetPickObject().Type != InteractionType.Ingredient)
+				if (interactor.PickUpObject.Type != InteractionType.Ingredient)
 					return false;
-				Ingredient ingredient = interactor.GetPickObject() as Ingredient;
+				Ingredient ingredient = interactor.PickUpObject as Ingredient;
 				if (ingredient.MixDataList.Count > 1)
 					return false;
 				if (CanCook(ingredient.MixDataList[0], out var recipeIndex))

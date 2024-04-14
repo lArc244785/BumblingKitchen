@@ -43,7 +43,7 @@ public class PlayerSound : MonoBehaviour
 
 	private AudioClip GetRandomSound(AudioClip[] sounds)
 	{
-		return sounds[Random.RandomRange(0, sounds.Length)];
+		return sounds[Random.Range(0, sounds.Length)];
 	}
 
 	private void PickUp()

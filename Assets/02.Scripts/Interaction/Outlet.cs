@@ -9,6 +9,7 @@ namespace BumblingKitchen
 	internal class Outlet : NetworkBehaviour, IInteractable
 	{
 		public InteractionType Type => InteractionType.Outlet;
+		public NetworkId NetworkId => Object.Id;
 
 		private TickTimer _waitPlatTimer;
 
@@ -19,6 +20,7 @@ namespace BumblingKitchen
 		[Networked, Capacity(20), OnChangedRender(nameof(UpdateOutLetPlates))]
 		private NetworkLinkedList<NetworkId> OutLetPlates { get;}
 		= MakeInitializer(new NetworkId[] { });
+
 
 		public event Action<int, int> OnUpdattingOutletPlates;
 
