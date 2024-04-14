@@ -22,6 +22,8 @@ namespace BumblingKitchen
 
 	public class OrderManger : NetworkBehaviour
 	{
+		private const int MAX_ORDER = 7;
+
 		[SerializeField] private Order _orderPrefab;
 
 		[SerializeField] private List<Recipe> _orderableList;
@@ -55,7 +57,13 @@ namespace BumblingKitchen
 				return;
 			_isOrderRun = true;
 			RandomOrder();
-			_singUpOrderTimer = TickTimer.CreateFromSeconds(Runner, 5.0f);
+
+		}
+
+		private void SetRandomSingUpOrderTimer()
+		{
+			float random = Random.Range(5.0f, 10.0f);
+			_singUpOrderTimer = TickTimer.CreateFromSeconds(Runner, random);
 		}
 
 		private void StopOrder()
@@ -76,6 +84,7 @@ namespace BumblingKitchen
 				startTime,
 				endTime);
 			RPC_SingUpOrder(newOrder);
+			SetRandomSingUpOrderTimer();
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
@@ -89,20 +98,21 @@ namespace BumblingKitchen
 			_orderList.Add(newOrder);
 		}
 
-		public override void Render()
+		public override void FixedUpdateNetwork()
 		{
-			UpdateOrderTime();
-
 			if (HasStateAuthority == false)
 				return;
-
 			if (_isOrderRun == false)
 				return;
 
-			if (_singUpOrderTimer.Expired(Runner) == true)
+			Debug.Log($"Order Run {_orderList.Count} {_singUpOrderTimer.TargetTick}");
+
+			if (_orderList.Count < MAX_ORDER)
 			{
-				RandomOrder();
-				_singUpOrderTimer = TickTimer.CreateFromSeconds(Runner, 5.0f);
+				if (_singUpOrderTimer.Expired(Runner) == true)
+				{
+					RandomOrder();
+				}
 			}
 
 			if (_orderList.Count == 0)
@@ -112,6 +122,12 @@ namespace BumblingKitchen
 			{
 				RPC_RemoveOrderReuslt(0, false);
 			}
+
+		}
+
+		public override void Render()
+		{
+			UpdateOrderTime();
 		}
 
 
