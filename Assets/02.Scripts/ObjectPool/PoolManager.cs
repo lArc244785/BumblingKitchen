@@ -33,6 +33,9 @@ namespace BumblingKitchen
 		Effect_WashDish,
 		Effect_Dust,
 		Effect_CookingSmoke,
+		UI_Order,
+		UI_CookingInfo,
+		UI_CookingInfo_element,
 	}
 
 	public class PoolManager : MonoBehaviour

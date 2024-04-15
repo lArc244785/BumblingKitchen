@@ -40,6 +40,11 @@ namespace BumblingKitchen
 		[SerializeField] private AudioClip _succeseSound;
 		[SerializeField] private AudioClip _failSound;
 
+		private float _minOrderTime = 10.0f;
+		private float _maxOrderTime = 20.0f;
+
+		private float _orderEndTime = 30.0f;
+
 		private void Awake()
 		{
 			_audioSource = GetComponent<AudioSource>();
@@ -62,7 +67,7 @@ namespace BumblingKitchen
 
 		private void SetRandomSingUpOrderTimer()
 		{
-			float random = Random.Range(5.0f, 10.0f);
+			float random = Random.Range(_minOrderTime, _maxOrderTime);
 			_singUpOrderTimer = TickTimer.CreateFromSeconds(Runner, random);
 		}
 
@@ -77,7 +82,7 @@ namespace BumblingKitchen
 		{
 			int randomIndex = Random.Range(0, _orderableList.Count);
 			float startTime = GameManager.Instance.GetPlayTime();
-			float endTime = startTime + 60.0f;
+			float endTime = startTime + _orderEndTime;
 
 			OrderData newOrder = new OrderData(
 				randomIndex,
@@ -90,7 +95,14 @@ namespace BumblingKitchen
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_SingUpOrder(OrderData data)
 		{
-			var newOrder = Instantiate(_orderPrefab, _orderPerent);
+			var newOrderGameObject = PoolManager.Instance.GetPooledObject(PoolObjectType.UI_Order);
+			RectTransform newOrderRectTransfrom = newOrderGameObject.GetComponent<RectTransform>();
+			newOrderRectTransfrom.SetParent(_orderPerent);
+			newOrderRectTransfrom.localPosition = Vector3.one;
+			newOrderRectTransfrom.localScale = Vector3.one;
+			newOrderRectTransfrom.localRotation = Quaternion.identity;
+
+			var newOrder = newOrderGameObject.GetComponent<Order>();
 
 			Recipe reciep = _orderableList[data.orderInex];
 			newOrder.InitSetting(reciep, data.startTime, data.endTime);
@@ -104,8 +116,6 @@ namespace BumblingKitchen
 				return;
 			if (_isOrderRun == false)
 				return;
-
-			Debug.Log($"Order Run {_orderList.Count} {_singUpOrderTimer.TargetTick}");
 
 			if (_orderList.Count < MAX_ORDER)
 			{
@@ -136,9 +146,16 @@ namespace BumblingKitchen
 		{
 			string recipeName = _orderList[index].RecipeName;
 			_orderList[index].gameObject.SetActive(false);
-			Destroy(_orderList[index].gameObject);
+			GameObject destoryGameObejct = _orderList[index].gameObject;
 			_orderList.RemoveAt(index);
-
+			if(destoryGameObejct.TryGetComponent<PooledObject>(out var pooled))
+			{
+				pooled.Relese();
+			}
+			else
+			{
+				Destroy(destoryGameObejct);
+			}
 		}
 
 		public void OrderCheck(string recipeName)

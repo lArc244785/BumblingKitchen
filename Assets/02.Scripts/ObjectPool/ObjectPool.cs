@@ -14,13 +14,9 @@ namespace BumblingKitchen
 
 		private Stack<PooledObject> _pool = new Stack<PooledObject>();
 
-		public void Awake()
-		{
-			SetUpObjectPool();
-		}
-
 		public void SetUpObjectPool()
 		{
+			Debug.Log($"[ObjectPool] SetUp {Type}");
 			for (int i = 0; i < _initAmount; i++)
 			{
 				PooledObject obj = CreatePooledObject();
@@ -58,6 +54,7 @@ namespace BumblingKitchen
 		{
 			var pooledObject = Instantiate(_prefab, Vector3.zero, Quaternion.identity);
 			pooledObject.InitPool(this);
+			pooledObject.gameObject.name = $"{_prefab.name} {_pool.Count}";
 			return pooledObject;
 		}
 

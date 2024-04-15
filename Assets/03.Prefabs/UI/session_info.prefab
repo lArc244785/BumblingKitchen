@@ -76,12 +76,12 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _sessionStateBackgroundSprites
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[SessionState, Assembly-CSharp],[UnityEngine.Sprite,
-        UnityEngine.CoreModule]], mscorlib
+      Data: 0|System.Collections.Generic.Dictionary`2[[BumblingKitchen.SessionLobby.SessionState,
+        Assembly-CSharp],[UnityEngine.Sprite, UnityEngine.CoreModule]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[SessionState, Assembly-CSharp]],
-        mscorlib
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[BumblingKitchen.SessionLobby.SessionState,
+        Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0

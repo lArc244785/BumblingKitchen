@@ -13,10 +13,16 @@ namespace BumblingKitchen
 		[SerializeField] private Slider _slider;
 		[SerializeField] private Image _icon;
 		[SerializeField] private Transform _cookingInfoParent;
-		[SerializeField] private CookingInfoUI _cookingInfoUIPrefab;
+
+		private PooledObject _pooled;
 
 		public float EndTiem { get; private set; }
 		public String RecipeName { get; private set; }
+
+		private void Awake()
+		{
+			_pooled = GetComponent<PooledObject>();
+		}
 
 		public void InitSetting(Recipe recipe, float startTime, float endTime)
 		{
@@ -47,8 +53,17 @@ namespace BumblingKitchen
 
 		private void CreateCookingInfoUI(CookingType type, List<IngredientData> info)
 		{
-			var newCookingInfoUI =  Instantiate(_cookingInfoUIPrefab, _cookingInfoParent);
+			var newCookingInfoUI = PoolManager.Instance.GetPooledObject(PoolObjectType.UI_CookingInfo).GetComponent<CookingInfoUI>();
+			RectTransform cookingInfoRectTransfrom = newCookingInfoUI.GetComponent<RectTransform>();
+			cookingInfoRectTransfrom.SetParent(_cookingInfoParent);
+			cookingInfoRectTransfrom.localPosition = Vector3.zero;
+			cookingInfoRectTransfrom.localScale = Vector3.one;
+			cookingInfoRectTransfrom.localRotation = Quaternion.identity;
+
 			newCookingInfoUI.InitSetting(type,info);
+
+			_pooled.OnRelese += newCookingInfoUI.GetComponent<PooledObject>().Relese;
+
 		}
 
 

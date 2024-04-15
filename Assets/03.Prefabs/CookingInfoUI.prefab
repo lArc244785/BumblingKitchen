@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 3164101101387769719}
   - component: {fileID: 983992006884713776}
   - component: {fileID: 3606691299221003209}
+  - component: {fileID: 2181457272217855232}
   m_Layer: 0
   m_Name: CookingInfoUI
   m_TagString: Untagged
@@ -197,7 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -313,8 +314,18 @@ MonoBehaviour:
       Entry: 8
       Data: 
   _gridlayoutGroup: {fileID: 5819133701718527290}
-  _elementPrefab: {fileID: 4257815012445942255, guid: af59a13652f31fe4998cae84cfaae0df,
-    type: 3}
   _rectTransform: {fileID: 8588334232615704294}
   _elementParent: {fileID: 4755632396347315631}
   _infoIcon: {fileID: 8562645907742453871}
+--- !u!114 &2181457272217855232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8512587433500244745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4212fc4a43c3c214b8139ff2ca467958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

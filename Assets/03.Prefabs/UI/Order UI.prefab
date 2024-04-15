@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7688931010146619079}
   - component: {fileID: 6162006088743569424}
   - component: {fileID: 1815025750305673690}
+  - component: {fileID: 3286830842482348773}
   m_Layer: 0
   m_Name: Order UI
   m_TagString: Untagged
@@ -96,6 +97,18 @@ MonoBehaviour:
   _cookingInfoParent: {fileID: 1051890211099725010}
   _cookingInfoUIPrefab: {fileID: 3606691299221003209, guid: 7cf6cdf605c801f4fba33c4a9f59ebdf,
     type: 3}
+--- !u!114 &3286830842482348773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767697869990294358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4212fc4a43c3c214b8139ff2ca467958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3939721790202815899
 GameObject:
   m_ObjectHideFlags: 0
