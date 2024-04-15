@@ -65,10 +65,7 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_RelesePickUpObject()
 		{
-			var pickedObject = Runner.FindObject(PickUpObject.NetworkId);
-			pickedObject.transform.SetParent(null);
 			OnDrop?.Invoke();
-
 			PickUpObject = null;
 		}
 

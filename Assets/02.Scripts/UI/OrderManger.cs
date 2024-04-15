@@ -43,7 +43,7 @@ namespace BumblingKitchen
 		private float _minOrderTime = 10.0f;
 		private float _maxOrderTime = 20.0f;
 
-		private float _orderEndTime = 30.0f;
+		private float _orderEndTime = 45.0f;
 
 		private void Awake()
 		{
@@ -175,6 +175,7 @@ namespace BumblingKitchen
 			RPC_OrderCheckResult(false);
 		}
 
+		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_OrderCheckResult(NetworkBool isSucess)
 		{
 			if (isSucess == true)

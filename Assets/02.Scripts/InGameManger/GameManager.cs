@@ -45,7 +45,6 @@ namespace BumblingKitchen
 		private void Awake()
 		{
 			Instance = this;
-
 		}
 
 		private void OnChangeGameState()
@@ -199,6 +198,7 @@ namespace BumblingKitchen
 
 		private void GameEnd()
 		{
+			Instance = null;
 			if (HasStateAuthority == false)
 				return;
 			State = GameState.End;
