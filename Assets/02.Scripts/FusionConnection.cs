@@ -146,13 +146,13 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 		OnPlayerLeftEvent?.Invoke(runner, player);
 		connectPlayers.Remove(player);
 
-		if(runner.IsSharedModeMasterClient == true)
-		{
-			if(GameManager.Instance != null)
-			{
-				ExitSessionToTitle();
-			}
-		}
+		//if(runner.IsSharedModeMasterClient == true)
+		//{
+		//	if(GameManager.Instance != null)
+		//	{
+		//		ExitSessionToTitle();
+		//	}
+		//}
 	}
 
 	public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
