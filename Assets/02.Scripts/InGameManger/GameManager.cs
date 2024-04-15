@@ -251,5 +251,20 @@ namespace BumblingKitchen
 				return result;
 			}
 		}
+
+		public float GetDetalPlayTime()
+		{
+
+			float? time = PlayTickTimer.RemainingTime(Runner);
+			if (time == null)
+			{
+				return -1;
+			}
+			else
+			{
+				float result = (float)_gameTime - (float)time;
+				return result;
+			}
+		}
 	}
 }

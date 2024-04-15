@@ -19,12 +19,12 @@ namespace BumblingKitchen.Interaction
 				return false;
 
 			InGameData.Instance.RPC_AddSpawnObject(Runner.LocalPlayer);
-			RPC_SpawnIngredient(interactor.Object);
+			RPC_SpawnIngredient(interactor.Object, GameManager.Instance.GetDetalPlayTime());
 			return true;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-		public void RPC_SpawnIngredient(NetworkId pickUpUserID)
+		public void RPC_SpawnIngredient(NetworkId pickUpUserID, float callTime)
 		{
 			var interactor = Runner.FindObject(pickUpUserID).GetComponent<Interactor>();
 			var netObject = Runner.Spawn(
@@ -35,6 +35,7 @@ namespace BumblingKitchen.Interaction
 				(runner, obj) =>
 				{
 					obj.GetComponent<Ingredient>().Init(_initRecipe);
+					obj.GetComponent<TestRate>().CallTime = callTime;
 				}
 				).GetComponent<NetworkObject>();
 

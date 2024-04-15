@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 6188091915235045416}
   - component: {fileID: 5858965788560427738}
   - component: {fileID: 7158654816365860499}
+  - component: {fileID: 6335119178251054340}
   m_Layer: 6
   m_Name: ingredient
   m_TagString: Untagged
@@ -246,6 +247,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 6188091915235045416}
   - {fileID: 5858965788560427738}
+  - {fileID: 6335119178251054340}
 --- !u!114 &6188091915235045416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +298,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6335119178251054340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289748677054955501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3c72ff6a90e764eb6de2056467aafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _CallTime: 0
 --- !u!1 &6271767151615973954
 GameObject:
   m_ObjectHideFlags: 0
