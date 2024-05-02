@@ -90,7 +90,7 @@ namespace BumblingKitchen.Interaction
 					return false;
 				if (CanCook(ingredient.MixDataList[0], out var recipeIndex))
 				{
-					interactor.Drop();
+					interactor.DropPickUpObject();
 					RPC_PutIngredient(ingredient.Object, recipeIndex);
 					ingredient.RPC_StartCook(Object, recipeIndex);
 				}

@@ -6,7 +6,7 @@ namespace BumblingKitchen.Interaction
 {
 	public interface IHandEvents
 	{
-		event Action OnPickUp;
-		event Action OnDrop;
+		event Action Pickuping;
+		event Action Droped;
 	}
 }

@@ -16,7 +16,7 @@ namespace BumblingKitchen.Interaction
 		{
 			if(interactor.HasPickUpObject == false)
 			{
-				interactor.RPC_PickUp(Object);
+				interactor.RPC_OnPickuping(Object);
 				OnPickUpObject?.Invoke();
 				return true;
 			}

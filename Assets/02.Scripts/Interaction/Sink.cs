@@ -46,7 +46,7 @@ namespace BumblingKitchen.Interaction
 						if (DirtyPlates.Count == DirtyPlates.Capacity)
 							return false;
 
-						Plate plate = interactor.Drop() as Plate;
+						Plate plate = interactor.DropPickUpObject() as Plate;
 						RPC_AddDirtyPlates(plate.Object);
 						plate.RPC_SetActive(false);
 						return true;

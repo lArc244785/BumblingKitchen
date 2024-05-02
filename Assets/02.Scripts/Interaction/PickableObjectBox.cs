@@ -30,7 +30,7 @@ namespace BumblingKitchen.Interaction
 				interactor.PickUpPoint.position,
 				interactor.PickUpPoint.rotation).GetComponent<NetworkObject>();
 			
-			interactor.RPC_PickUp(netObject);
+			interactor.RPC_OnPickuping(netObject);
 		}
 	}
 }

@@ -51,7 +51,6 @@ namespace BumblingKitchen
 		private NetworkObject GetNewInstance(NetworkObject prefab)
 		{
 			NetworkObject instance = Instantiate(prefab);
-			//Debug.Log($"[NetworkObject Pool] New Object {prefab.NetworkTypeId}");
 
 			if (_poolTable.TryGetValue(prefab.NetworkTypeId, out var stack) == false)
 			{
@@ -74,7 +73,6 @@ namespace BumblingKitchen
 
 		protected override void DestroyPrefabInstance(NetworkRunner runner, NetworkPrefabId prefabId, NetworkObject instance)
 		{
-			//Debug.Log($"[NetworkObject Pool] Despawn {prefabId}");
 			if (_poolTable.TryGetValue(prefabId, out var stack) == true)
 			{
 				instance.transform.SetParent(null);

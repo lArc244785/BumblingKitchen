@@ -5,6 +5,6 @@ namespace BumblingKitchen.Interaction
 {
 	internal interface ICutEvent
 	{
-		public event Action OnCutEvent;
+		public event Action Cutting;
 	}
 }

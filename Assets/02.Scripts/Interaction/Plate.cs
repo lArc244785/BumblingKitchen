@@ -40,7 +40,7 @@ namespace BumblingKitchen.Interaction
 						{
 							if (interactor.IsPickUpInteractor(interactable) == true)
 							{
-								interactor.Drop();
+								interactor.DropPickUpObject();
 							}
 							ingredient.InvokePickUpObject();
 							RPC_PutIngredient(ingredient.Object);
@@ -50,7 +50,7 @@ namespace BumblingKitchen.Interaction
 							Debug.Log("접시에 재료를 추가합니다.");
 							if (interactor.IsPickUpInteractor(interactable) == true)
 							{
-								interactor.Drop();
+								interactor.DropPickUpObject();
 							}
 							ingredient.InvokePickUpObject();
 							RPC_DespawnObject(ingredient.Object);

@@ -233,7 +233,7 @@ namespace BumblingKitchen.Interaction
 
 				if(interactor.IsPickUpInteractor(pickableObject) == true)
 				{
-					interactor.Drop();
+					interactor.DropPickUpObject();
 				}
 
 				RPC_DespawnIngredient(ingredient.Object);

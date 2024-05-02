@@ -24,7 +24,7 @@ namespace BumblingKitchen
 
 			if (plate.IsDirty == true || plate.IsPutIngredient() == false)
 				return false;
-			interactor.Drop();
+			interactor.DropPickUpObject();
 			var ingredient = plate.SpillIngredient();
 			_outLet.SendPlate(plate);
 			RPC_DeSpawn(ingredient.Object);

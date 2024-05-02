@@ -22,8 +22,8 @@ public class PlayerSound : MonoBehaviour
 	{
 		_moveEvents = GetComponent<IMoveEvents>();
 		_handEvents = GetComponent<IHandEvents>();
-		_handEvents.OnPickUp += PickUp;
-		_handEvents.OnDrop += Drop;
+		_handEvents.Pickuping += PickUp;
+		_handEvents.Droped += Drop;
 
 		_moveEvents.OnBegineMove += StartStep;
 		_moveEvents.OnEndMove += StopStep;

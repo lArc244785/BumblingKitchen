@@ -5,6 +5,6 @@ namespace BumblingKitchen.Interaction
 {
 	internal interface ICleanEvent
 	{
-		public event Action OnCleanEvent;
+		public event Action Cleaning;
 	}
 }

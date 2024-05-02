@@ -48,7 +48,7 @@ namespace BumblingKitchen.Interaction
 					return false;
 				if (CanCook(ingredient.MixDataList[0], out var recipeIndex))
 				{
-					interactor.Drop();
+					interactor.DropPickUpObject();
 					RPC_PutIngredient(ingredient.Object, recipeIndex);
 					ingredient.RPC_StartCook(Object, recipeIndex);
 				}
@@ -69,7 +69,7 @@ namespace BumblingKitchen.Interaction
 						return false;
 
 					_putIngredient.RPC_DoneCook(Runner.LocalPlayer);
-					interactor.RPC_PickUp(_putIngredient.Object);
+					interactor.RPC_OnPickuping(_putIngredient.Object);
 					RPC_RelesePutIngredient();
 				}
 			}

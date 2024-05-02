@@ -24,7 +24,7 @@ namespace BumblingKitchen.Interaction
 
 			var plat = Runner.FindObject(PopCleanPlate()).GetComponent<PickableInteractable>();
 			plat.RPC_SetActive(true);
-			interactor.RPC_PickUp(plat.Object);
+			interactor.RPC_OnPickuping(plat.Object);
 
 			return false;
 		}

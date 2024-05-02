@@ -23,7 +23,7 @@ namespace BumblingKitchen.Interaction
 					var fryingpan = interactor.PickUpObject as FryingPan;
 					if (fryingpan.CanPutGasRange() == true)
 					{
-						RPC_PutObject(interactor.Drop().NetworkId);
+						RPC_PutObject(interactor.DropPickUpObject().NetworkId);
 					}
 				}
 			}

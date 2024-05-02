@@ -16,7 +16,7 @@ namespace BumblingKitchen
 			switch (interactable.Type)
 			{
 				case InteractionType.Ingredient:
-					RPC_Despawn(interactor.Drop().NetworkId);
+					RPC_Despawn(interactor.DropPickUpObject().NetworkId);
 					return true;
 					break;
 				case InteractionType.Plate:

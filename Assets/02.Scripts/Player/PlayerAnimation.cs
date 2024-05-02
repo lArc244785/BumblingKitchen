@@ -22,10 +22,10 @@ namespace BumblingKitchen.Player
 
 			_move.OnBegineMove += Move;
 			_move.OnEndMove += Stop;
-			_hand.OnPickUp += PickUp;
-			_hand.OnDrop += Drop;
-			_cut.OnCutEvent += Cut;
-			_clean.OnCleanEvent += Clean;
+			_hand.Pickuping += PickUp;
+			_hand.Droped += Drop;
+			_cut.Cutting += Cut;
+			_clean.Cleaning += Clean;
 		}
 
 		private void Clean()
@@ -65,8 +65,8 @@ namespace BumblingKitchen.Player
 			_move.OnBegineMove -= Move;
 			_move.OnEndMove -= Stop;
 
-			_hand.OnPickUp -= PickUp;
-			_hand.OnDrop -= Drop;
+			_hand.Pickuping -= PickUp;
+			_hand.Droped -= Drop;
 		}
 	}
 }
