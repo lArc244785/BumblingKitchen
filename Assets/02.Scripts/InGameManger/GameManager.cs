@@ -107,8 +107,8 @@ namespace BumblingKitchen
 			_load = load;
 			if (HasStateAuthority == true)
 			{
-				_load.OnSpawningNetworkPooledObjects += SpawnNetworkObject;
-				_load.OnCompeleteProcess += GameReadyWait;
+				_load.SpawningNetworkPooledObjects += SpawnNetworkObject;
+				_load.CompeleteProcess += GameReadyWait;
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace BumblingKitchen
 			var netObjSetup = GameObject.Find("NetworkObjectSetUp").GetComponent<InGameNetworkObjectSetup>();
 			netObjSetup.OnCompletSpawn += _load.RPC_SpawnedNetworkObject;
 			netObjSetup.SetUpNetworkObject();
-			_load.OnCompeleteProcess += netObjSetup.AllDespawn;
+			_load.CompeleteProcess += netObjSetup.AllDespawn;
 		}
 
 		private void GameReadyWait()

@@ -17,7 +17,7 @@ namespace BumblingKitchen.Interaction
 			//상호작용 주체가 픽업한 객체가 없는 경우 픽업 실행한다.
 			if(interactor.HasPickUpObject == false)
 			{
-				interactor.RPC_OnPickuping(Object);
+				interactor.RPC_Pickup(Object);
 				OnPickupingObject();
 				return true;
 			}

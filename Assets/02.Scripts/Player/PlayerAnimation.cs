@@ -23,7 +23,7 @@ namespace BumblingKitchen.Player
 			_move.OnBegineMove += Move;
 			_move.OnEndMove += Stop;
 			_hand.Pickuping += PickUp;
-			_hand.Droped += Drop;
+			_hand.DropedPickupobject += Drop;
 			_cut.Cutting += Cut;
 			_clean.Cleaning += Clean;
 		}
@@ -66,7 +66,7 @@ namespace BumblingKitchen.Player
 			_move.OnEndMove -= Stop;
 
 			_hand.Pickuping -= PickUp;
-			_hand.Droped -= Drop;
+			_hand.DropedPickupobject -= Drop;
 		}
 	}
 }

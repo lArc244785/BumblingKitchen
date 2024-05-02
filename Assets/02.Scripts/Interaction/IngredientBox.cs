@@ -38,7 +38,7 @@ namespace BumblingKitchen.Interaction
 				}
 				).GetComponent<NetworkObject>();
 
-			interactor.RPC_OnPickuping(netObject);
+			interactor.RPC_Pickup(netObject);
 		}
 	}
 }

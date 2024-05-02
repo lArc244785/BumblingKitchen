@@ -20,7 +20,7 @@ namespace BumblingKitchen
 			if (interactable.Type != InteractionType.Plate)
 				return false;
 			
-			Plate plate = interactor.PickUpObject as Plate;
+			Plate plate = interactor.PickupObject as Plate;
 
 			if (plate.IsDirty == true || plate.IsPutIngredient() == false)
 				return false;

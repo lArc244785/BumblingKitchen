@@ -41,9 +41,9 @@ namespace BumblingKitchen.Interaction
 			{
 				if (interactor.HasPickUpObject == false)
 					return false;
-				if (interactor.PickUpObject.Type != InteractionType.Ingredient)
+				if (interactor.PickupObject.Type != InteractionType.Ingredient)
 					return false;
-				Ingredient ingredient = interactor.PickUpObject as Ingredient;
+				Ingredient ingredient = interactor.PickupObject as Ingredient;
 				if (ingredient.MixDataList.Count > 1)
 					return false;
 				if (CanCook(ingredient.MixDataList[0], out var recipeIndex))
@@ -61,15 +61,15 @@ namespace BumblingKitchen.Interaction
 				{
 					RPC_Effect();
 					_putIngredient.RPC_Cooking(_addProgress);
-					interactor.RPC_OnCutEvent();
+					interactor.RPC_OnCuttingEvent();
 				}
 				else if(_putIngredient.CurrentState == CookState.Sucess)
 				{
 					if (interactor.HasPickUpObject == true)
 						return false;
 
-					_putIngredient.RPC_OnDoneCooked(Runner.LocalPlayer);
-					interactor.RPC_OnPickuping(_putIngredient.Object);
+					_putIngredient.RPC_DoneCooked(Runner.LocalPlayer);
+					interactor.RPC_Pickup(_putIngredient.Object);
 					RPC_RelesePutIngredient();
 				}
 			}

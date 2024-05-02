@@ -21,7 +21,7 @@ namespace BumblingKitchen
 
 		public void Init(InGameLoad load)
 		{
-			load.OnUpdateProgress += DrawProgress;
+			load.ProgressUpdated += DrawProgress;
 		}
 
 		private void DrawProgress(float value)

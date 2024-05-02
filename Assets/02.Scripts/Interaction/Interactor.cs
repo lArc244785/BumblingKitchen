@@ -7,8 +7,8 @@ namespace BumblingKitchen.Interaction
     public class Interactor : NetworkBehaviour, IHandEvents, ICutEvent, ICleanEvent
 	{
         [field:SerializeField] public Transform PickUpPoint { get; private set; }
-		public IInteractable PickUpObject { get; private set; }
-		public bool HasPickUpObject => PickUpObject != null;
+		public IInteractable PickupObject { get; private set; }
+		public bool HasPickUpObject => PickupObject != null;
 
 		//픽업 오브젝트를 탐색 시작 위치
         [SerializeField] private Vector3 _detectedStartLocalPoint;
@@ -19,7 +19,7 @@ namespace BumblingKitchen.Interaction
 
 		#region events
 		public event Action Pickuping;
-		public event Action Droped;
+		public event Action DropedPickupobject;
 		public event Action Cutting;
 		public event Action Cleaning;
 		#endregion
@@ -45,15 +45,15 @@ namespace BumblingKitchen.Interaction
 		/// </summary>
 		public bool TryInteraction(IInteractable interactionObject)
 		{
-			if (PickUpObject?.Type > interactionObject.Type)
+			if (PickupObject?.Type > interactionObject.Type)
 			{
 				Debug.Log("상호 작용 시작! 픽업 오브젝트가 주체");
-				return PickUpObject.TryInteraction(this, interactionObject);
+				return PickupObject.TryInteraction(this, interactionObject);
 			}
 			else
 			{
 				Debug.Log("상호 작용 시작! 오브젝트가 주체");
-				return interactionObject.TryInteraction(this, PickUpObject);
+				return interactionObject.TryInteraction(this, PickupObject);
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace BumblingKitchen.Interaction
 				return false;
 			}
 
-			if (PickUpObject == target)
+			if (PickupObject == target)
 			{
 				return true;
 			}
@@ -81,7 +81,7 @@ namespace BumblingKitchen.Interaction
 		/// [RPC] 네트워크 오브젝트를 픽업 오브젝트로 지정합니다.
 		/// </summary>
 		[Rpc(RpcSources.All, RpcTargets.All)]
-        public void RPC_OnPickuping(NetworkId id)
+        public void RPC_Pickup(NetworkId id)
 		{
             var obj = Runner.FindObject(id);
 
@@ -89,7 +89,7 @@ namespace BumblingKitchen.Interaction
 			{
 				obj.transform.SetParent(PickUpPoint);
 				obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-				PickUpObject = pickUpObject;
+				PickupObject = pickUpObject;
 				Pickuping?.Invoke();
 			}
 			else
@@ -108,7 +108,7 @@ namespace BumblingKitchen.Interaction
 				return null;
 			}
 
-			var dropObject = PickUpObject;
+			var dropObject = PickupObject;
 			RPC_OnDroped();
 			return dropObject;
 		}
@@ -167,8 +167,8 @@ namespace BumblingKitchen.Interaction
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_OnDroped()
 		{
-			Droped?.Invoke();
-			PickUpObject = null;
+			DropedPickupobject?.Invoke();
+			PickupObject = null;
 		}
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace BumblingKitchen.Interaction
 		/// </summary>
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
-		public void RPC_OnCutEvent()
+		public void RPC_OnCuttingEvent()
 		{
 			Cutting?.Invoke();
 		}
@@ -186,7 +186,7 @@ namespace BumblingKitchen.Interaction
 		/// </summary>
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
-		public void RPC_OnCleanEvent()
+		public void RPC_OnCleaningEvent()
 		{
 			Cleaning?.Invoke();
 		}

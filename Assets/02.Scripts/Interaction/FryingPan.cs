@@ -83,9 +83,9 @@ namespace BumblingKitchen.Interaction
 			{
 				if (interactor.HasPickUpObject == false)
 					return false;
-				if (interactor.PickUpObject.Type != InteractionType.Ingredient)
+				if (interactor.PickupObject.Type != InteractionType.Ingredient)
 					return false;
-				Ingredient ingredient = interactor.PickUpObject as Ingredient;
+				Ingredient ingredient = interactor.PickupObject as Ingredient;
 				if (ingredient.MixDataList.Count > 1)
 					return false;
 				if (CanCook(ingredient.MixDataList[0], out var recipeIndex))
@@ -170,7 +170,7 @@ namespace BumblingKitchen.Interaction
 			if (_putIngredient == null)
 				return;
 
-			_putIngredient.RPC_OnDoneCooked(player);
+			_putIngredient.RPC_DoneCooked(player);
 			_putIngredient = null;
 		}
 

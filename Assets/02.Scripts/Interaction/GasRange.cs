@@ -18,9 +18,9 @@ namespace BumblingKitchen.Interaction
 		{
 			if (_putFryingPan == null)
 			{
-				if (interactor.PickUpObject.Type == InteractionType.FireKitchenTool)
+				if (interactor.PickupObject.Type == InteractionType.FireKitchenTool)
 				{
-					var fryingpan = interactor.PickUpObject as FryingPan;
+					var fryingpan = interactor.PickupObject as FryingPan;
 					if (fryingpan.CanPutGasRange() == true)
 					{
 						RPC_PutObject(interactor.DropPickUpObject().NetworkId);

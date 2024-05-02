@@ -230,7 +230,7 @@ namespace BumblingKitchen.Interaction
 		/// </summary>
 		/// <param name="player"></param>
 		[Rpc(RpcSources.All, RpcTargets.All)]
-		public void RPC_OnDoneCooked(PlayerRef player)
+		public void RPC_DoneCooked(PlayerRef player)
 		{
 			if(HasStateAuthority == true)
 			{

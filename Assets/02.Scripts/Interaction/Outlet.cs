@@ -34,7 +34,7 @@ namespace BumblingKitchen
 
 			var plate = Runner.FindObject(OutLetPlates[0]).GetComponent<Plate>();
 			plate.RPC_SetActive(true);
-			interactor.RPC_OnPickuping(plate.Object);
+			interactor.RPC_Pickup(plate.Object);
 			RPC_RemoveFirstOutLetPlate(plate.Object);
 
 			return true;

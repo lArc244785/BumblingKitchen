@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace BumblingKitchen
 {
+	/// <summary>
+	/// 로딩 프로세스
+	/// </summary>
 	public enum LoadProcess
 	{
 		None,
@@ -18,14 +21,14 @@ namespace BumblingKitchen
 		Total
 	}
 
-
 	public class InGameLoad : NetworkBehaviour
 	{
+		public event Action SpawningNetworkPooledObjects;
+		public event Action CompeleteProcess;
+		public event Action<float> ProgressUpdated;
+		private event Action SpawnPlayer;
+		
 		[SerializeField] private LoadProcess _process;
-
-		private event Action OnSpawnPlayer;
-		public event Action OnSpawningNetworkPooledObjects;
-		public event Action OnCompeleteProcess;
 
 		private TickTimer _stabilizationTimer;
 		private TickTimer _complentWaitTimer;
@@ -33,7 +36,6 @@ namespace BumblingKitchen
 		//Master Only
 		private Dictionary<PlayerRef, bool> _playerReadyTable;
 
-		public event Action<float> OnUpdateProgress;
 
 		private void UpdateProgress()
 		{
@@ -41,7 +43,7 @@ namespace BumblingKitchen
 			int totalProcess = (int)LoadProcess.Total;
 
 			float progress = (float)currentProcess / (float)totalProcess;
-			OnUpdateProgress?.Invoke(progress);
+			ProgressUpdated?.Invoke(progress);
 		}
 
 		private void Awake()
@@ -74,13 +76,13 @@ namespace BumblingKitchen
 					LoadInGameScene();
 					break;
 				case LoadProcess.SpawnPlayer:
-					OnSpawnPlayer?.Invoke();
+					SpawnPlayer?.Invoke();
 					break;
 				case LoadProcess.WaitAllClientStabilization:
 					RPC_PlayerReady(Runner.LocalPlayer);
 					break;
 				case LoadProcess.SetupPoolNetworkobject:
-					OnSpawningNetworkPooledObjects?.Invoke();
+					SpawningNetworkPooledObjects?.Invoke();
 					break;
 				case LoadProcess.Complent:
 					WaitComplent();
@@ -136,7 +138,7 @@ namespace BumblingKitchen
 			if(_process == LoadProcess.Complent &&
 				_complentWaitTimer.Expired(Runner) == true)
 			{
-				OnCompeleteProcess?.Invoke();
+				CompeleteProcess?.Invoke();
 				Runner.UnloadScene(SceneRef.FromIndex(3));
 				_complentWaitTimer = TickTimer.None;
 			}
@@ -144,7 +146,7 @@ namespace BumblingKitchen
 
 		public void InGameStabilizationed(Action spawnPlayer)
 		{
-			OnSpawnPlayer = spawnPlayer;
+			SpawnPlayer = spawnPlayer;
 			NextProcess(LoadProcess.SpawnPlayer);
 		}
 
