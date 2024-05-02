@@ -1,13 +1,13 @@
-using UnityEngine;
 using Fusion;
 using System;
+using UnityEngine;
 
 namespace BumblingKitchen.Interaction
 {
-    public class Interactor : NetworkBehaviour, IHandEvents, ICutEvent, ICleanEvent
+	public class Interactor : NetworkBehaviour, IHandEvents, ICutEvent, ICleanEvent
 	{
 		// PUBLIC	=======================================
-		[field:SerializeField] public Transform PickUpPoint { get; private set; }
+		[field: SerializeField] public Transform PickUpPoint { get; private set; }
 		public IInteractable PickupObject { get; private set; }
 		public bool HasPickUpObject => PickupObject != null;
 
@@ -15,9 +15,9 @@ namespace BumblingKitchen.Interaction
 		//픽업 오브젝트를 탐색 시작 위치
 		[SerializeField] private Vector3 _detectedStartLocalPoint;
 		//픽업 오브젝트의 탐색 길이
-        [SerializeField] private float _detectDistance;
+		[SerializeField] private float _detectDistance;
 		//픽업 오브젝트의 레이어 마스크
-        [SerializeField] private LayerMask _detectLayerMask;
+		[SerializeField] private LayerMask _detectLayerMask;
 
 		// EVENT	=======================================
 		public event Action Pickuping;
@@ -31,7 +31,7 @@ namespace BumblingKitchen.Interaction
 		/// </summary>
 		public void Interaction()
 		{
-            var interactionObject = DetectedInteractable();
+			var interactionObject = DetectedInteractable();
 
 			//상호작용 오브젝트를 찾지 못했다면 
 			if (interactionObject == null)
@@ -41,7 +41,7 @@ namespace BumblingKitchen.Interaction
 
 			TryInteraction(interactionObject);
 		}
-		
+
 		/// <summary>
 		/// 픽업된 오브젝트가 있는 경우 파라미터로 들어온 오브젝트와 우선 순위를 비교해서 상호작용 주체가 결정하여 상호작용을 시도해봅니다.
 		/// </summary>
@@ -83,11 +83,11 @@ namespace BumblingKitchen.Interaction
 		/// [RPC] 네트워크 오브젝트를 픽업 오브젝트로 지정합니다.
 		/// </summary>
 		[Rpc(RpcSources.All, RpcTargets.All)]
-        public void RPC_Pickup(NetworkId id)
+		public void RPC_Pickup(NetworkId id)
 		{
-            var obj = Runner.FindObject(id);
+			var obj = Runner.FindObject(id);
 
-			if(obj.TryGetComponent<IInteractable>(out var pickUpObject) == true)
+			if (obj.TryGetComponent<IInteractable>(out var pickUpObject) == true)
 			{
 				obj.transform.SetParent(PickUpPoint);
 				obj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -101,8 +101,8 @@ namespace BumblingKitchen.Interaction
 		}
 
 		/// <summary>
-	/// 픽업한 오브젝트를 드롭하고 해당 오브젝트를 반환합니다.
-	/// </summary>
+		/// 픽업한 오브젝트를 드롭하고 해당 오브젝트를 반환합니다.
+		/// </summary>
 		public IInteractable DropPickUpObject()
 		{
 			if (HasPickUpObject == false)
@@ -135,10 +135,10 @@ namespace BumblingKitchen.Interaction
 					throw new MissingComponentException($"{hit.collider.gameObject}");
 				}
 
-				if(IsPickUpInteractor(interactableObject) == true)
+				if (IsPickUpInteractor(interactableObject) == true)
 				{
 					continue;
-				}	
+				}
 
 				if (detedObject == null)
 				{
@@ -194,7 +194,7 @@ namespace BumblingKitchen.Interaction
 		}
 
 		//Debug 용
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		private void OnDrawGizmos()
 		{
 			Vector3 detectPoint = GetDetectPoint();
@@ -202,6 +202,6 @@ namespace BumblingKitchen.Interaction
 			Ray ray = new(detectPoint, Vector3.down);
 			Gizmos.DrawLine(ray.origin, ray.GetPoint(_detectDistance));
 		}
-		#endif
+#endif
 	}
 }
