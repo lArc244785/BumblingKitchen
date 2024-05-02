@@ -20,9 +20,9 @@ namespace BumblingKitchen
 			_ingredient = GetComponentInParent<Ingredient>();
 			_mixElementUIList = _mixElementsParent.GetComponentsInChildren<MixElementUI>();
 
-			_ingredient.OnCookingStart += Close;
-			_ingredient.OnDoneCooked += Open;
-			_ingredient.OnUpdateMixData += UpdateMixData;
+			_ingredient.CookingStart += Close;
+			_ingredient.DoneCooked += Open;
+			_ingredient.UpdattingMixData += UpdateMixData;
 		}
 
 		private void UpdateMixData(List<IngredientData> mixDataList)

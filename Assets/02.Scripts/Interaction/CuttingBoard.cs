@@ -68,7 +68,7 @@ namespace BumblingKitchen.Interaction
 					if (interactor.HasPickUpObject == true)
 						return false;
 
-					_putIngredient.RPC_DoneCook(Runner.LocalPlayer);
+					_putIngredient.RPC_OnDoneCooked(Runner.LocalPlayer);
 					interactor.RPC_OnPickuping(_putIngredient.Object);
 					RPC_RelesePutIngredient();
 				}
@@ -94,10 +94,10 @@ namespace BumblingKitchen.Interaction
 			ingredient.transform.localRotation = Quaternion.identity;
 			_putIngredient = ingredient;
 
-			_putIngredient.OnCookingStart += OnCookingStart;
-			_putIngredient.OnDoneCooked += OnDoenCooked;
-			_putIngredient.OnUpdattingProgress += OnUpdattingProgress;
-			_putIngredient.OnCookingSucess += OnCookingSucess;
+			_putIngredient.CookingStart += OnCookingStart;
+			_putIngredient.DoneCooked += OnDoenCooked;
+			_putIngredient.UpdattingProgress += OnUpdattingProgress;
+			_putIngredient.CookingSucess += OnCookingSucess;
 
 			OnSettingRecipe?.Invoke(_recipeList[recipeIndex]);
 		}
@@ -130,10 +130,10 @@ namespace BumblingKitchen.Interaction
 
 		private void ResetCookingEvent()
 		{
-			_putIngredient.OnCookingStart -= OnCookingStart;
-			_putIngredient.OnDoneCooked -= OnDoenCooked;
-			_putIngredient.OnUpdattingProgress -= OnUpdattingProgress;
-			_putIngredient.OnCookingSucess -= OnCookingSucess;
+			_putIngredient.CookingStart -= OnCookingStart;
+			_putIngredient.DoneCooked -= OnDoenCooked;
+			_putIngredient.UpdattingProgress -= OnUpdattingProgress;
+			_putIngredient.CookingSucess -= OnCookingSucess;
 		}
 
 		[Rpc(RpcSources.All, RpcTargets.All)]
