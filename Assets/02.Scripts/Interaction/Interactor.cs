@@ -6,23 +6,25 @@ namespace BumblingKitchen.Interaction
 {
     public class Interactor : NetworkBehaviour, IHandEvents, ICutEvent, ICleanEvent
 	{
-        [field:SerializeField] public Transform PickUpPoint { get; private set; }
+		// PUBLIC	=======================================
+		[field:SerializeField] public Transform PickUpPoint { get; private set; }
 		public IInteractable PickupObject { get; private set; }
 		public bool HasPickUpObject => PickupObject != null;
 
+		// PRIVATE	======================================
 		//픽업 오브젝트를 탐색 시작 위치
-        [SerializeField] private Vector3 _detectedStartLocalPoint;
+		[SerializeField] private Vector3 _detectedStartLocalPoint;
 		//픽업 오브젝트의 탐색 길이
         [SerializeField] private float _detectDistance;
 		//픽업 오브젝트의 레이어 마스크
         [SerializeField] private LayerMask _detectLayerMask;
 
-		#region events
+		// EVENT	=======================================
 		public event Action Pickuping;
 		public event Action DropedPickupobject;
 		public event Action Cutting;
 		public event Action Cleaning;
-		#endregion
+		//=================================================
 
 		/// <summary>
 		/// 캐릭터가 바라보는 방향에서 일정 지점에서 있는 오브젝트를 탐색하고 가장 우선순위가 높은 오브젝트와 상호작용을 시도합니다.

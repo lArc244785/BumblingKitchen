@@ -7,7 +7,7 @@ namespace BumblingKitchen.Interaction
 {
 	public class Ingredient : PickableInteractable
 	{
-		//PUBLIC =================================
+		// PUBLIC	=======================================
 		public override InteractionType Type => InteractionType.Ingredient;
 		/// <summary>
 		/// 조합된 재료 이름
@@ -18,17 +18,8 @@ namespace BumblingKitchen.Interaction
 		/// </summary>
 		public List<IngredientData> MixDataList { get; } = new();
 		public CookState CurrentState { get; private set; }
-		
-		//EVENTS
-		public Action CookingStart;
-		public Action<float> UpdattingProgress;
-		public Action CookingSucess;
-		public Action DoneCooked;
-		public Action CookingFail;
-		public Action<List<IngredientData>> UpdattingMixData;
-		//PUBLIC =================================
 
-		//PRIVATE =================================
+		// PRIVATE	======================================
 		[SerializeField] private Transform _modelParent;
 		private PooledObject _modelObject;
 		//조리 레시피로 재료를 가공할 때 사용된다.
@@ -41,7 +32,15 @@ namespace BumblingKitchen.Interaction
 		/// [Networked] 현재 조합된 재료들의 레시피 이름
 		/// </summary>
 		[Networked] private NetworkString<_32> RecipeName { get; set; }
-		//PRIVATE =================================
+		
+		// EVENT	=======================================
+		public Action CookingStart;
+		public Action<float> UpdattingProgress;
+		public Action CookingSucess;
+		public Action DoneCooked;
+		public Action CookingFail;
+		public Action<List<IngredientData>> UpdattingMixData;
+		//================================================
 
 		public void Init(Recipe recipe)
 		{

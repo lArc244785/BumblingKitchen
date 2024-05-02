@@ -23,40 +23,29 @@ namespace BumblingKitchen
 
 	public class InGameLoad : NetworkBehaviour
 	{
-		public event Action SpawningNetworkPooledObjects;
-		public event Action CompeleteProcess;
-		public event Action<float> ProgressUpdated;
-		private event Action SpawnPlayer;
-		
+		// PUBLIC	=======================================
+
+
+		// PRIVATE	======================================
 		[SerializeField] private LoadProcess _process;
 
 		private TickTimer _stabilizationTimer;
 		private TickTimer _complentWaitTimer;
-
 		//Master Only
 		private Dictionary<PlayerRef, bool> _playerReadyTable;
 
-
-		private void UpdateProgress()
-		{
-			int currentProcess = (int)_process;
-			int totalProcess = (int)LoadProcess.Total;
-
-			float progress = (float)currentProcess / (float)totalProcess;
-			ProgressUpdated?.Invoke(progress);
-		}
+		// EVENT	=======================================
+		public event Action SpawningNetworkPooledObjects;
+		public event Action ProcessCompeleted;
+		public event Action<float> UpdattingProgress;
+		private event Action PlayerSpawned;
+		//=================================================
 
 		private void Awake()
 		{
 			_stabilizationTimer = TickTimer.None;
 			_complentWaitTimer = TickTimer.None;
 		}
-		public override void Spawned()
-		{
-			base.Spawned();
-			StartProcess();
-		}
-
 
 		private void StartProcess()
 		{
@@ -69,21 +58,27 @@ namespace BumblingKitchen
 			_process = process;
 			switch (_process)
 			{
+				//로딩 스크립트가 Runner에 안정적으로 등록이 완료될 때까지 대기합니다.
 				case LoadProcess.LoadStabilization:
 					_stabilizationTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
 					break;
+				//인 게임씬을 로딩 합니다.
 				case LoadProcess.LoadInGameScene:
 					LoadInGameScene();
 					break;
+				//플레이어 캐릭터를 소환합니다.
 				case LoadProcess.SpawnPlayer:
-					SpawnPlayer?.Invoke();
+					PlayerSpawned?.Invoke();
 					break;
+				//모든 플레이어가 준비가 완료될 때 까지 대기합니다.
 				case LoadProcess.WaitAllClientStabilization:
 					RPC_PlayerReady(Runner.LocalPlayer);
 					break;
+				//네트워크 풀 오브젝트를 준비합니다.
 				case LoadProcess.SetupPoolNetworkobject:
 					SpawningNetworkPooledObjects?.Invoke();
 					break;
+				//모든 준비가 완료되었고 일정 시간 대기 후 프로세스를 종료합니다.
 				case LoadProcess.Complent:
 					WaitComplent();
 					break;
@@ -91,14 +86,25 @@ namespace BumblingKitchen
 			UpdateProgress();
 		}
 
+		private void UpdateProgress()
+		{
+			int currentProcess = (int)_process;
+			int totalProcess = (int)LoadProcess.Total;
+
+			float progress = (float)currentProcess / (float)totalProcess;
+			UpdattingProgress?.Invoke(progress);
+		}
+
+		public override void Spawned()
+		{
+			base.Spawned();
+			StartProcess();
+		}
 
 		private void WaitComplent()
 		{
-			Debug.Log("FinshWait");
 			_complentWaitTimer = TickTimer.CreateFromSeconds(Runner, 1.0f);
 		}
-
-
 
 		private void SetupPlayerReadyTable()
 		{
@@ -127,7 +133,6 @@ namespace BumblingKitchen
 			if(_process == LoadProcess.LoadStabilization &&
 				_stabilizationTimer.Expired(Runner) == true)
 			{
-				Debug.Log("Loading Stabilization");
 				_stabilizationTimer = TickTimer.None;
 				GameObject.Find("Canvas Loading").GetComponent<LoadingUI>().Init(this);
 				SetupPlayerReadyTable();
@@ -138,7 +143,7 @@ namespace BumblingKitchen
 			if(_process == LoadProcess.Complent &&
 				_complentWaitTimer.Expired(Runner) == true)
 			{
-				CompeleteProcess?.Invoke();
+				ProcessCompeleted?.Invoke();
 				Runner.UnloadScene(SceneRef.FromIndex(3));
 				_complentWaitTimer = TickTimer.None;
 			}
@@ -146,7 +151,7 @@ namespace BumblingKitchen
 
 		public void InGameStabilizationed(Action spawnPlayer)
 		{
-			SpawnPlayer = spawnPlayer;
+			PlayerSpawned = spawnPlayer;
 			NextProcess(LoadProcess.SpawnPlayer);
 		}
 
@@ -158,7 +163,6 @@ namespace BumblingKitchen
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 		private void RPC_PlayerReady(PlayerRef player)
 		{
-			Debug.Log("PlayerReady");
 			if (_playerReadyTable.ContainsKey(player) == false)
 				return;
 
@@ -184,7 +188,6 @@ namespace BumblingKitchen
 		{
 			NextProcess(LoadProcess.Complent);
 		}
-
 
 		private void OnDestroy()
 		{
