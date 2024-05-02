@@ -8,6 +8,6 @@ namespace BumblingKitchen
 {
 	public interface IObjectPickUpEvent
 	{
-		event Action OnPickUpObject;
+		event Action PickupingObject;
 	}
 }

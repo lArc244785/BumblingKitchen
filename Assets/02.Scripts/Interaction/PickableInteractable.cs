@@ -10,28 +10,32 @@ namespace BumblingKitchen.Interaction
 
 		public NetworkId NetworkId => Object.Id;
 
-		public event Action OnPickUpObject;
+		public event Action PickupingObject;
 
 		public virtual bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
+			//상호작용 주체가 픽업한 객체가 없는 경우 픽업 실행한다.
 			if(interactor.HasPickUpObject == false)
 			{
 				interactor.RPC_OnPickuping(Object);
-				OnPickUpObject?.Invoke();
+				OnPickupingObject();
 				return true;
 			}
 			return false;
 		}
 
+		/// <summary>
+		/// [RPC] 해당 오브젝트를 비활성화 합니다.
+		/// </summary>
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		public void RPC_SetActive(bool isActive)
 		{
 			gameObject.SetActive(isActive);
 		}
 
-		public void InvokePickUpObject()
+		public void OnPickupingObject()
 		{
-			OnPickUpObject?.Invoke();
+			PickupingObject?.Invoke();
 		}
 	}
 }

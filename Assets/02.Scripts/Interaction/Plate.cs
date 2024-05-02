@@ -42,7 +42,7 @@ namespace BumblingKitchen.Interaction
 							{
 								interactor.DropPickUpObject();
 							}
-							ingredient.InvokePickUpObject();
+							ingredient.OnPickupingObject();
 							RPC_PutIngredient(ingredient.Object);
 						}
 						else if(_putIngredient.TryMix(ingredient) == true)
@@ -52,7 +52,7 @@ namespace BumblingKitchen.Interaction
 							{
 								interactor.DropPickUpObject();
 							}
-							ingredient.InvokePickUpObject();
+							ingredient.OnPickupingObject();
 							RPC_DespawnObject(ingredient.Object);
 						}
 					}

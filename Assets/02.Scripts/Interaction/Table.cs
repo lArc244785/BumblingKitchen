@@ -61,12 +61,12 @@ namespace BumblingKitchen.Interaction
 			_putObject.transform.localPosition = Vector3.zero;
 			_putObject.transform.localRotation = Quaternion.identity;
 
-			_putObject.OnPickUpObject += RPC_RelesePutObject;
+			_putObject.PickupingObject += RPC_RelesePutObject;
 		}
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		private void RPC_RelesePutObject()
 		{
-			_putObject.OnPickUpObject -= RPC_RelesePutObject;
+			_putObject.PickupingObject -= RPC_RelesePutObject;
 			_putObject = null;
 		}
 
