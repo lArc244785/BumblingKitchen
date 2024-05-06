@@ -99,7 +99,6 @@ namespace BumblingKitchen.Interaction
 			}
 		}
 
-
 		/// <summary>
 		/// 해당 오브젝트가 현재 픽업한 오브젝트인지 확인합니다.
 		/// </summary>
@@ -119,7 +118,6 @@ namespace BumblingKitchen.Interaction
 				return false;
 			}
 		}
-
 
 		/// <summary>
 		/// [RPC] 네트워크 오브젝트를 픽업 오브젝트로 지정합니다.
@@ -156,7 +154,6 @@ namespace BumblingKitchen.Interaction
 			RPC_OnDroped();
 			return dropObject;
 		}
-
 
 		/// <summary>
 		/// 가장 우선 순위가 높은 IInteractable을 반환합니다. 단 현재 집고 있는 오브젝트는 제외입니다.
@@ -226,7 +223,6 @@ namespace BumblingKitchen.Interaction
 		{
 			Cutting?.Invoke();
 		}
-
 
 		/// <summary>
 		/// 청소 관련 로직 호출시 호출되어야됩니다.

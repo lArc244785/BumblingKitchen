@@ -11,6 +11,7 @@ namespace BumblingKitchen.Interaction
 		/// 상호작용 오브젝트의 타입
 		/// </summary>
 		public virtual InteractionType Type => InteractionType.None;
+
 		/// <summary>
 		/// Network 환경에서의 오브젝트 ID
 		/// </summary>

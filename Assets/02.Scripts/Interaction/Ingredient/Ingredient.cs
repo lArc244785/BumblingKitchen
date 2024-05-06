@@ -8,19 +8,26 @@ namespace BumblingKitchen.Interaction
 	public class Ingredient : PickableInteractable
 	{
 		#region Property
+		/// <summary>
+		/// 상호작용 오브젝트의 타입
+		/// </summary>
 		public override InteractionType Type => InteractionType.Ingredient;
+		
 		/// <summary>
 		/// 조합된 재료 이름
 		/// </summary>
 		public string Name { private set; get; }
+
 		/// <summary>
 		/// 들어간 재료 리스트 추가할 때 마다 정렬된다.
 		/// </summary>
 		public List<IngredientData> MixDataList { get; } = new();
+		
 		/// <summary>
 		/// 재료의 조리 상태
 		/// </summary>
 		public CookState CurrentState { get; private set; }
+
 		/// <summary>
 		/// [Networked] 현재 조합된 재료들의 레시피 이름
 		/// </summary>
