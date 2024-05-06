@@ -7,7 +7,7 @@ namespace BumblingKitchen.Interaction
 {
 	public class Ingredient : PickableInteractable
 	{
-		// PUBLIC	=======================================
+		#region Property
 		public override InteractionType Type => InteractionType.Ingredient;
 		/// <summary>
 		/// 조합된 재료 이름
@@ -17,35 +17,87 @@ namespace BumblingKitchen.Interaction
 		/// 들어간 재료 리스트 추가할 때 마다 정렬된다.
 		/// </summary>
 		public List<IngredientData> MixDataList { get; } = new();
-		public CookState CurrentState { get; private set; }
-
-		// PRIVATE	======================================
-		[SerializeField] private Transform _modelParent;
-		private PooledObject _modelObject;
-		//조리 레시피로 재료를 가공할 때 사용된다.
-		private CookingRecipe _cookingRecipe;
 		/// <summary>
-		/// 조리 도구를 이용한 조리 진행도
+		/// 재료의 조리 상태
 		/// </summary>
-		private float _currentProgress;
+		public CookState CurrentState { get; private set; }
 		/// <summary>
 		/// [Networked] 현재 조합된 재료들의 레시피 이름
 		/// </summary>
 		[Networked] private NetworkString<_32> RecipeName { get; set; }
-		
-		// EVENT	=======================================
-		public Action CookingStart;
-		public Action<float> UpdattingProgress;
-		public Action CookingSucess;
-		public Action DoneCooked;
-		public Action CookingFail;
-		public Action<List<IngredientData>> UpdattingMixData;
-		//================================================
+		#endregion
 
+
+		#region Field
+		/// <summary>
+		/// 모델 오브젝트가 위치할 부모 Transfrom
+		/// </summary>
+		[SerializeField] private Transform _modelParent;
+
+		/// <summary>
+		/// 모델 오브젝트 해당 오브젝트는 모두 PooledObject를 가지고 있어야됩니다.
+		/// </summary>
+		private PooledObject _modelObject;
+		
+		/// <summary>
+		/// 조리 시 사용되는 레시피
+		/// </summary>
+		private CookingRecipe _cookingRecipe;
+		
+		/// <summary>
+		/// 조리 도구를 이용한 조리 진행도
+		/// </summary>
+		private float _currentProgress;
+		#endregion
+
+
+		#region Event
+		/// <summary>
+		/// 조리 시작 시 호출되는 이벤트
+		/// </summary>
+		public Action CookingStart;
+
+		/// <summary>
+		/// 조리의 진행도가 업데이트 시 호출되는 이벤트
+		/// </summary>
+		public Action<float> UpdattingProgress;
+		
+		/// <summary>
+		/// 조리 성공 시 호출되는 이벤트
+		/// </summary>
+		public Action CookingSucess;
+		
+		/// <summary>
+		/// 조리가 끝났을 때 호출되는 이벤트
+		/// </summary>
+		public Action DoneCooked;
+		
+		/// <summary>
+		/// 조리 실패 시 호출되는 이벤트
+		/// </summary>
+		public Action CookingFail;
+		
+		/// <summary>
+		/// 재료의 섞인 재료가 업데이트 시 호출되는 이벤트
+		/// </summary>
+		public Action<List<IngredientData>> UpdattingMixData;
+		#endregion
+
+
+		#region Method
+		/// <summary>
+		/// 초기 생성 시 해당 재료의 레시피 이름을 설정합니다.
+		/// </summary>
+		/// <param name="recipe"></param>
 		public void Init(Recipe recipe)
 		{
 			RecipeName = recipe.Name;
 		}
+
+		/// <summary>
+		/// 네트워크 오브젝트가 생성 시 호출됩니다.
+		/// 동기화 된 레시피의 이름 통해서 현재 재료의 상태를 업데이트 합니다.
+		/// </summary>
 		public override void Spawned()
 		{
 			if (RecipeName.ToString().Equals(string.Empty))
@@ -63,9 +115,15 @@ namespace BumblingKitchen.Interaction
 			gameObject.name = recipe.Name;
 		}
 
+		/// <summary>
+		/// 1. 상호작용 주체가 픽업이 가능한 경우 해당 오브젝트를 픽업합니다.
+		/// 2. 상호작용 주체가 재료를 들고 있는 경우 해당 재료를 섞기를 시도해보고 가능한 경우 RPC를 통해서 섞기를 진행합니다.
+		/// </summary>
+		/// <returns>상호 작용 성공 여부</returns>
+		/// <exception cref="주체가 픽업한 오브젝트가 PickableInteractable에서 파생된 객체가 아닌 경우"></exception>
 		public override bool TryInteraction(Interactor interactor, IInteractable interactable)
 		{
-			if(base.TryInteraction(interactor, interactable) == true)
+			if (base.TryInteraction(interactor, interactable) == true)
 			{
 				return true;
 			}
@@ -82,13 +140,13 @@ namespace BumblingKitchen.Interaction
 			if (TryMix(ingredient) == true)
 			{
 				PickableInteractable pickableObject = interactable as PickableInteractable;
-				
-				if(pickableObject == null)
+
+				if (pickableObject == null)
 				{
 					throw new Exception("This ingredient isn't PickableInteractable!");
 				}
 
-				if(interactor.IsPickUpInteractor(pickableObject) == true)
+				if (interactor.IsPickUpInteractor(pickableObject) == true)
 				{
 					interactor.DropPickUpObject();
 				}
@@ -98,7 +156,6 @@ namespace BumblingKitchen.Interaction
 
 			return false;
 		}
-
 
 		/// <summary>
 		/// 두개의 재료를 합치기를 시도합니다.
@@ -124,6 +181,7 @@ namespace BumblingKitchen.Interaction
 			RPC_UpdateIngredient(foundRecipe.Name);
 			return true;
 		}
+
 		/// <summary>
 		/// [RPC] 레시피에 맞추어서 재료의 정보와 비주얼 데이터를 업데이트 합니다.
 		/// </summary>
@@ -143,6 +201,11 @@ namespace BumblingKitchen.Interaction
 			Name = newRecipe.Name;
 			UpdateModel(newRecipe);
 		}
+
+		/// <summary>
+		/// 레시피를 기반으로 해서 그에 맞는 오브젝트로 업데이트 합니다.
+		/// </summary>
+		/// <param name="newRecipe"></param>
 		private void UpdateModel(Recipe newRecipe)
 		{
 			if (_modelObject != null)
@@ -155,6 +218,7 @@ namespace BumblingKitchen.Interaction
 			_modelObject.transform.localPosition = Vector3.zero;
 			_modelObject.transform.rotation = Quaternion.identity;
 		}
+
 		/// <summary>
 		/// 재료를 합치고 정렬을 진행합니다.
 		/// </summary>
@@ -190,6 +254,12 @@ namespace BumblingKitchen.Interaction
 			CurrentState = CookState.Cooking;
 			CookingStart?.Invoke();
 		}
+
+		/// <summary>
+		/// [RPC] 조리도구를 통해서 조리를 진행합니다.
+		/// 설정된 조리 레시피를 기반으로 일정 진행도를 넘어가면 재료의 데이터가 업데이트 됩니다.
+		/// </summary>
+		/// <param name="addProgress"></param>
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		public void RPC_Cooking(float addProgress)
 		{
@@ -203,7 +273,7 @@ namespace BumblingKitchen.Interaction
 			{
 				case CookState.Cooking:
 					{
-						if(_currentProgress >= _cookingRecipe.SucessProgress)
+						if (_currentProgress >= _cookingRecipe.SucessProgress)
 						{
 							CurrentState = CookState.Sucess;
 							RPC_UpdateIngredient(_cookingRecipe.Sucess.Name);
@@ -213,7 +283,7 @@ namespace BumblingKitchen.Interaction
 					}
 				case CookState.Sucess:
 					{
-						if(_currentProgress >= _cookingRecipe.FailProgress)
+						if (_currentProgress >= _cookingRecipe.FailProgress)
 						{
 							CurrentState = CookState.Fail;
 							RPC_UpdateIngredient(_cookingRecipe.Fail.Name);
@@ -224,16 +294,17 @@ namespace BumblingKitchen.Interaction
 			}
 
 		}
+
 		/// <summary>
-		/// [RPC] 조리 완료
+		/// [RPC] 조리 완료시 호출됩니다.
 		/// </summary>
 		/// <param name="player"></param>
 		[Rpc(RpcSources.All, RpcTargets.All)]
 		public void RPC_DoneCooked(PlayerRef player)
 		{
-			if(HasStateAuthority == true)
+			if (HasStateAuthority == true)
 			{
-				if(CurrentState == CookState.Sucess)
+				if (CurrentState == CookState.Sucess)
 				{
 					InGameData.Instance.RPC_AddSuccesCooking(player);
 				}
@@ -248,16 +319,25 @@ namespace BumblingKitchen.Interaction
 			DoneCooked?.Invoke();
 		}
 
-
+		/// <summary>
+		/// [RPC] 재료를 합치는 경우 들어온 재료의 오브젝트를 삭제할 때 사용됩니다.
+		/// </summary>
 		[Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 		private void RPC_DespawnIngredient(NetworkObject despawnObject)
 		{
 			Runner.Despawn(despawnObject);
 		}
+
+		/// <summary>
+		/// 오브젝트가 Despawn시 MixDataList를 초기화 합니다.
+		/// </summary>
+		/// <param name="runner"></param>
+		/// <param name="hasState"></param>
 		public override void Despawned(NetworkRunner runner, bool hasState)
 		{
 			base.Despawned(runner, hasState);
 			MixDataList.Clear();
 		}
+		#endregion
 	}
 }

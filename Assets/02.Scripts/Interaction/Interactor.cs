@@ -6,26 +6,66 @@ namespace BumblingKitchen.Interaction
 {
 	public class Interactor : NetworkBehaviour, IHandEvents, ICutEvent, ICleanEvent
 	{
-		// PUBLIC	=======================================
+		#region Property
+		/// <summary>
+		/// 픽업 오브젝트의 부모 Transfrom
+		/// </summary>
 		[field: SerializeField] public Transform PickUpPoint { get; private set; }
+
+		/// <summary>
+		/// 픽업 오브젝트
+		/// </summary>
 		public IInteractable PickupObject { get; private set; }
+		
+		/// <summary>
+		/// 현재 픽업 오브젝트가 있는지
+		/// </summary>
 		public bool HasPickUpObject => PickupObject != null;
+		#endregion
 
-		// PRIVATE	======================================
-		//픽업 오브젝트를 탐색 시작 위치
+
+		#region Field
+		/// <summary>
+		/// 오브젝트 탐색 시작하는 위치
+		/// </summary>
 		[SerializeField] private Vector3 _detectedStartLocalPoint;
-		//픽업 오브젝트의 탐색 길이
+		
+		/// <summary>
+		/// 탐색 Ray의 길이
+		/// </summary>
 		[SerializeField] private float _detectDistance;
-		//픽업 오브젝트의 레이어 마스크
+		
+		/// <summary>
+		/// 탐색 Ray에 걸리는 오브젝트들의 마스크
+		/// </summary>
 		[SerializeField] private LayerMask _detectLayerMask;
+		#endregion
 
-		// EVENT	=======================================
+
+		#region Event
+		/// <summary>
+		/// 픽업 시 호출되는 이벤트 이벤트입니다.
+		/// </summary>
 		public event Action Pickuping;
+		
+		/// <summary>
+		/// 픽업한 오브젝트를 놓았을 때 호출되는 이벤트 입니다.
+		/// </summary>
 		public event Action DropedPickupobject;
-		public event Action Cutting;
-		public event Action Cleaning;
-		//=================================================
 
+		/// <summary>
+		/// 재료를 자르는 상호작용을 진행시 호출되는 이벤트입니다.
+		/// </summary>
+		public event Action Cutting;
+
+		/// <summary>
+		/// 접시 닦기 상호작용을 진행시 호출되는 이벤트입니다.
+		/// </summary>
+		public event Action Cleaning;
+		#endregion
+
+
+		#region Method
 		/// <summary>
 		/// 캐릭터가 바라보는 방향에서 일정 지점에서 있는 오브젝트를 탐색하고 가장 우선순위가 높은 오브젝트와 상호작용을 시도합니다.
 		/// </summary>
@@ -59,6 +99,7 @@ namespace BumblingKitchen.Interaction
 			}
 		}
 
+
 		/// <summary>
 		/// 해당 오브젝트가 현재 픽업한 오브젝트인지 확인합니다.
 		/// </summary>
@@ -78,6 +119,7 @@ namespace BumblingKitchen.Interaction
 				return false;
 			}
 		}
+
 
 		/// <summary>
 		/// [RPC] 네트워크 오브젝트를 픽업 오브젝트로 지정합니다.
@@ -114,6 +156,7 @@ namespace BumblingKitchen.Interaction
 			RPC_OnDroped();
 			return dropObject;
 		}
+
 
 		/// <summary>
 		/// 가장 우선 순위가 높은 IInteractable을 반환합니다. 단 현재 집고 있는 오브젝트는 제외입니다.
@@ -155,6 +198,7 @@ namespace BumblingKitchen.Interaction
 
 			return detedObject;
 		}
+
 		/// <summary>
 		/// 현재 위치에서의 탐색 시작 위치를 가져옵니다.
 		/// </summary>
@@ -183,6 +227,7 @@ namespace BumblingKitchen.Interaction
 			Cutting?.Invoke();
 		}
 
+
 		/// <summary>
 		/// 청소 관련 로직 호출시 호출되어야됩니다.
 		/// </summary>
@@ -192,16 +237,6 @@ namespace BumblingKitchen.Interaction
 		{
 			Cleaning?.Invoke();
 		}
-
-		//Debug 용
-#if UNITY_EDITOR
-		private void OnDrawGizmos()
-		{
-			Vector3 detectPoint = GetDetectPoint();
-			Gizmos.color = Color.green;
-			Ray ray = new(detectPoint, Vector3.down);
-			Gizmos.DrawLine(ray.origin, ray.GetPoint(_detectDistance));
-		}
-#endif
+		#endregion
 	}
 }
