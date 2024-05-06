@@ -14,4 +14,4 @@ overcooked을 참고하여 개발한 Copycat Game입니다.
 - [Interactor](https://github.com/lArc244785/BumblingKitchen/blob/fix/clean-code/Assets/02.Scripts/Interaction/Interactor.cs)
 - [PickableInteractable](https://github.com/lArc244785/BumblingKitchen/blob/fix/clean-code/Assets/02.Scripts/Interaction/PickableInteractable.cs)
 - [Ingredient](https://github.com/lArc244785/BumblingKitchen/blob/fix/clean-code/Assets/02.Scripts/Interaction/Ingredient/Ingredient.cs)
-- [Load](https://github.com/lArc244785/BumblingKitchen/blob/fix/clean-code/Assets/02.Scripts/Loading/InGameLoad.cs)
+- [InGameLoad](https://github.com/lArc244785/BumblingKitchen/blob/fix/clean-code/Assets/02.Scripts/Loading/InGameLoad.cs)
